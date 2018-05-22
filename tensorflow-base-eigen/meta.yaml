@@ -1,5 +1,6 @@
 {% set version = "1.8.0" %}
 
+# This is the recipe for the "eigen" variant of tensorflow-base
 package:
   name: tensorflow-base
   version: {{ version }}

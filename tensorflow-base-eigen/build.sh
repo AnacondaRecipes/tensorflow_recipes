@@ -5,8 +5,9 @@ set -ex
 mkdir -p ./bazel_output_base
 export BAZEL_OPTS="--batch "
 
-# set up bazel config file for conda provided clang toolchain
 if [[ ${HOST} =~ .*darwin.* ]]; then
+
+    # set up bazel config file for conda provided clang toolchain
     cp -r ${RECIPE_DIR}/custom_clang_toolchain .
     cd custom_clang_toolchain
     sed -e "s:\${CLANG}:${CLANG}:" \
@@ -22,13 +23,42 @@ if [[ ${HOST} =~ .*darwin.* ]]; then
         -e "s:\${CONDA_BUILD_SYSROOT}:${CONDA_BUILD_SYSROOT}:" \
         CROSSTOOL.template > CROSSTOOL
     cd ..
+
+    # set build arguments
+    export  BAZEL_USE_CPP_ONLY_TOOLCHAIN=1
+    BUILD_OPTS="
+        --crosstool_top=//custom_clang_toolchain:toolchain
+        --verbose_failures
+        --config=opt"
+else
+    # Linux
+    # the following arguments are useful for debugging
+    #    --logging=6
+    #    --subcommands
+
+    # Set compiler and linker flags as bazel does not account for CFLAGS,
+    # CXXFLAGS and LDFLAGS.
+    BUILD_OPTS="
+    --copt=-march=nocona
+    --copt=-mtune=haswell
+    --copt=-ftree-vectorize
+    --copt=-fPIC
+    --copt=-fstack-protector-strong
+    --copt=-fno-plt
+    --copt=-O2
+    --cxxopt=-fvisibility-inlines-hidden
+    --cxxopt=-fmessage-length=0
+    --linkopt=-zrelro
+    --linkopt=-znow
+    --verbose_failures
+    --config=opt"
+
 fi
 
 # Python settings
 export PYTHON_BIN_PATH=${PYTHON}
 export PYTHON_LIB_PATH=${SP_DIR}
 export USE_DEFAULT_PYTHON_LIB_PATH=1
-
 
 # additional settings
 # disable jemmloc (needs MADV_HUGEPAGE macro which is not in glib <= 2.12)
@@ -49,22 +79,7 @@ export TF_NEED_MPI=0
 yes "" | ./configure
 
 # build using bazel
-# add the following when debugging
-#    --logging=6 \
-#    --subcommands \
-if [[ ${HOST} =~ .*darwin.* ]]; then
-    export  BAZEL_USE_CPP_ONLY_TOOLCHAIN=1
-    bazel ${BAZEL_OPTS} build \
-        --crosstool_top=//custom_clang_toolchain:toolchain \
-        --verbose_failures \
-        --config=opt \
-        //tensorflow/tools/pip_package:build_pip_package
-else
-    bazel ${BAZEL_OPTS} build \
-        --verbose_failures \
-        --config=opt \
-        //tensorflow/tools/pip_package:build_pip_package
-fi
+bazel ${BAZEL_OPTS} build ${BUILD_OPTS} //tensorflow/tools/pip_package:build_pip_package
 
 # build a whl file
 mkdir -p $SRC_DIR/tensorflow_pkg
