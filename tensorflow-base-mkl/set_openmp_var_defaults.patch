@@ -1,0 +1,17 @@
+diff --git a/tensorflow/__init__.py b/tensorflow/__init__.py
+index c8683e3976..6d54de35d2 100644
+--- a/tensorflow/__init__.py
++++ b/tensorflow/__init__.py
+@@ -20,6 +20,12 @@ from __future__ import absolute_import
+ from __future__ import division
+ from __future__ import print_function
+ 
++# Set reasonable OpenMP defaults for MKL-DNN
++import os
++os.environ["KMP_BLOCKTIME"] = os.environ.get("KMP_BLOCKTIME", "1")
++os.environ["OMP_PROC_BIND"] = os.environ.get("OMP_PROC_BIND", "true")
++del os
++
+ # pylint: disable=g-bad-import-order
+ from tensorflow.python import pywrap_tensorflow  # pylint: disable=unused-import
+ # pylint: disable=wildcard-import
