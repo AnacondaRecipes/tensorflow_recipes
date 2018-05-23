@@ -1,0 +1,25 @@
+{% set version = "1.8.0" %}
+
+package:
+  name: tensorflow-{{ variant }}
+  version: {{ version }}
+
+build:
+  number: 0
+  skip: True  # [not linux64]
+
+requirements:
+  run:
+    - tensorflow =={{ version }}
+    - _tflow_180_select =={{ select_version }}
+
+test:
+  imports:
+    - tensorflow
+    - tensorboard
+  commands:
+    # has an exit code of 1, see tensorboard recipe
+    - tensorboard --help || true  # [unix]
+
+about:
+  summary: Metapackage for selecting a TensorFlow variant.
