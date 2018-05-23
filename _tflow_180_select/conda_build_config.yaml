@@ -1,0 +1,11 @@
+tflow_variant_version:
+  - 1.0
+  - 2.0
+  - 3.0
+tflow_variant_str:
+  - gpu
+  - mkl
+  - eigen
+zip_keys:
+  - tflow_variant_version
+  - tflow_variant_str
