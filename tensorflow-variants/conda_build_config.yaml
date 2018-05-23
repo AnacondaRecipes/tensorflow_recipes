@@ -2,8 +2,8 @@ variant:
   - mkl
   - eigen
 select_version:
-  - 2.0=mkl
-  - 3.0=eigen
+  - "2.0 mkl"
+  - "3.0 eigen"
 zip_keys:
   - variant
   - select_version
