@@ -1,7 +1,9 @@
 variant:
+  - gpu
   - mkl
   - eigen
 select_version:
+  - "1.0 gpu"
   - "2.0 mkl"
   - "3.0 eigen"
 zip_keys:
