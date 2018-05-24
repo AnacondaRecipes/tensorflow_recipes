@@ -22,6 +22,10 @@ source:
     - 0002-add-additional-cuda-rpaths.patch
     # patch to support glibc 2.11
     - support_glibc_2_11.patch
+    # Fix for CUDA 8, see:
+    # https://github.com/tensorflow/tensorflow/issues/19203
+    # https://github.com/zheng-xq/tensorflow/commit/f506183dd148d97e3378eb994b2ac9c948ef0ada
+    - f506183dd148d97e3378eb994b2ac9c948ef0ada.patch  # [cudatoolkit == '8.0']
 
 build:
   number: 0
