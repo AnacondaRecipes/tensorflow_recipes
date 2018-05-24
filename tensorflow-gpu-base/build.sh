@@ -2,6 +2,9 @@
 
 set -vex
 
+# expand PREFIX in BUILD file
+sed -i -e "s:\${PREFIX}:${PREFIX}:" tensorflow/core/platform/default/build_config/BUILD
+
 mkdir -p ./bazel_output_base
 export BAZEL_OPTS="--batch "
 
@@ -10,11 +13,12 @@ export PYTHON_BIN_PATH=${PYTHON}
 export PYTHON_LIB_PATH=${SP_DIR}
 export USE_DEFAULT_PYTHON_LIB_PATH=1
 
-export CC_OPT_FLAGS="-march=nocona"
-
 # additional settings
 # disable jemmloc (needs MADV_HUGEPAGE macro which is not in glib <= 2.12)
 export TF_NEED_JEMALLOC=0
+# do not build with MKL support
+export TF_NEED_MKL=0
+export CC_OPT_FLAGS="-march=nocona -mtune=haswell"
 export TF_NEED_GCP=1
 export TF_NEED_HDFS=1
 export TF_NEED_S3=1
@@ -61,9 +65,19 @@ yes "" | ./configure
 
 # build using bazel
 # for debugging the following lines may be helpful
-#    --logging=6 \
-#    --subcommands \
+#   --logging=6 \
+#   --subcommands \
 bazel ${BAZEL_OPTS} build \
+    --copt=-march=nocona \
+    --copt=-mtune=haswell \
+    --copt=-ftree-vectorize \
+    --copt=-fPIC \
+    --copt=-fstack-protector-strong \
+    --copt=-O2 \
+    --cxxopt=-fvisibility-inlines-hidden \
+    --cxxopt=-fmessage-length=0 \
+    --linkopt=-zrelro \
+    --linkopt=-znow \
     --linkopt="-L${PREFIX}/lib" \
     --verbose_failures \
     --config=opt \
@@ -78,6 +92,9 @@ bazel-bin/tensorflow/tools/pip_package/build_pip_package $SRC_DIR/tensorflow_pkg
 
 # install using pip from the whl file
 pip install --no-deps $SRC_DIR/tensorflow_pkg/*.whl
+
+# The tensorboard package has the proper entrypoint
+rm -f ${PREFIX}/bin/tensorboard
 
 # Run unit tests on the pip installation
 # Logic here is based off run_pip_tests.sh in the tensorflow repo
@@ -94,8 +111,7 @@ ln -s $(pwd)/tensorflow ${PIP_TEST_ROOT}/tensorflow
 
 # Test which are known to fail on a given platform
 KNOWN_FAIL=""
-
-PIP_TEST_FILTER_TAG="-no_pip_gpu,-no_pip"
+PIP_TEST_FILTER_TAG="-no_pip_gpu,-no_pip,-no_oss,-oss_serial"
 BAZEL_FLAGS="--define=no_tensorflow_py_deps=true --test_lang_filters=py \
       --build_tests_only -k --test_tag_filters=${PIP_TEST_FILTER_TAG} \
       --test_timeout 9999999"
