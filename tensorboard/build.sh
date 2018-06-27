@@ -6,31 +6,52 @@ set -ex
 rm -rf "${SP_DIR}/setuptools/command/launcher manifest.xml"
 rm -rf "${SP_DIR}/setuptools/script (dev).tmpl"
 
-# Adapted from: https://github.com/tensorflow/tensorboard/blob/0.1.5/tensorboard/pip_package/build_pip_package.sh
 # build using bazel
 mkdir -p ./bazel_output_base
 export BAZEL_OPTS="--batch"
 bazel ${BAZEL_OPTS} build //tensorboard/pip_package:build_pip_package
 
-# collect files for the python package
+# Adapted from: https://github.com/tensorflow/tensorboard/blob/1.9.0/tensorboard/pip_package/build_pip_package.sh
+if [ "$(uname)" = "Darwin" ]; then
+  sedi="sed -i ''"
+else
+  sedi="sed -i"
+fi
+
 TMPDIR=tmp_pip_dir
 mkdir -p ${TMPDIR}
-# The whl file contains all dependencies in an external directory, there is
-# no need for this in a conda packages as these requirements are provided by
-# other packages.
-#cp -R bazel-bin/tensorboard/pip_package/build_pip_package.runfiles/org_tensorflow_tensorboard/external "${TMPDIR}"
-cp -R bazel-bin/tensorboard/pip_package/build_pip_package.runfiles/org_tensorflow_tensorboard/tensorboard "${TMPDIR}"
+RUNFILES=$(pwd)/bazel-bin/tensorboard/pip_package/build_pip_package.runfiles
 
-cp tensorboard/pip_package/MANIFEST.in ${TMPDIR}
-cp README.md ${TMPDIR}
-cp tensorboard/pip_package/setup.py ${TMPDIR}
-cd tmp_pip_dir
-rm -f MANIFEST
+pushd ${TMPDIR}
 
+cp -LR "${RUNFILES}/org_tensorflow_tensorboard/tensorboard" .
+mv -f "tensorboard/pip_package/LICENSE" .
+mv -f "tensorboard/pip_package/MANIFEST.in" .
+mv -f "tensorboard/pip_package/README.rst" .
+mv -f "tensorboard/pip_package/setup.cfg" .
+mv -f "tensorboard/pip_package/setup.py" .
+rm -rf tensorboard/pip_package
+
+rm -f tensorboard/tensorboard              # bazel py_binary sh wrapper
+chmod -x LICENSE                           # bazel symlinks confuse cp
+find . -name __init__.py | xargs chmod -x  # which goes for all genfiles
+
+mkdir -p tensorboard/_vendor
+touch tensorboard/_vendor/__init__.py
+cp -LR "${RUNFILES}/org_html5lib/html5lib" tensorboard/_vendor
+cp -LR "${RUNFILES}/org_mozilla_bleach/bleach" tensorboard/_vendor
+
+chmod -R u+w,go+r .
+
+find tensorboard -name \*.py |
+  xargs $sedi -e '
+    s/^import html5lib$/from tensorboard._vendor import html5lib/
+    s/^from html5lib/from tensorboard._vendor.html5lib/
+    s/^import bleach$/from tensorboard._vendor import bleach/
+    s/^from bleach/from tensorboard._vendor.bleach/
+  '
 # install the package
 python setup.py install --single-version-externally-managed --record record.txt
 
-# Remove bin/tensorboard from as it is include in the
-# tensorflow-base/tensorflow-gpu-base packages.
-# TODO for next release: keep this file and remove the file in the -base packages.
+# Remove bin/tensorboard since the entry_point takes care of creating this.
 rm $PREFIX/bin/tensorboard
