@@ -1,4 +1,4 @@
-{% set version = "1.8.0" %}
+{% set version = "1.9.0rc1" %}
 
 # This is the recipe for the "gpu" variant of tensorflow-base
 package:
@@ -7,8 +7,8 @@ package:
 
 source:
   fn: tensorflow-{{ version }}.tar.gz
-  url: https://github.com/tensorflow/tensorflow/archive/v{{ version }}.tar.gz
-  sha256: 47646952590fd213b747247e6870d89bb4a368a95ae3561513d6c76e44f92a75
+  url: https://github.com/tensorflow/tensorflow/archive/v1.9.0-rc1.tar.gz
+  sha256: fff9f72ae12f3e3b5cfa924a1d751147decea4172fd02760aa1a3f9b04d5616a
   patches:
   patches:
     # Patches need to get certain tests to pass on CentOS 6
@@ -22,13 +22,10 @@ source:
     - 0002-add-additional-cuda-rpaths.patch
     # patch to support glibc 2.11
     - support_glibc_2_11.patch
-    # Fix for CUDA 8, see:
-    # https://github.com/tensorflow/tensorflow/issues/19203
-    # https://github.com/zheng-xq/tensorflow/commit/f506183dd148d97e3378eb994b2ac9c948ef0ada
-    - f506183dd148d97e3378eb994b2ac9c948ef0ada.patch  # [cudatoolkit == '8.0']
 
 build:
   number: 0
+  string: gpu_py{{ CONDA_PY }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}
   skip: True  # [not linux64]
 
 requirements:
