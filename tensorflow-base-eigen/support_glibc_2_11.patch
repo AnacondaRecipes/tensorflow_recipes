@@ -1,24 +1,24 @@
 diff --git a/tensorflow/workspace.bzl b/tensorflow/workspace.bzl
-index 48728ac131..9ce8250171 100644
+index 50a69598a1..5ea92e8e68 100644
 --- a/tensorflow/workspace.bzl
 +++ b/tensorflow/workspace.bzl
 @@ -102,6 +102,7 @@ def tf_workspace(path_prefix="", tf_repo_name=""):
-      sha256 = "5996380e3e8b981f55d1c8d58e709c00dbb4806ba367be75d0925a68cc2f6478",
-      strip_prefix = "abseil-cpp-720c017e30339fd1786ce4aac68bc8559736e53f",
+      sha256 = "1273a1434ced93bc3e703a48c5dced058c95e995c8c009e9bdcb24a69e2180e9",
+      strip_prefix = "abseil-cpp-9613678332c976568272c8f4a78631a29159271d",
       build_file = clean_dep("//third_party:com_google_absl.BUILD"),
 +     patch_file = clean_dep("//third_party:abseil_remove_glibc_check.patch")
    )
  
    tf_http_archive(
-@@ -432,6 +433,7 @@ def tf_workspace(path_prefix="", tf_repo_name=""):
+@@ -433,6 +434,7 @@ def tf_workspace(path_prefix="", tf_repo_name=""):
        ],
-       sha256 = "0a05bd355e4571b01d813dddffa38e57e689ac41b264dc9b1bd6ec66463ef5d6",
-       strip_prefix = "grpc-bd6bdf93279a39a8cd92978fd7c9d14eccd98fc2",
+       sha256 = "895b31310e718a61f7335759a778c068a6edde1c089883598a0830cbb7075673",
+       strip_prefix = "grpc-d184fa229d75d336aedea0041bd59cb93e7e267f",
 +      patch_file = clean_dep("//third_party/grpc:do_not_use_pthread_name.patch")
    )
  
  
-@@ -489,6 +491,7 @@ def tf_workspace(path_prefix="", tf_repo_name=""):
+@@ -490,6 +492,7 @@ def tf_workspace(path_prefix="", tf_repo_name=""):
        ],
        sha256 = "524ba98a56300149696481b4cb9ddebd0c7b7ac9b9f6edee81da2d2d7e5d2bb3",
        strip_prefix = "boringssl-a0fb951d2a26a8ee746b52f3ba81ab011a0af778",

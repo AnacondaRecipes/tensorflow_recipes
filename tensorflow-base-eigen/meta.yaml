@@ -1,4 +1,4 @@
-{% set version = "1.8.0" %}
+{% set version = "1.9.0" %}
 
 # This is the recipe for the "eigen" variant of tensorflow-base
 package:
@@ -7,8 +7,8 @@ package:
 
 source:
   fn: tensorflow-{{ version }}.tar.gz
-  url: https://github.com/tensorflow/tensorflow/archive/v{{ version }}.tar.gz
-  sha256: 47646952590fd213b747247e6870d89bb4a368a95ae3561513d6c76e44f92a75
+  url: https://github.com/tensorflow/tensorflow/archive/v1.9.0.tar.gz
+  sha256: ffc3151b06823d57b4a408261ba8efe53601563dfe93af0866751d4f6ca5068c
   patches:
     # needed for older glibc support
     - 0001-add-rt-to-linkopts.patch                   # [linux]
@@ -28,9 +28,11 @@ build:
   number: 0
   skip: True  # [not x86_64]
   skip: True  # [win and vc<14]
+  string: eigen_py{{ CONDA_PY }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}
   entry_points:
-    - freeze_graph = tensorflow.python.tools.freeze_graph:main
+    - freeze_graph = tensorflow.python.tools.freeze_graph:run_main
     - saved_model_cli = tensorflow.python.tools.saved_model_cli:main
+    - tflite_convert = tensorflow.contrib.lite.python.tflite_convert:main
     - toco = tensorflow.contrib.lite.toco.python.toco_wrapper:main
     - toco_from_protos = tensorflow.contrib.lite.toco.python.toco_from_protos:main
     # The tensorboard package adds this entry point.
@@ -46,6 +48,7 @@ requirements:
     - posix  # [win]
     - m2-patch  # [win]
     - pip
+    - setuptools <=39.1.0
     - python
     - swig
     - zlib
