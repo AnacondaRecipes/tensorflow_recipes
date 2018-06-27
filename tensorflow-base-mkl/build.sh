@@ -119,5 +119,5 @@ if [ "${CPU_COUNT}" -gt 20 ]; then
     BAZEL_PARALLEL_TEST_FLAGS="--local_test_jobs=20"
 fi
 # to reduce build time on worker skip tests, run when testing
-#bazel ${BAZEL_OPTS} test ${BAZEL_FLAGS} \
-#    ${BAZEL_PARALLEL_TEST_FLAGS} -- ${BAZEL_TEST_TARGETS} ${KNOWN_FAIL}
+bazel ${BAZEL_OPTS} test ${BAZEL_FLAGS} \
+    ${BAZEL_PARALLEL_TEST_FLAGS} -- ${BAZEL_TEST_TARGETS} ${KNOWN_FAIL}
