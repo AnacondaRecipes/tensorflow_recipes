@@ -1,6 +1,6 @@
 {% set version = "1.9.0" %}
 
-# This is the recipe for the "mkl" variant of tensorflow-base
+# This is the recipe for the "mkl" and "eigen" variants of tensorflow-base
 package:
   name: tensorflow-base
   version: {{ version }}
@@ -23,14 +23,14 @@ source:
     # additional patches
     - 0003-Update-is_windows-to-allow-mingw-shells.patch
     - 0004-Escape-regex-pattern-properly-before-using-it.patch
-    - set_openmp_var_defaults.patch
-    - mkl_dnn_avx.patch
+    - set_openmp_var_defaults.patch   # [tflow_variant == 'mkl']
+    - mkl_dnn_avx.patch               # [tflow_variant == 'mkl']
 
 build:
   number: 0
   skip: True  # [not x86_64]
   skip: True  # [win and vc<14]
-  string: mkl_py{{ CONDA_PY }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}
+  string: {{ tflow_variant }}_py{{ CONDA_PY }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}
   entry_points:
     - freeze_graph = tensorflow.python.tools.freeze_graph:run_main
     - saved_model_cli = tensorflow.python.tools.saved_model_cli:main

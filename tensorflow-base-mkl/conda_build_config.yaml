@@ -1,2 +1,3 @@
 tflow_variant:
   - mkl
+  - eigen

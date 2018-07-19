@@ -2,6 +2,18 @@
 
 set -ex
 
+# variant specific settings
+if [ ${tflow_variant} == "mkl" ]; then
+    export TF_NEED_MKL=1
+    export BAZEL_MKL_OPT="--config=mkl"
+else
+    # eigen variant, do not build with MKL support
+    export TF_NEED_MKL=0
+    export BAZEL_MKL_OPT=""
+fi
+echo "TF_NEED_MKL: ${TF_NEED_MKL}"
+echo "BAZEL_MKL_OPT: ${BAZEL_MKL_OPT}"
+
 mkdir -p ./bazel_output_base
 export BAZEL_OPTS="--batch "
 
@@ -51,7 +63,7 @@ else
     --linkopt=-zrelro
     --linkopt=-znow
     --verbose_failures
-    --config=mkl
+    ${BAZEL_MKL_OPT}
     --config=opt"
 
 fi
@@ -64,8 +76,6 @@ export USE_DEFAULT_PYTHON_LIB_PATH=1
 # additional settings
 # disable jemmloc (needs MADV_HUGEPAGE macro which is not in glib <= 2.12)
 export TF_NEED_JEMALLOC=0
-# do not build with MKL support
-export TF_NEED_MKL=1
 export CC_OPT_FLAGS="-march=nocona -mtune=haswell"
 export TF_NEED_GCP=1
 export TF_NEED_HDFS=1
@@ -119,5 +129,5 @@ if [ "${CPU_COUNT}" -gt 20 ]; then
     BAZEL_PARALLEL_TEST_FLAGS="--local_test_jobs=20"
 fi
 # to reduce build time on worker skip tests, run when testing
-bazel ${BAZEL_OPTS} test ${BAZEL_FLAGS} \
-    ${BAZEL_PARALLEL_TEST_FLAGS} -- ${BAZEL_TEST_TARGETS} ${KNOWN_FAIL}
+#bazel ${BAZEL_OPTS} test ${BAZEL_FLAGS} \
+#    ${BAZEL_PARALLEL_TEST_FLAGS} -- ${BAZEL_TEST_TARGETS} ${KNOWN_FAIL}
