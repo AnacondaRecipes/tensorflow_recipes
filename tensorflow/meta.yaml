@@ -23,7 +23,7 @@ test:
     - tensorboard
   commands:
     # has an exit code of 1, see tensorboard recipe
-    - tensorboard --help || true  # [unix]
+    - tensorboard --help | grep USAGE  # [unix]
 
 about:
   home: http://tensorflow.org/

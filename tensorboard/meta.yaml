@@ -51,7 +51,7 @@ test:
   commands:
     # sets an exit value of 1
     # https://github.com/tensorflow/tensorboard/issues/1007
-    - tensorboard --help || true  # [unix]
+    - tensorboard --help | grep USAGE  # [unix]
 
 about:
   home: http://tensorflow.org/
