@@ -35,7 +35,7 @@ build:
     - freeze_graph = tensorflow.python.tools.freeze_graph:run_main
     - saved_model_cli = tensorflow.python.tools.saved_model_cli:main
     - tflite_convert = tensorflow.contrib.lite.python.tflite_convert:main
-    - toco = tensorflow.contrib.lite.toco.python.toco_wrapper:main
+    - toco = tensorflow.contrib.lite.python.tflite_convert:main
     - toco_from_protos = tensorflow.contrib.lite.toco.python.toco_from_protos:main
     # The tensorboard package adds this entry point.
     # - tensorboard = tensorboard.main:run_main
@@ -91,6 +91,11 @@ test:
   imports:
     - tensorflow
   commands:
+    - freeze_graph --help
+    - saved_model_cli --help
+    - tflite_convert --help
+    - toco_from_protos --help
+    - toco --help
     - conda inspect linkages -p $PREFIX tensorflow-base  # [linux]
 
 about:
