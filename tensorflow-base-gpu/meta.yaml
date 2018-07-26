@@ -1,4 +1,4 @@
-{% set version = "1.9.0rc1" %}
+{% set version = "1.9.0" %}
 
 # This is the recipe for the "gpu" variant of tensorflow-base
 package:
@@ -7,9 +7,8 @@ package:
 
 source:
   fn: tensorflow-{{ version }}.tar.gz
-  url: https://github.com/tensorflow/tensorflow/archive/v1.9.0-rc1.tar.gz
-  sha256: fff9f72ae12f3e3b5cfa924a1d751147decea4172fd02760aa1a3f9b04d5616a
-  patches:
+  url: https://github.com/tensorflow/tensorflow/archive/v1.9.0.tar.gz
+  sha256: ffc3151b06823d57b4a408261ba8efe53601563dfe93af0866751d4f6ca5068c
   patches:
     # Patches need to get certain tests to pass on CentOS 6
     - stable-image-rotate-test.patch                  # [linux]
@@ -27,6 +26,14 @@ build:
   number: 0
   string: gpu_py{{ CONDA_PY }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}
   skip: True  # [not linux64]
+  entry_points:
+    - freeze_graph = tensorflow.python.tools.freeze_graph:run_main
+    - saved_model_cli = tensorflow.python.tools.saved_model_cli:main
+    - tflite_convert = tensorflow.contrib.lite.python.tflite_convert:main
+    - toco = tensorflow.contrib.lite.python.tflite_convert:main
+    - toco_from_protos = tensorflow.contrib.lite.toco.python.toco_from_protos:main
+    # The tensorboard package adds this entry point.
+    # - tensorboard = tensorboard.main:run_main
 
 requirements:
   build:
@@ -36,6 +43,7 @@ requirements:
     # conda build requirements
     - bazel >=0.10.0
     - pip
+    - setuptools <=39.1.0
     - python
     - swig
     - zlib
@@ -85,7 +93,13 @@ test:
   files:
     - gpu_test.py
   commands:
-    - conda inspect linkages -p $PREFIX tensorflow-gpu-base  [linux]
+    - freeze_graph --help
+    - saved_model_cli --help
+    - tflite_convert --help
+    - toco_from_protos --help
+    - toco --help
+    - conda inspect linkages -p $PREFIX tensorflow-base  # [linux]
+
 
 about:
   home: http://tensorflow.org/
