@@ -5,9 +5,9 @@ package:
   version: {{ version }}
 
 build:
-  number: 0
+  number: 1
   skip: True  # [not x86_64]
-  string: {{ tflow_variant }}_py{{ CONDA_PY }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}  # [linux]
+  string: {{ tflow_variant }}_py{{ py_version | replace(".", "") }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}  # [linux]
 
 requirements:
   run:
