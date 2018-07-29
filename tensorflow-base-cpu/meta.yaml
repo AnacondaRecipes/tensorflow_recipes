@@ -93,9 +93,9 @@ test:
   commands:
     - freeze_graph --help
     - saved_model_cli --help
-    - tflite_convert --help
-    - toco_from_protos --help
-    - toco --help
+    - tflite_convert --help         # [not win]
+    - toco_from_protos --help       # [not win]
+    - toco --help                   # [not win]
     - conda inspect linkages -p $PREFIX tensorflow-base  # [linux]
 
 about:
