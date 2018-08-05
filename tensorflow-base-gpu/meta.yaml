@@ -18,14 +18,19 @@ source:
     - relax_precision_in_matrix_log_op_test.patch     # [linux]
     # GPU patches
     - 0001-do-not-include-B-usr-bin-flag.patch
-    - 0002-add-additional-cuda-rpaths.patch
+    - 0002-add-additional-cuda-rpaths.patch           # [linux]
     # patch to support glibc 2.11
     - support_glibc_2_11.patch
+    - 0003-Update-is_windows-to-allow-mingw-shells.patch
+    - 0004-Escape-regex-pattern-properly-before-using-it.patch
+    - 0005-Add-workaround-for-17067.patch
+    - 0001-Fix-Windows-GPU-Build.patch
 
 build:
   number: 0
   string: gpu_py{{ CONDA_PY }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}
-  skip: True  # [not linux64]
+  skip: True  # [not x86_64]
+  skip: True  # [win and vc<14]
   entry_points:
     - freeze_graph = tensorflow.python.tools.freeze_graph:run_main
     - saved_model_cli = tensorflow.python.tools.saved_model_cli:main
@@ -41,7 +46,9 @@ requirements:
     - {{ compiler('cxx') }}
   host:
     # conda build requirements
-    - bazel >=0.10.0
+    - bazel >=0.10.0,<0.15
+    - posix  # [win]
+    - m2-patch  # [win]
     - pip
     - setuptools <=39.1.0
     - python
@@ -50,7 +57,7 @@ requirements:
     # GPU requirements
     - cudatoolkit {{ cudatoolkit }}*
     - cudnn {{ cudnn }}*
-    - cupti
+    - cupti  # [not win]
     # requirements specified by the package itself
     - wheel >0.26
     - termcolor >=1.1.0
@@ -65,7 +72,9 @@ requirements:
     - astor >=0.6.0
     - absl-py >=0.1.6
     # the following packages are required for testing
+    - m2-perl             # [win]
     - portpicker
+    - pyreadline          # [win]
     - scipy
     - scikit-learn
   run:
@@ -83,7 +92,7 @@ requirements:
     - absl-py >=0.1.6
     - cudatoolkit {{ cudatoolkit }}*
     - cudnn {{ cudnn }}*
-    - cupti
+    - cupti  # [not win]
 
 test:
   # the tensorflow import is tested by the run_test.sh script.
@@ -95,9 +104,9 @@ test:
   commands:
     - freeze_graph --help
     - saved_model_cli --help
-    - tflite_convert --help
-    - toco_from_protos --help
-    - toco --help
+    - tflite_convert --help     # [not win]
+    - toco_from_protos --help   # [not win]
+    - toco --help               # [not win]
     - conda inspect linkages -p $PREFIX tensorflow-base  # [linux]
 
 

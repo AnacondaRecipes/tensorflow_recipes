@@ -7,14 +7,13 @@ package:
 build:
   number: 1
   skip: True  # [not x86_64]
-  string: {{ tflow_variant }}_py{{ py_version | replace(".", "") }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}  # [linux]
+  string: {{ tflow_variant }}_py{{ py_version | replace(".", "") }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}  # [linux or win-64]
 
 requirements:
   run:
-    - tensorflow-base =={{version}}               # [win]
-    - python {{ py_version }}                     # [linux]
-    - tensorflow-base =={{ full_base_version }}   # [linux]
-    - _tflow_190_select =={{ select_version }}    # [linux]
+    - python {{ py_version }}                     # [linux or win-64]
+    - tensorflow-base =={{ full_base_version }}   # [linux or win-64]
+    - _tflow_190_select =={{ select_version }}    # [linux or win-64]
     - tensorboard >=1.9.0,<1.10.0
 
 test:
