@@ -1,0 +1,21 @@
+full_base_version:              
+  - "1.9.0 gpu_py27h9f529ab_1"
+  - "1.9.0 gpu_py35h9f529ab_1"
+  - "1.9.0 gpu_py36h9f529ab_1"
+select_version:                 
+  - "0.0.1 gpu"               
+  - "0.0.1 gpu"               
+  - "0.0.1 gpu"               
+tflow_variant:                  
+  - "gpu"
+  - "gpu"
+  - "gpu"
+py_version:                     
+  - 2.7                         
+  - 3.5                         
+  - 3.6                         
+zip_keys:                       
+  - full_base_version           
+  - select_version              
+  - tflow_variant               
+  - py_version                  
