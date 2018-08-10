@@ -52,7 +52,7 @@ toolchain {
   compiler_flag: "-fPIC"
   compiler_flag: "-fPIE"
   compiler_flag: "-fstack-protector-strong"
-  compiler_flag: "-O2"
+  compiler_flag: "-O1"
   compiler_flag: "-pipe"
   tool_path {name: "ld" path: "${LD}" }
   tool_path {name: "cpp" path: "/usr/bin/cpp" }
@@ -72,7 +72,7 @@ toolchain {
   compilation_mode_flags {
     mode: OPT
     compiler_flag: "-g0"
-    compiler_flag: "-O2"
+    compiler_flag: "-O1"
     compiler_flag: "-D_FORTIFY_SOURCE=1"
     compiler_flag: "-DNDEBUG"
     compiler_flag: "-ffunction-sections"
