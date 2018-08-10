@@ -8,8 +8,32 @@ rm -rf "${SP_DIR}/setuptools/script (dev).tmpl"
 
 # build using bazel
 mkdir -p ./bazel_output_base
-export BAZEL_OPTS="--batch"
-bazel ${BAZEL_OPTS} build //tensorboard/pip_package:build_pip_package
+BAZEL_OPTS="--batch"
+if [[ ${HOST} =~ .*darwin.* ]]; then
+    # set up bazel config file for conda provided clang toolchain
+    cp -r ${RECIPE_DIR}/custom_clang_toolchain .
+    cd custom_clang_toolchain
+    sed -e "s:\${CLANG}:${CLANG}:" \
+        -e "s:\${INSTALL_NAME_TOOL}:${INSTALL_NAME_TOOL}:" \
+        -e "s:\${CONDA_BUILD_SYSROOT}:${CONDA_BUILD_SYSROOT}:" \
+        cc_wrapper.sh.template > cc_wrapper.sh
+    chmod +x cc_wrapper.sh
+    sed -e "s:\${PREFIX}:${BUILD_PREFIX}:" \
+        -e "s:\${LD}:${LD}:" \
+        -e "s:\${NM}:${NM}:" \
+        -e "s:\${STRIP}:${STRIP}:" \
+        -e "s:\${LIBTOOL}:${LIBTOOL}:" \
+        -e "s:\${CONDA_BUILD_SYSROOT}:${CONDA_BUILD_SYSROOT}:" \
+        CROSSTOOL.template > CROSSTOOL
+    cd ..
+
+    # set build arguments
+    export  BAZEL_USE_CPP_ONLY_TOOLCHAIN=1
+    BUILD_OPTS="
+        --crosstool_top=//custom_clang_toolchain:toolchain
+        --verbose_failures"
+fi
+bazel ${BAZEL_OPTS} build ${BUILD_OPTS:-} //tensorboard/pip_package:build_pip_package
 
 # Adapted from: https://github.com/tensorflow/tensorboard/blob/1.9.0/tensorboard/pip_package/build_pip_package.sh
 if [ "$(uname)" = "Darwin" ]; then
