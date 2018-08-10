@@ -35,5 +35,3 @@ cc_toolchain(
     strip_files = ":empty",
     supports_param_files = 0,
 )
-
-cc_toolchain_type(name = "toolchain_type")
