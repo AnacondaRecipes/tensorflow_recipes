@@ -41,6 +41,7 @@ if [[ ${HOST} =~ .*darwin.* ]]; then
     BUILD_OPTS="
         --crosstool_top=//custom_clang_toolchain:toolchain
         --verbose_failures
+        ${BAZEL_MKL_OPT}
         --config=opt"
 else
     # Linux
