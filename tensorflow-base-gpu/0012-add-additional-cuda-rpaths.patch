@@ -1,8 +1,17 @@
+From d5b2388dd9e5bcd3e7b29891d44cf08dd4f3e119 Mon Sep 17 00:00:00 2001
+From: Jonathan Helmus <jjhelmus@gmail.com>
+Date: Mon, 20 Aug 2018 16:42:54 -0500
+Subject: [PATCH 12/12] add additional cuda rpaths
+
+---
+ tensorflow/core/platform/default/build_config/BUILD | 3 +++
+ 1 file changed, 3 insertions(+)
+
 diff --git a/tensorflow/core/platform/default/build_config/BUILD b/tensorflow/core/platform/default/build_config/BUILD
-index 44a89c3a96..6d7a6f4b63 100644
+index da1f66d..50ade4b 100644
 --- a/tensorflow/core/platform/default/build_config/BUILD
 +++ b/tensorflow/core/platform/default/build_config/BUILD
-@@ -204,6 +204,9 @@ cc_library(
+@@ -243,6 +243,9 @@ cc_library(
          "//conditions:default": [
              "-Wl,-rpath,../local_config_cuda/cuda/lib64",
              "-Wl,-rpath,../local_config_cuda/cuda/extras/CUPTI/lib64",
@@ -12,3 +21,6 @@ index 44a89c3a96..6d7a6f4b63 100644
          ],
      }),
      deps = [
+-- 
+2.7.4
+

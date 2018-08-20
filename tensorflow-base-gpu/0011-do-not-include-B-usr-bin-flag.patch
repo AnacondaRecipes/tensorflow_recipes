@@ -1,20 +1,28 @@
-From 59bc86ed46abd5ec94863d28863d343fdda02306 Mon Sep 17 00:00:00 2001
+From 4323d61ac6e099239910994f7da5e1104423dfe8 Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
 Date: Wed, 27 Jun 2018 15:09:50 -0500
-Subject: [PATCH] do not include -B/usr/bin/ flag
+Subject: [PATCH 11/12] do not include -B/usr/bin/ flag
 
 ---
- third_party/gpus/crosstool/CROSSTOOL.tpl        | 1 -
+ third_party/gpus/crosstool/CROSSTOOL.tpl        | 2 --
  third_party/sycl/crosstool/CROSSTOOL.tpl        | 4 +---
  third_party/toolchains/cpus/arm/CROSSTOOL.tpl   | 2 --
  third_party/toolchains/gpus/crosstool/CROSSTOOL | 1 -
- 4 files changed, 1 insertion(+), 7 deletions(-)
+ 4 files changed, 1 insertion(+), 8 deletions(-)
 
 diff --git a/third_party/gpus/crosstool/CROSSTOOL.tpl b/third_party/gpus/crosstool/CROSSTOOL.tpl
-index 60b19daf1d..414199ffd1 100644
+index 3972c96..b91118c 100644
 --- a/third_party/gpus/crosstool/CROSSTOOL.tpl
 +++ b/third_party/gpus/crosstool/CROSSTOOL.tpl
-@@ -204,7 +204,6 @@ toolchain {
+@@ -208,7 +208,6 @@ toolchain {
+       action: "c++-link-dynamic-library"
+       action: "c++-link-nodeps-dynamic-library"
+       flag_group {
+-        flag: "-B/usr/bin/"
+       }
+     }
+   }
+@@ -446,7 +445,6 @@ toolchain {
        action: "c++-link-dynamic-library"
        action: "c++-link-nodeps-dynamic-library"
        flag_group {
@@ -23,7 +31,7 @@ index 60b19daf1d..414199ffd1 100644
      }
    }
 diff --git a/third_party/sycl/crosstool/CROSSTOOL.tpl b/third_party/sycl/crosstool/CROSSTOOL.tpl
-index f8e50efcc6..304b98aa58 100755
+index f8e50ef..304b98a 100755
 --- a/third_party/sycl/crosstool/CROSSTOOL.tpl
 +++ b/third_party/sycl/crosstool/CROSSTOOL.tpl
 @@ -41,7 +41,6 @@ toolchain {
@@ -50,7 +58,7 @@ index f8e50efcc6..304b98aa58 100755
 \ No newline at end of file
 +}
 diff --git a/third_party/toolchains/cpus/arm/CROSSTOOL.tpl b/third_party/toolchains/cpus/arm/CROSSTOOL.tpl
-index f0e17d1fe0..33e500e0dd 100644
+index f0e17d1..33e500e 100644
 --- a/third_party/toolchains/cpus/arm/CROSSTOOL.tpl
 +++ b/third_party/toolchains/cpus/arm/CROSSTOOL.tpl
 @@ -168,7 +168,6 @@ toolchain {
@@ -70,7 +78,7 @@ index f0e17d1fe0..33e500e0dd 100644
    # TODO(bazel-team): In theory, the path here ought to exactly match the path
    # used by gcc. That works because bazel currently doesn't track files at
 diff --git a/third_party/toolchains/gpus/crosstool/CROSSTOOL b/third_party/toolchains/gpus/crosstool/CROSSTOOL
-index d6ee7e38c4..7c91f8626d 100644
+index d6ee7e3..7c91f86 100644
 --- a/third_party/toolchains/gpus/crosstool/CROSSTOOL
 +++ b/third_party/toolchains/gpus/crosstool/CROSSTOOL
 @@ -210,7 +210,6 @@ toolchain {
@@ -82,5 +90,5 @@ index d6ee7e38c4..7c91f8626d 100644
      }
    }
 -- 
-2.11.1
+2.7.4
 
