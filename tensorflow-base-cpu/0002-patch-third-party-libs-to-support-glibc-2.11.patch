@@ -1,8 +1,24 @@
+From 07fe6e1d214843b3467d24f925018164e37b9281 Mon Sep 17 00:00:00 2001
+From: Jonathan Helmus <jjhelmus@gmail.com>
+Date: Mon, 20 Aug 2018 12:12:38 -0500
+Subject: [PATCH 02/10] patch third party libs to support glibc 2.11
+
+patch abseil-cpp, grpc and boringssl to support glibc 2.11
+---
+ tensorflow/workspace.bzl                       |  3 +++
+ third_party/abseil_remove_glibc_check.patch    | 21 ++++++++++++++++++++
+ third_party/boringssl/add_time_h.patch         | 12 ++++++++++++
+ third_party/grpc/do_not_use_pthread_name.patch | 27 ++++++++++++++++++++++++++
+ 4 files changed, 63 insertions(+)
+ create mode 100644 third_party/abseil_remove_glibc_check.patch
+ create mode 100644 third_party/boringssl/add_time_h.patch
+ create mode 100644 third_party/grpc/do_not_use_pthread_name.patch
+
 diff --git a/tensorflow/workspace.bzl b/tensorflow/workspace.bzl
-index 50a69598a1..5ea92e8e68 100644
+index 378de42..0e31ed4 100644
 --- a/tensorflow/workspace.bzl
 +++ b/tensorflow/workspace.bzl
-@@ -102,6 +102,7 @@ def tf_workspace(path_prefix="", tf_repo_name=""):
+@@ -104,6 +104,7 @@ def tf_workspace(path_prefix="", tf_repo_name=""):
       sha256 = "1273a1434ced93bc3e703a48c5dced058c95e995c8c009e9bdcb24a69e2180e9",
       strip_prefix = "abseil-cpp-9613678332c976568272c8f4a78631a29159271d",
       build_file = clean_dep("//third_party:com_google_absl.BUILD"),
@@ -10,15 +26,15 @@ index 50a69598a1..5ea92e8e68 100644
    )
  
    tf_http_archive(
-@@ -433,6 +434,7 @@ def tf_workspace(path_prefix="", tf_repo_name=""):
-       ],
-       sha256 = "895b31310e718a61f7335759a778c068a6edde1c089883598a0830cbb7075673",
-       strip_prefix = "grpc-d184fa229d75d336aedea0041bd59cb93e7e267f",
+@@ -469,6 +470,7 @@ def tf_workspace(path_prefix="", tf_repo_name=""):
+       sha256 = "50db9cf2221354485eb7c3bd55a4c27190caef7048a2a1a15fbe60a498f98b44",
+       strip_prefix = "grpc-1.13.0",
+       system_build_file = clean_dep("//third_party/systemlibs:grpc.BUILD"),
 +      patch_file = clean_dep("//third_party/grpc:do_not_use_pthread_name.patch")
    )
  
- 
-@@ -490,6 +492,7 @@ def tf_workspace(path_prefix="", tf_repo_name=""):
+   tf_http_archive(
+@@ -527,6 +529,7 @@ def tf_workspace(path_prefix="", tf_repo_name=""):
        ],
        sha256 = "524ba98a56300149696481b4cb9ddebd0c7b7ac9b9f6edee81da2d2d7e5d2bb3",
        strip_prefix = "boringssl-a0fb951d2a26a8ee746b52f3ba81ab011a0af778",
@@ -28,7 +44,7 @@ index 50a69598a1..5ea92e8e68 100644
    tf_http_archive(
 diff --git a/third_party/abseil_remove_glibc_check.patch b/third_party/abseil_remove_glibc_check.patch
 new file mode 100644
-index 0000000000..f390ba3d1c
+index 0000000..f390ba3
 --- /dev/null
 +++ b/third_party/abseil_remove_glibc_check.patch
 @@ -0,0 +1,21 @@
@@ -55,7 +71,7 @@ index 0000000000..f390ba3d1c
 + #endif
 diff --git a/third_party/boringssl/add_time_h.patch b/third_party/boringssl/add_time_h.patch
 new file mode 100644
-index 0000000000..bcadfd4e62
+index 0000000..bcadfd4
 --- /dev/null
 +++ b/third_party/boringssl/add_time_h.patch
 @@ -0,0 +1,12 @@
@@ -73,16 +89,16 @@ index 0000000000..bcadfd4e62
 + #include <sys/types.h>
 diff --git a/third_party/grpc/do_not_use_pthread_name.patch b/third_party/grpc/do_not_use_pthread_name.patch
 new file mode 100644
-index 0000000000..c7ede6b6db
+index 0000000..2a4ebc6
 --- /dev/null
 +++ b/third_party/grpc/do_not_use_pthread_name.patch
 @@ -0,0 +1,27 @@
 +diff --git a/src/core/lib/gprpp/thd_posix.cc b/src/core/lib/gprpp/thd_posix.cc
-+index 2f6c2edcae..30dbf82ab4 100644
++index 533c07e..4b909b9 100644
 +--- a/src/core/lib/gprpp/thd_posix.cc
 ++++ b/src/core/lib/gprpp/thd_posix.cc
 +@@ -36,6 +36,11 @@
-+ #include "src/core/lib/gpr/useful.h"
++ #include "src/core/lib/gprpp/fork.h"
 + #include "src/core/lib/gprpp/memory.h"
 + 
 ++// addition for glib 2.11 support which lacks pthread_setname_np
@@ -92,8 +108,8 @@ index 0000000000..c7ede6b6db
 ++
 + namespace grpc_core {
 + namespace {
-+ gpr_mu g_mu;
-+@@ -91,7 +96,9 @@ class ThreadInternalsPosix
++ class ThreadInternalsPosix;
++@@ -86,7 +91,9 @@ class ThreadInternalsPosix
 +                             size_t buf_len = GPR_ARRAY_SIZE(buf) - 1;
 +                             strncpy(buf, arg.name, buf_len);
 +                             buf[buf_len] = '\0';
@@ -104,3 +120,6 @@ index 0000000000..c7ede6b6db
 + #endif  // GPR_APPLE_PTHREAD_NAME
 +                           }
 + 
+-- 
+2.7.4
+

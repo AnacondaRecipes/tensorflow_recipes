@@ -1,17 +1,30 @@
-From b45c949ec75099034f76e044f31a9dceab84e288 Mon Sep 17 00:00:00 2001
+From a689188975917a9dd5ea0e3dfe495f588f444fa7 Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
 Date: Wed, 27 Jun 2018 12:46:18 -0500
-Subject: [PATCH] add rt to linkopts
+Subject: [PATCH 01/10] add rt to linkopts
 
 ---
+ tensorflow/BUILD          | 1 +
  tensorflow/tensorflow.bzl | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
+diff --git a/tensorflow/BUILD b/tensorflow/BUILD
+index 518c2b0..e02a7f6 100644
+--- a/tensorflow/BUILD
++++ b/tensorflow/BUILD
+@@ -486,6 +486,7 @@ tf_cc_shared_object(
+         "//tensorflow:windows": [],
+         "//tensorflow:windows_msvc": [],
+         "//conditions:default": [
++            "-lrt",
+             "-Wl,--version-script",  #  This line must be directly followed by the version_script.lds file
+             "$(location //tensorflow:tf_framework_version_script.lds)",
+         ],
 diff --git a/tensorflow/tensorflow.bzl b/tensorflow/tensorflow.bzl
-index b59f8e1f98..1db5f9eedd 100644
+index 9259ebe..301b59a 100644
 --- a/tensorflow/tensorflow.bzl
 +++ b/tensorflow/tensorflow.bzl
-@@ -296,7 +296,7 @@ def tf_cc_shared_object(
+@@ -309,7 +309,7 @@ def tf_cc_shared_object(
      name,
      srcs=[],
      deps=[],
@@ -20,7 +33,7 @@ index b59f8e1f98..1db5f9eedd 100644
      framework_so=tf_binary_additional_srcs(),
      **kwargs):
    native.cc_binary(
-@@ -327,7 +327,7 @@ register_extension_info(
+@@ -340,7 +340,7 @@ register_extension_info(
  def tf_cc_binary(name,
                   srcs=[],
                   deps=[],
@@ -30,5 +43,5 @@ index b59f8e1f98..1db5f9eedd 100644
                   **kwargs):
    native.cc_binary(
 -- 
-2.11.1
+2.7.4
 
