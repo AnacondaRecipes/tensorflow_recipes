@@ -1,4 +1,4 @@
-{% set version = "1.9.0" %}
+{% set version = "1.10.0" %}
 
 package:
   name: tensorboard
@@ -7,12 +7,12 @@ package:
 source:
   fn: tensorflow-{{ version }}.tar.gz                                          # [unix]
   url: https://github.com/tensorflow/tensorboard/archive/{{ version }}.tar.gz  # [unix]
-  sha256: 95663d6c3d05243913ce433fa1cc86c64181f46e74b1fd9429e1b9e39ec5e59c     # [unix]
+  sha256: d003ee154e8ae85b0f8a34fd7f8bb82a7f0acface8ca80db982b3595e401794f     # [unix]
 
   # Rename this to dummy since we don't want CB to extract it
   fn: tensorboard-{{ version }}-py3-none-any.whl.dummy                                        # [win]
   url: https://pypi.io/packages/py3/t/tensorboard/tensorboard-{{ version }}-py3-none-any.whl  # [win]
-  sha256: 42a04637a636e16054b065907c81396b83a9702948ecd14218f19dc5cf85de98                    # [win]
+  sha256: e4ea6ac2e47bf715b915f08a186e6205fa097318bd73f0b265d437b1d7834484                    # [win]
 
 build:
   number: 0
@@ -45,13 +45,11 @@ requirements:
 
 test:
   requires:
-    - tensorflow-base >=1.9.0,<1.10.0
+    - tensorflow-base >=1.10.0,<1.11.0
   imports:
     - tensorboard
   commands:
-    # sets an exit value of 1
-    # https://github.com/tensorflow/tensorboard/issues/1007
-    - tensorboard --help | grep USAGE  # [unix]
+    - tensorboard --help
 
 about:
   home: http://tensorflow.org/
