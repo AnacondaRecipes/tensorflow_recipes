@@ -1,7 +1,7 @@
 Recipes for creating Tensorflow conda packages.
 
 In the `defaults` channel Tensorflow is provided via a number of packages.  
-As of version 1.9.0, the library itself is provided by the `tensorflow-base`
+As of version 1.10.0, the library itself is provided by the `tensorflow-base`
 package.  On Windows and Mac the **tensorflow-base** recipe is used to produce
 this package. On Linux, three different variants of the `tensorflow-base`
 package are provided, a variant which uses MKL, a variant which uses Eigen, and
@@ -16,9 +16,9 @@ The `tensorflow` metapackage package is created by the **tensorflow** recipe.
 On Windows and Mac a single `tensorflow` metapackage is used which depends on
 the correct versions of the `tensorflow-base` and `tensorboard` packages.
 On Linux, the `tensorflow` metapackage depends on `tensorboard`, an exact
-build of `tensorflow-base` and the version of the `_tflow_190_select` package
-which matches the `tensorflow-base` variant.  The `_tflow_190_select` package,
-created from the **_tflow_190_select** recipe, establishes the priority of the
+build of `tensorflow-base` and the version of the `_tflow_1100_select` package
+which matches the `tensorflow-base` variant.  The `_tflow_1100_select` package,
+created from the **_tflow_1100_select** recipe, establishes the priority of the
 variants using the version number. The variant with the highest version will
 be installed by default. The non-default variant can be installed using the
 `tensorflow-mkl`, `tensorflow-eigen` and `tensorflow-gpu` packages which are
@@ -32,4 +32,4 @@ Available Recipe:
 * tensorflow-base-cpu : Eigen and MKL variants of the Tensorflow library, Linux only.
 * tensorflow-base-gpu : GPU variant of the Tensorflow library, Linux only.
 * tensorflow-variants : Recipe used to create tensorflow variant packages, e.g. tensorflow-mkl.
-* _tflow_190_select : Metapackage to establish priority in tensorflow-base packages.
+* _tflow_1100_select : Metapackage to establish priority in tensorflow-base packages.
