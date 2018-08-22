@@ -1,6 +1,6 @@
 # metapackage to establish priority order for tensorflow-base packages
 package:
-  name: _tflow_190_select
+  name: _tflow_1100_select
   version: {{ tflow_variant_version }}
 
 build:

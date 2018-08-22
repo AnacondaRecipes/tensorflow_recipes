@@ -1,11 +1,11 @@
-{% set version = "1.9.0" %}
+{% set version = "1.10.0" %}
 
 package:
   name: tensorflow
   version: {{ version }}
 
 build:
-  number: 1
+  number: 0
   skip: True  # [not x86_64]
   string: {{ tflow_variant }}_py{{ py_version | replace(".", "") }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}  # [linux or win-64]
 
@@ -14,15 +14,14 @@ requirements:
     - python {{ py_version }}                     # [linux or win-64]
     - tensorflow-base =={{ full_base_version }}   # [linux or win-64]
     - _tflow_190_select =={{ select_version }}    # [linux or win-64]
-    - tensorboard >=1.9.0,<1.10.0
+    - tensorboard >=1.10.0,<1.11.0
 
 test:
   imports:
     - tensorflow
     - tensorboard
   commands:
-    # has an exit code of 1, see tensorboard recipe
-    - tensorboard --help | grep USAGE  # [unix]
+    - tensorboard --help
 
 about:
   home: http://tensorflow.org/
