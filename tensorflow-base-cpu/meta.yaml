@@ -22,6 +22,7 @@ source:
     - 0009-relax-precision-in-matrix_log_op_test.patch          # [linux]
     # set OpenMP variables for MKL variant
     - 0010-set-default-openmp-variables.patch   # [tflow_variant == 'mkl']
+    - 0011-Add-init-symbol-names-prefixed-with-an-underscore.patch
 
 build:
   number: 0
