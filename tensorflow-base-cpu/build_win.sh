@@ -43,8 +43,7 @@ pip install ${PIP_NAME} --no-deps
 rm -f ${PREFIX}/Scripts/tensorboard.exe
 
 # Test which are known to fail and do not effect the package
-KNOWN_FAIL="-${PY_TEST_DIR}/tensorflow/python/kernel_tests/boosted_trees:training_ops_test \
-	-${PY_TEST_DIR}/tensorflow/python/kernel_tests/distributions:dirichlet_multinomial_test"
+KNOWN_FAIL="-${PY_TEST_DIR}/tensorflow/python/estimator:boosted_trees_test"
 
 ${LIBRARY_BIN}/bazel --batch test -c opt $BUILD_OPTS -k --test_output=errors \
   --define=no_tensorflow_py_deps=true --test_lang_filters=py \

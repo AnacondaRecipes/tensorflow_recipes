@@ -1,0 +1,17 @@
+full_base_version:
+  - "1.10.0 eigen_py35h45df0d8_0"
+  - "1.10.0 eigen_py36h45df0d8_0"
+select_version:
+  - "0.0.2 eigen"
+  - "0.0.2 eigen"
+tflow_variant:
+  - "eigen"
+  - "eigen"
+py_version:
+  - 3.5
+  - 3.6
+zip_keys:
+  - full_base_version
+  - select_version
+  - tflow_variant
+  - py_version
