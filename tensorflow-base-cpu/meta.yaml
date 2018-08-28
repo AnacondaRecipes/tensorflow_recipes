@@ -71,6 +71,7 @@ requirements:
     - pyreadline          # [win]
     - scipy
     - scikit-learn
+    - mklml            # [win and tflow_variant == 'mkl']
   run:
     - python
     - termcolor >=1.1.0
