@@ -64,6 +64,7 @@ mkdir -p tensorboard/_vendor
 touch tensorboard/_vendor/__init__.py
 cp -LR "${RUNFILES}/org_html5lib/html5lib" tensorboard/_vendor
 cp -LR "${RUNFILES}/org_mozilla_bleach/bleach" tensorboard/_vendor
+cp -LR "${RUNFILES}/org_tensorflow_serving_api/tensorflow_serving" tensorboard/_vendor
 
 chmod -R u+w,go+r .
 
@@ -73,9 +74,10 @@ find tensorboard -name \*.py |
     s/^from html5lib/from tensorboard._vendor.html5lib/
     s/^import bleach$/from tensorboard._vendor import bleach/
     s/^from bleach/from tensorboard._vendor.bleach/
+    s/from tensorflow_serving/from tensorboard._vendor.tensorflow_serving/
   '
 # install the package
-python setup.py install --single-version-externally-managed --record record.txt
+python -m pip install . --no-deps --ignore-installed -vvv
 
 # Remove bin/tensorboard since the entry_point takes care of creating this.
 rm $PREFIX/bin/tensorboard
