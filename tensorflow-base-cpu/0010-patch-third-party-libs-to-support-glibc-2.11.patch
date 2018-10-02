@@ -1,7 +1,7 @@
-From 07fe6e1d214843b3467d24f925018164e37b9281 Mon Sep 17 00:00:00 2001
+From 9d4c98eeaf0cf884a1bf5870a4636a3c828299c6 Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
-Date: Mon, 20 Aug 2018 12:12:38 -0500
-Subject: [PATCH 02/10] patch third party libs to support glibc 2.11
+Date: Tue, 2 Oct 2018 18:47:38 -0500
+Subject: [PATCH 10/13] patch third party libs to support glibc 2.11
 
 patch abseil-cpp, grpc and boringssl to support glibc 2.11
 ---
@@ -15,33 +15,33 @@ patch abseil-cpp, grpc and boringssl to support glibc 2.11
  create mode 100644 third_party/grpc/do_not_use_pthread_name.patch
 
 diff --git a/tensorflow/workspace.bzl b/tensorflow/workspace.bzl
-index 378de42..0e31ed4 100644
+index 758c94c..410d523 100755
 --- a/tensorflow/workspace.bzl
 +++ b/tensorflow/workspace.bzl
-@@ -104,6 +104,7 @@ def tf_workspace(path_prefix="", tf_repo_name=""):
-      sha256 = "1273a1434ced93bc3e703a48c5dced058c95e995c8c009e9bdcb24a69e2180e9",
-      strip_prefix = "abseil-cpp-9613678332c976568272c8f4a78631a29159271d",
-      build_file = clean_dep("//third_party:com_google_absl.BUILD"),
-+     patch_file = clean_dep("//third_party:abseil_remove_glibc_check.patch")
-   )
+@@ -112,6 +112,7 @@ def tf_workspace(path_prefix = "", tf_repo_name = ""):
+         sha256 = "4ee36dacb75846eaa209ce8060bb269a42b7b3903612ca6d9e86a692659fe8c1",
+         strip_prefix = "abseil-cpp-f0f15c2778b0e4959244dd25e63f445a455870f5",
+         build_file = clean_dep("//third_party:com_google_absl.BUILD"),
++        patch_file = clean_dep("//third_party:abseil_remove_glibc_check.patch")
+     )
  
-   tf_http_archive(
-@@ -469,6 +470,7 @@ def tf_workspace(path_prefix="", tf_repo_name=""):
-       sha256 = "50db9cf2221354485eb7c3bd55a4c27190caef7048a2a1a15fbe60a498f98b44",
-       strip_prefix = "grpc-1.13.0",
-       system_build_file = clean_dep("//third_party/systemlibs:grpc.BUILD"),
-+      patch_file = clean_dep("//third_party/grpc:do_not_use_pthread_name.patch")
-   )
+     tf_http_archive(
+@@ -473,6 +474,7 @@ def tf_workspace(path_prefix = "", tf_repo_name = ""):
+         sha256 = "50db9cf2221354485eb7c3bd55a4c27190caef7048a2a1a15fbe60a498f98b44",
+         strip_prefix = "grpc-1.13.0",
+         system_build_file = clean_dep("//third_party/systemlibs:grpc.BUILD"),
++        patch_file = clean_dep("//third_party/grpc:do_not_use_pthread_name.patch")
+     )
  
-   tf_http_archive(
-@@ -527,6 +529,7 @@ def tf_workspace(path_prefix="", tf_repo_name=""):
-       ],
-       sha256 = "524ba98a56300149696481b4cb9ddebd0c7b7ac9b9f6edee81da2d2d7e5d2bb3",
-       strip_prefix = "boringssl-a0fb951d2a26a8ee746b52f3ba81ab011a0af778",
-+      patch_file = clean_dep("//third_party/boringssl:add_time_h.patch")
-   )
+     tf_http_archive(
+@@ -531,6 +533,7 @@ def tf_workspace(path_prefix = "", tf_repo_name = ""):
+         ],
+         sha256 = "1188e29000013ed6517168600fc35a010d58c5d321846d6a6dfee74e4c788b45",
+         strip_prefix = "boringssl-7f634429a04abc48e2eb041c81c5235816c96514",
++        patch_file = clean_dep("//third_party/boringssl:add_time_h.patch")
+     )
  
-   tf_http_archive(
+     tf_http_archive(
 diff --git a/third_party/abseil_remove_glibc_check.patch b/third_party/abseil_remove_glibc_check.patch
 new file mode 100644
 index 0000000..f390ba3
@@ -71,17 +71,17 @@ index 0000000..f390ba3
 + #endif
 diff --git a/third_party/boringssl/add_time_h.patch b/third_party/boringssl/add_time_h.patch
 new file mode 100644
-index 0000000..bcadfd4
+index 0000000..8e2b12c
 --- /dev/null
 +++ b/third_party/boringssl/add_time_h.patch
 @@ -0,0 +1,12 @@
 +diff --git a/src/crypto/bio/socket_helper.c b/src/crypto/bio/socket_helper.c
-+index 268405a6..7dbb5d32 100644
++index d4209d0..62044a4 100644
 +--- a/src/crypto/bio/socket_helper.c
 ++++ b/src/crypto/bio/socket_helper.c
-+@@ -18,6 +18,7 @@
-+ #include <openssl/bio.h>
-+ #include <openssl/err.h>
++@@ -20,6 +20,7 @@
++ 
++ #if !defined(OPENSSL_TRUSTY)
 + 
 ++#include <time.h>
 + #include <fcntl.h>

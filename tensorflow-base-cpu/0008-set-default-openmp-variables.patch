@@ -1,7 +1,7 @@
-From 7151264de9b36f4d438041889bb6993872c1cfa7 Mon Sep 17 00:00:00 2001
+From aa4cf3d2ff1a587bd16bc6958341b07eb629fded Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
 Date: Mon, 20 Aug 2018 12:20:36 -0500
-Subject: [PATCH 10/10] set default openmp variables
+Subject: [PATCH 08/13] set default openmp variables
 
 Set default values for KMP_BLOCKTIME and OMP_PROC_BIND at import if they are
 not already defined.

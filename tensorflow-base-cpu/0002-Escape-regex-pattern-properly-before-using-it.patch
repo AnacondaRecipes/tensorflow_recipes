@@ -1,7 +1,7 @@
-From b6bffa8d3a052f5a1aac8278810d40eca73ee1b9 Mon Sep 17 00:00:00 2001
+From 51d98f4d03ed5d026f63bef228ce676df93bef9e Mon Sep 17 00:00:00 2001
 From: Nehal J Wani <nehaljw.kkd1@gmail.com>
 Date: Sat, 28 Apr 2018 19:00:36 -0500
-Subject: [PATCH 04/10] Escape regex pattern properly before using it
+Subject: [PATCH 02/13] Escape regex pattern properly before using it
 
 Without this patch, the function _ignore_file_path throws a traceback:
 

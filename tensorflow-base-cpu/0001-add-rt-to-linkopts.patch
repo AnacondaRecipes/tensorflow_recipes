@@ -1,7 +1,7 @@
-From a689188975917a9dd5ea0e3dfe495f588f444fa7 Mon Sep 17 00:00:00 2001
+From a1af44e65ba26ee3d0d7d4087f3330cbf9cd82c1 Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
 Date: Wed, 27 Jun 2018 12:46:18 -0500
-Subject: [PATCH 01/10] add rt to linkopts
+Subject: [PATCH 01/13] add rt to linkopts
 
 ---
  tensorflow/BUILD          | 1 +
@@ -9,39 +9,39 @@ Subject: [PATCH 01/10] add rt to linkopts
  2 files changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/tensorflow/BUILD b/tensorflow/BUILD
-index 518c2b0..e02a7f6 100644
+index b5e0a4e..b16cc44 100644
 --- a/tensorflow/BUILD
 +++ b/tensorflow/BUILD
-@@ -486,6 +486,7 @@ tf_cc_shared_object(
+@@ -499,6 +499,7 @@ tf_cc_shared_object(
+         "//tensorflow:darwin": [],
          "//tensorflow:windows": [],
-         "//tensorflow:windows_msvc": [],
          "//conditions:default": [
 +            "-lrt",
              "-Wl,--version-script",  #  This line must be directly followed by the version_script.lds file
              "$(location //tensorflow:tf_framework_version_script.lds)",
          ],
 diff --git a/tensorflow/tensorflow.bzl b/tensorflow/tensorflow.bzl
-index 9259ebe..301b59a 100644
+index adac895..de13f1c 100644
 --- a/tensorflow/tensorflow.bzl
 +++ b/tensorflow/tensorflow.bzl
-@@ -309,7 +309,7 @@ def tf_cc_shared_object(
-     name,
-     srcs=[],
-     deps=[],
--    linkopts=[],
-+    linkopts=['-lrt'],
-     framework_so=tf_binary_additional_srcs(),
-     **kwargs):
-   native.cc_binary(
-@@ -340,7 +340,7 @@ register_extension_info(
- def tf_cc_binary(name,
-                  srcs=[],
-                  deps=[],
--                 linkopts=[],
-+                 linkopts=['-lrt'],
-                  copts=tf_copts(),
-                  **kwargs):
-   native.cc_binary(
+@@ -355,7 +355,7 @@ def tf_cc_shared_object(
+         srcs = [],
+         deps = [],
+         data = [],
+-        linkopts = [],
++        linkopts = ['-lrt'],
+         framework_so = tf_binary_additional_srcs(),
+         kernels = [],
+         **kwargs):
+@@ -391,7 +391,7 @@ def tf_cc_binary(
+         srcs = [],
+         deps = [],
+         data = [],
+-        linkopts = [],
++        linkopts = ['-lrt'],
+         copts = tf_copts(),
+         kernels = [],
+         **kwargs):
 -- 
 2.7.4
 
