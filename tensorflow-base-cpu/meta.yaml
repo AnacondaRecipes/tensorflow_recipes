@@ -18,8 +18,9 @@ source:
     - 0006-fix-lookup_ops-test.patch                                  # [linux]
     - 0007-relax-precision-in-matrix_log_op_test.patch                # [linux]
     - 0008-set-default-openmp-variables.patch                         # [tflow_variant == 'mkl']
-    - 0009-Add-init-symbol-names-prefixed-with-an-underscore.patch    # [not linux]
+    - 0009-Add-init-symbol-names-prefixed-with-an-underscore.patch    # [osx]
     - 0010-patch-third-party-libs-to-support-glibc-2.11.patch         # [linux]
+    - 0012-Add-alternate-clock_gettime-implementation-for-macOS.patch  # [osx]
 
 build:
   number: 0
