@@ -1,7 +1,7 @@
-From d97c15ff6d5ff23c28eeda5f67f50f95e31fe78e Mon Sep 17 00:00:00 2001
+From f1937b26c37b5f38e6c7f71e591250208fde72fa Mon Sep 17 00:00:00 2001
 From: Nehal J Wani <nehaljw.kkd1@gmail.com>
 Date: Thu, 23 Aug 2018 11:34:00 -0500
-Subject: [PATCH 09/13] Add (init) symbol names prefixed with an underscore
+Subject: [PATCH 09/11] Add (init) symbol names prefixed with an underscore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -27,7 +27,7 @@ xref: https://stackoverflow.com/a/37534357
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/tensorflow/tensorflow.bzl b/tensorflow/tensorflow.bzl
-index de13f1c..c2750e1 100644
+index de13f1c..f86d98b 100644
 --- a/tensorflow/tensorflow.bzl
 +++ b/tensorflow/tensorflow.bzl
 @@ -1536,7 +1536,7 @@ def _append_init_to_versionscript_impl(ctx):
@@ -35,7 +35,7 @@ index de13f1c..c2750e1 100644
              output = ctx.outputs.versionscript,
              substitutions = {
 -                "global:": "global:\n     init_%s;\n     PyInit_*;" % (mod_name),
-+                "global:": "global:\n     init_%s;\n     _init_%s;\n     PyInit_*;\n     _PyInit_*"%(mod_name, mod_name),
++                "global:": "global:\n     init_%s;\n     _init_%s;\n     PyInit_*;\n     _PyInit_*;"%(mod_name, mod_name),
              },
              is_executable = False,
          )
@@ -49,5 +49,5 @@ index de13f1c..c2750e1 100644
              is_executable = False,
          )
 -- 
-2.7.4
+2.5.4 (Apple Git-61)
 
