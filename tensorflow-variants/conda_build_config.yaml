@@ -3,9 +3,9 @@ variant:
   - "eigen"
   - "mkl"
 select_version:
-  - "0.0.1 gpu"   # [not osx]
-  - "0.0.2 eigen"
-  - "0.0.3 mkl"
+  - "2.1.0 gpu"   # [not osx]
+  - "2.2.0 eigen"
+  - "2.3.0 mkl"
 zip_keys:
   - variant
   - select_version

@@ -1,4 +1,4 @@
-{% set version = "1.10.0" %}
+{% set version = "1.11.0" %}
 
 package:
   name: tensorflow-{{ variant }}
@@ -11,7 +11,7 @@ build:
 requirements:
   run:
     - tensorflow =={{ version }}
-    - _tflow_1100_select =={{ select_version }}
+    - _tflow_select =={{ select_version }}
 
 test:
   imports:
