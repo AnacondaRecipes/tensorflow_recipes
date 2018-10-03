@@ -1,7 +1,7 @@
-From 45f28dd73a898474a0da6f657378d842e6af3b6d Mon Sep 17 00:00:00 2001
+From 47901ca1844226d0abdbdd7366174818710a185a Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
 Date: Tue, 20 Jun 2017 15:13:14 -0500
-Subject: [PATCH 06/10] relax tolerence in special_math_test
+Subject: [PATCH 04/13] relax tolerence in special_math_test
 
 ---
  tensorflow/python/kernel_tests/distributions/special_math_test.py | 2 +-

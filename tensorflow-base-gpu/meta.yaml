@@ -11,19 +11,18 @@ source:
   sha256: ee9cb98d9e0d8106f2f4ed52a38fe89399324af303e1401567e5b64a9f86744b
   patches:
     # from cpu variant
-    - 0002-patch-third-party-libs-to-support-glibc-2.11.patch   # [linux]
-    - 0003-Update-is_windows-to-allow-mingw-shells.patch
-    - 0004-Escape-regex-pattern-properly-before-using-it.patch
+    - 0010-patch-third-party-libs-to-support-glibc-2.11.patch   # [linux]
+    - 0002-Escape-regex-pattern-properly-before-using-it.patch
     # Patches need to get certain tests to pass on CentOS 6
-    - 0005-stable-image-rotate-test.patch                       # [linux]
-    - 0006-relax-tolerence-in-special_math_test.patch           # [linux]
-    - 0007-skip-read-only-debugger_cli_common-test.patch        # [linux]
-    - 0008-fix-lookup_ops-test.patch                            # [linux]
-    - 0009-relax-precision-in-matrix_log_op_test.patch          # [linux]
+    - 0003-stable-image-rotate-test.patch                       # [linux]
+    - 0004-relax-tolerence-in-special_math_test.patch           # [linux]
+    - 0005-skip-read-only-debugger_cli_common-test.patch        # [linux]
+    - 0006-fix-lookup_ops-test.patch                            # [linux]
+    - 0007-relax-precision-in-matrix_log_op_test.patch          # [linux]
     # GPU patches
     - 0011-do-not-include-B-usr-bin-flag.patch
     - 0012-add-additional-cuda-rpaths.patch                     # [linux]
-    - 0001-Add-patch-for-eigen-cuda-19198.patch                 # [win]
+    - 0013-Add-patch-for-eigen-cuda-19198.patch                 # [win]
 
 build:
   number: 0

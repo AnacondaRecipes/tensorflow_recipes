@@ -1,0 +1,34 @@
+From aa4cf3d2ff1a587bd16bc6958341b07eb629fded Mon Sep 17 00:00:00 2001
+From: Jonathan Helmus <jjhelmus@gmail.com>
+Date: Mon, 20 Aug 2018 12:20:36 -0500
+Subject: [PATCH 08/13] set default openmp variables
+
+Set default values for KMP_BLOCKTIME and OMP_PROC_BIND at import if they are
+not already defined.
+
+This patch only needs to be applied to the MKL variant of the tensorflow-base
+conda package.
+---
+ tensorflow/api_template.__init__.py | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/tensorflow/api_template.__init__.py b/tensorflow/api_template.__init__.py
+index 779f65d..165da4f 100644
+--- a/tensorflow/api_template.__init__.py
++++ b/tensorflow/api_template.__init__.py
+@@ -18,6 +18,12 @@ from __future__ import absolute_import
+ from __future__ import division
+ from __future__ import print_function
+ 
++# Set reasonable OpenMP defaults for MKL-DNN
++import os
++os.environ["KMP_BLOCKTIME"] = os.environ.get("KMP_BLOCKTIME", "1")
++os.environ["OMP_PROC_BIND"] = os.environ.get("OMP_PROC_BIND", "true")
++del os
++
+ # pylint: disable=g-bad-import-order
+ from tensorflow.python import pywrap_tensorflow  # pylint: disable=unused-import
+ 
+-- 
+2.7.4
+

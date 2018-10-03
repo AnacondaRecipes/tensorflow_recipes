@@ -1,7 +1,7 @@
-From d5b2388dd9e5bcd3e7b29891d44cf08dd4f3e119 Mon Sep 17 00:00:00 2001
+From deb49a89a0ca1280c0fbedb99f3b63788695f557 Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
 Date: Mon, 20 Aug 2018 16:42:54 -0500
-Subject: [PATCH 12/12] add additional cuda rpaths
+Subject: [PATCH 12/13] add additional cuda rpaths
 
 ---
  tensorflow/core/platform/default/build_config/BUILD | 3 +++

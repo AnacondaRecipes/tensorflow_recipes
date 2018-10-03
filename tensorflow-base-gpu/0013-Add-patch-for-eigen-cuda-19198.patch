@@ -1,7 +1,7 @@
-From c4e2d8cac55ef21bd7d42217c391cba50a515897 Mon Sep 17 00:00:00 2001
-From: Nehal J Wani <nehaljw.kkd1@gmail.com>
-Date: Sat, 25 Aug 2018 03:28:42 -0500
-Subject: [PATCH] Add patch for eigen+cuda #19198
+From 6c68e4f0df418f901b47dfcbd02bc3f3d63c05b6 Mon Sep 17 00:00:00 2001
+From: Jonathan Helmus <jjhelmus@gmail.com>
+Date: Tue, 2 Oct 2018 18:56:50 -0500
+Subject: [PATCH 13/13] Add patch for eigen+cuda #19198
 
 xxx\execroot\org_tensorflow\external\eigen_archive\eigen\src/Core/arch/CUDA/Half.h(212):
 error: more than one instance of overloaded function "__hadd" matches
@@ -20,20 +20,20 @@ xref: https://gist.github.com/bstriner/a7fb0a8da1f830900fa932652439ed44
  create mode 100644 third_party/eigen_half.patch
 
 diff --git a/tensorflow/workspace.bzl b/tensorflow/workspace.bzl
-index 378de4261c..93ca2f2dc5 100644
+index 410d523..506c153 100755
 --- a/tensorflow/workspace.bzl
 +++ b/tensorflow/workspace.bzl
-@@ -115,6 +115,7 @@ def tf_workspace(path_prefix="", tf_repo_name=""):
-       sha256 = "d956415d784fa4e42b6a2a45c32556d6aec9d0a3d8ef48baee2522ab762556a9",
-       strip_prefix = "eigen-eigen-fd6845384b86",
-       build_file = clean_dep("//third_party:eigen.BUILD"),
-+      patch_file = clean_dep("//third_party:eigen_half.patch"),
-   )
+@@ -124,6 +124,7 @@ def tf_workspace(path_prefix = "", tf_repo_name = ""):
+         sha256 = "d956415d784fa4e42b6a2a45c32556d6aec9d0a3d8ef48baee2522ab762556a9",
+         strip_prefix = "eigen-eigen-fd6845384b86",
+         build_file = clean_dep("//third_party:eigen.BUILD"),
++        patch_file = clean_dep("//third_party:eigen_half.patch"),
+     )
  
-   tf_http_archive(
+     tf_http_archive(
 diff --git a/third_party/eigen_half.patch b/third_party/eigen_half.patch
 new file mode 100644
-index 0000000000..461e1c1550
+index 0000000..461e1c1
 --- /dev/null
 +++ b/third_party/eigen_half.patch
 @@ -0,0 +1,22 @@
@@ -60,5 +60,5 @@ index 0000000000..461e1c1550
 + EIGEN_STRONG_INLINE __device__ half operator - (const half& a) {
 +   return __hneg(a);
 -- 
-2.17.0
+2.7.4
 

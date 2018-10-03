@@ -1,7 +1,7 @@
-From 4323d61ac6e099239910994f7da5e1104423dfe8 Mon Sep 17 00:00:00 2001
+From 32590e8c11b5f71f15ab822c66537540f7a99796 Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
 Date: Wed, 27 Jun 2018 15:09:50 -0500
-Subject: [PATCH 11/12] do not include -B/usr/bin/ flag
+Subject: [PATCH 11/13] do not include -B/usr/bin/ flag
 
 ---
  third_party/gpus/crosstool/CROSSTOOL.tpl        | 2 --
@@ -78,10 +78,10 @@ index f0e17d1..33e500e 100644
    # TODO(bazel-team): In theory, the path here ought to exactly match the path
    # used by gcc. That works because bazel currently doesn't track files at
 diff --git a/third_party/toolchains/gpus/crosstool/CROSSTOOL b/third_party/toolchains/gpus/crosstool/CROSSTOOL
-index d6ee7e3..7c91f86 100644
+index b8eeb31..4e89b05 100644
 --- a/third_party/toolchains/gpus/crosstool/CROSSTOOL
 +++ b/third_party/toolchains/gpus/crosstool/CROSSTOOL
-@@ -210,7 +210,6 @@ toolchain {
+@@ -216,7 +216,6 @@ toolchain {
        action: "c++-link-dynamic-library"
        action: "c++-link-nodeps-dynamic-library"
        flag_group {

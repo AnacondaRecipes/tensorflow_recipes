@@ -1,7 +1,7 @@
-From fddca4286c5604dac3c68e504d985485b5d518a8 Mon Sep 17 00:00:00 2001
+From b635e9fe1de07ed1d24addb76b9b72e8a34483f3 Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
 Date: Thu, 11 Jan 2018 13:05:31 -0600
-Subject: [PATCH 08/10] fix lookup_ops test
+Subject: [PATCH 06/13] fix lookup_ops test
 
 The order of the exported data is undefined, perform a valid sort before
 comparing.
@@ -10,11 +10,11 @@ comparing.
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/tensorflow/contrib/lookup/lookup_ops_test.py b/tensorflow/contrib/lookup/lookup_ops_test.py
-index 889accd..bcec1ce 100644
+index 0a54bb1..e3276b2 100644
 --- a/tensorflow/contrib/lookup/lookup_ops_test.py
 +++ b/tensorflow/contrib/lookup/lookup_ops_test.py
-@@ -423,9 +423,9 @@ class MutableHashTableOpTest(test.TestCase):
-       self.assertAllEqual([None, 2], exported_values.get_shape().as_list())
+@@ -495,9 +495,9 @@ class MutableHashTableOpTest(test.TestCase):
+                           msg="Saw shape %s" % exported_values.shape)
        # exported data is in the order of the internal map, i.e. undefined
        sorted_keys = np.sort(exported_keys.eval())
 -      sorted_values = np.sort(exported_values.eval())
