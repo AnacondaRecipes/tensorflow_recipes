@@ -20,6 +20,7 @@ source:
     - 0008-set-default-openmp-variables.patch                         # [tflow_variant == 'mkl']
     - 0009-Add-init-symbol-names-prefixed-with-an-underscore.patch    # [osx]
     - 0010-patch-third-party-libs-to-support-glibc-2.11.patch         # [linux]
+    - 0011-Static-cast-size_t-to-int-in-arguments-1-2-to-forwar.patch  # [win]
     - 0012-Add-alternate-clock_gettime-implementation-for-macOS.patch  # [osx]
 
 build:
