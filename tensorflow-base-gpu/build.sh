@@ -71,6 +71,8 @@ yes "" | ./configure
 # for debugging the following lines may be helpful
 #   --logging=6 \
 #   --subcommands \
+# jobs can be used to limit parallel builds and reduce resource needs
+#    --jobs=20             \
 bazel ${BAZEL_OPTS} build \
     --copt=-march=nocona \
     --copt=-mtune=haswell \
