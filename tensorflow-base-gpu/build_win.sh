@@ -55,12 +55,12 @@ pip install ${PIP_NAME} --no-deps
 rm -f ${PREFIX}/Scripts/tensorboard.exe
 
 # Test which are known to fail and do not effect the package
-#KNOWN_FAIL="-${PY_TEST_DIR}/tensorflow/python/estimator:boosted_trees_test"
-#
-#${LIBRARY_BIN}/bazel --batch test -c opt ${BUILD_OPTS} -k --test_output=errors --flaky_test_attempts=3 \
-#   --define=no_tensorflow_py_deps=true --test_lang_filters=py --local_test_jobs=1 \
-#   --build_tag_filters=-no_pip,-no_windows,-no_windows_gpu,-no_gpu,-no_pip_gpu,-no_oss --build_tests_only \
-#   --test_timeout 9999999 --test_tag_filters=-no_pip,-no_windows,-no_windows_gpu,-no_gpu,-no_pip_gpu,-no_oss \
-#   -- //${PY_TEST_DIR}/tensorflow/python/... \
-#      //${PY_TEST_DIR}/tensorflow/contrib/... \
-#      ${KNOWN_FAIL}
+KNOWN_FAIL="-${PY_TEST_DIR}/tensorflow/python/keras:local_test -${PY_TEST_DIR}/tensorflow/python/kernel_tests:fft_ops_test"
+
+${LIBRARY_BIN}/bazel --batch test -c opt ${BUILD_OPTS} -k --test_output=errors --flaky_test_attempts=3 \
+   --define=no_tensorflow_py_deps=true --test_lang_filters=py --local_test_jobs=1 \
+   --build_tag_filters=-no_pip,-no_windows,-no_windows_gpu,-no_gpu,-no_pip_gpu,-no_oss --build_tests_only \
+   --test_timeout 9999999 --test_tag_filters=-no_pip,-no_windows,-no_windows_gpu,-no_gpu,-no_pip_gpu,-no_oss \
+   -- //${PY_TEST_DIR}/tensorflow/python/... \
+      //${PY_TEST_DIR}/tensorflow/contrib/... \
+      ${KNOWN_FAIL}
