@@ -1,31 +1,23 @@
 # configuration for linux-64 eigen and mkl variants
 full_base_version:
-  - "1.10.0 eigen_py27h4dcebc2_0"
-  - "1.10.0 eigen_py35h4dcebc2_0"
-  - "1.10.0 eigen_py36h4dcebc2_0"
-  - "1.10.0 mkl_py27h3c3e929_0"
-  - "1.10.0 mkl_py35h3c3e929_0"
-  - "1.10.0 mkl_py36h3c3e929_0"
+  - "1.11.0 eigen_py27h4dcebc2_0"
+  - "1.11.0 eigen_py36h4dcebc2_0"
+  - "1.11.0 mkl_py27h3c3e929_0"
+  - "1.11.0 mkl_py36h3c3e929_0"
 select_version:
-  - "0.0.2 eigen"
-  - "0.0.2 eigen"
-  - "0.0.2 eigen"
-  - "0.0.3 mkl"
-  - "0.0.3 mkl"
-  - "0.0.3 mkl"
+  - "2.2.0 eigen"
+  - "2.2.0 eigen"
+  - "2.3.0 mkl"
+  - "2.3.0 mkl"
 tflow_variant:
   - "eigen"
   - "eigen"
-  - "eigen"
-  - "mkl"
   - "mkl"
   - "mkl"
 py_version:
   - 2.7
-  - 3.5
   - 3.6
   - 2.7
-  - 3.5
   - 3.6
 zip_keys:
   - full_base_version
