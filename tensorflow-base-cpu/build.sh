@@ -100,6 +100,15 @@ bazel-bin/tensorflow/tools/pip_package/build_pip_package $SRC_DIR/tensorflow_pkg
 # install the whl using pip
 pip install --no-deps $SRC_DIR/tensorflow_pkg/*.whl
 
+# tflow vendors libmklml.dylib and libiomp5.dylib
+if [ $target_platform == osx-64 ] && [ ${tflow_variant} == "mkl" ]; then
+    # https://github.com/ContinuumIO/anaconda-issues/issues/6423
+    # https://github.com/JuliaPy/PyPlot.jl/issues/315
+    # Also required to make the overlinking check happy
+    _xternal_libmklml_dylib=$(find $SP_DIR/ -name libmklml.dylib)
+    install_name_tool -change @rpath/libiomp5.dylib @loader_path/libiomp5.dylib $_xternal_libmklml_dylib
+fi
+
 # The tensorboard package has the proper entrypoint
 rm -f ${PREFIX}/bin/tensorboard
 
