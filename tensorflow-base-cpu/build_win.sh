@@ -31,9 +31,9 @@ ${LIBRARY_BIN}/bazel --batch build -c opt $BUILD_OPTS tensorflow/tools/pip_packa
 
 # xref: https://github.com/tensorflow/tensorflow/issues/21886
 # xref: https://github.com/tensorflow/tensorflow/issues/6396
-# While the mkl build is running, open a shell and type the following:
+# While the build is running, open a shell and type the following:
 # export _param_file="/c/users/$USER/_bazel_$USER/xxxxxxxx/execroot/org_tensorflow/bazel-out/x64_windows-opt/bin/tensorflow/python/_pywrap_tensorflow_internal.so-2.params"
-# while true; do if [ -f $_param_file ]; then sed -i 's,^/WHOLEARCHIVE:\(.*external.*\),\1,' $_param_file; echo done; break; else sleep 1; fi; done
+# while true; do if [ -f $_param_file ]; then sed -i 's,^/WHOLEARCHIVE:\(.*external.*\),\1,' $_param_file;  sed -i 's,\(.*icuuc.lib\),\/WHOLEARCHIVE:\1,' $_param_file; echo done; break; fi; done
 # export _param_file="/c/users/$USER/_bazel_$USER/xxxxxxxx/execroot/org_tensorflow/bazel-out/x64_windows-opt/bin/tensorflow/contrib/lite/toco/python/_tensorflow_wrap_toco.so-2.params"
 # while true; do if [ -f $_param_file ]; then sed -i 's,^/WHOLEARCHIVE:\(.*external.*\),\1,' $_param_file; echo done; break; else sleep 1; fi; done
 
@@ -51,7 +51,7 @@ pip install ${PIP_NAME} --no-deps
 rm -f ${PREFIX}/Scripts/tensorboard.exe
 
 # Test which are known to fail and do not effect the package
-KNOWN_FAIL="-${PY_TEST_DIR}/tensorflow/python/keras:local_test"
+KNOWN_FAIL="-${PY_TEST_DIR}/tensorflow/python/keras:local_test -${PY_TEST_DIR}/tensorflow/contrib/factorization/gmm_ops_test"
 
 ${LIBRARY_BIN}/bazel --batch test -c opt $BUILD_OPTS -k --test_output=errors \
   --define=no_tensorflow_py_deps=true --test_lang_filters=py \

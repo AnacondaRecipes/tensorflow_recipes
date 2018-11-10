@@ -1,0 +1,38 @@
+From 3645b77a1bc15d6aa414ad6dc61f18a37f50a5cc Mon Sep 17 00:00:00 2001
+From: Nehal J Wani <nehaljw.kkd1@gmail.com>
+Date: Sat, 10 Nov 2018 05:31:01 +0530
+Subject: [PATCH] Revert "enable fast C++ implementation of python protobuf
+ (#1489)"
+
+This reverts commit 4ece44ee6b9a8ead757be603a76aa2f8d5f92e36.
+---
+ tensorboard/main.py | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
+
+diff --git a/tensorboard/main.py b/tensorboard/main.py
+index 6be1fae4..455a4840 100644
+--- a/tensorboard/main.py
++++ b/tensorboard/main.py
+@@ -26,18 +26,12 @@ from __future__ import division
+ from __future__ import print_function
+ 
+ # pylint: disable=g-import-not-at-top
+-import os
+-
+ # Disable the TF GCS filesystem cache which interacts pathologically with the
+ # pattern of reads used by TensorBoard for logdirs. See for details:
+ #   https://github.com/tensorflow/tensorboard/issues/1225
+ # This must be set before the first import of tensorflow.
++import os
+ os.environ['GCS_READ_CACHE_DISABLED'] = '1'
+-
+-# Use fast C++ implementation of Python protocol buffers. See:
+-# https://github.com/protocolbuffers/protobuf/blob/v3.6.0/python/google/protobuf/pyext/README
+-os.environ['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'cpp'
+-os.environ['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION_VERSION'] = '2'
+ # pylint: enable=g-import-not-at-top
+ 
+ import sys
+-- 
+2.17.2 (Apple Git-113)
+

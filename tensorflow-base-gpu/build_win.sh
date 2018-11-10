@@ -36,10 +36,13 @@ echo "" | ./configure
 BUILD_OPTS="--logging=6 --subcommands --define=override_eigen_strong_inline=true --experimental_shortened_obj_file_path=true"
 ${LIBRARY_BIN}/bazel --batch build -c opt $BUILD_OPTS tensorflow/tools/pip_package:build_pip_package || exit $?
 
-# xref: https://github.com/tensorflow/tensorflow/issues/20332#issuecomment-415974623
-# Run the following in another shell as the build proceeds (replace $USER and xxxxxxxx):
-# export _param_file="/c/users/$USER/_bazel_$USER/xxxxxxxx/execroot/org_tensorflow/bazel-out/x64_windows-opt/bin/tensorflow/tools/pip_package/simple_console_for_windows.zip-2.params" 
-# while true; do if [ -f $_param__file ]; then sed -i '/zip=/d' $_param_file; echo done; break; else sleep 1; fi; done
+# xref: https://github.com/tensorflow/tensorflow/issues/21886
+# xref: https://github.com/tensorflow/tensorflow/issues/6396
+# While the GPU build is running, open a shell and type the following:
+# export _param_file="/c/users/$USER/_bazel_$USER/xxxxxxxx/execroot/org_tensorflow/bazel-out/x64_windows-opt/bin/tensorflow/python/_pywrap_tensorflow_internal.so-2.params"
+# while true; do if [ -f $_param_file ]; then sed -i 's,^/WHOLEARCHIVE:\(.*external.*\),\1,' $_param_file; sed -i 's,\(.*icuuc.a\),\/WHOLEARCHIVE:\1,' $_param_file; echo done; break; fi; done
+# export _param_file="/c/users/$USER/_bazel_$USER/xxxxxxxx/execroot/org_tensorflow/bazel-out/x64_windows-opt/bin/tensorflow/contrib/lite/toco/python/_tensorflow_wrap_toco.so-2.params"
+# while true; do if [ -f $_param_file ]; then sed -i 's,^/WHOLEARCHIVE:\(.*external.*\),\1,' $_param_file; echo done; break; else sleep 1; fi; done
 
 PY_TEST_DIR="py_test_dir"
 rm -fr ${PY_TEST_DIR}

@@ -1,6 +1,6 @@
 full_base_version:
-  - "1.11.0 eigen_py36h45df0d8_0"
-  - "1.11.0 mkl_py36h81393da_0"
+  - "1.12.0 eigen_py36h45df0d8_0"
+  - "1.12.0 mkl_py36h81393da_0"
 select_version:
   - "2.2.0 eigen"
   - "2.3.0 mkl"

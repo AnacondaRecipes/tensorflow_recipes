@@ -1,6 +1,6 @@
 # configuration for win-64 gpu, cuda 9.0
 full_base_version:
-  - "1.11.0 gpu_py36h6e53903_0"
+  - "1.12.0 gpu_py36h6e53903_0"
 select_version:
   - "2.1.0 gpu"
 tflow_variant:
