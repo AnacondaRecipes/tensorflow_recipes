@@ -43,6 +43,7 @@ if [[ ${HOST} =~ .*darwin.* ]]; then
         --verbose_failures
         ${BAZEL_MKL_OPT}
         --config=opt"
+    export TF_ENABLE_XLA=0
 else
     # Linux
     # the following arguments are useful for debugging
@@ -66,6 +67,7 @@ else
     --verbose_failures
     ${BAZEL_MKL_OPT}
     --config=opt"
+    export TF_ENABLE_XLA=1
 
 fi
 
