@@ -14,20 +14,17 @@ export PYTHON_LIB_PATH=${SP_DIR}
 export USE_DEFAULT_PYTHON_LIB_PATH=1
 
 # additional settings
-# disable jemmloc (needs MADV_HUGEPAGE macro which is not in glib <= 2.12)
-export TF_NEED_JEMALLOC=0
 # do not build with MKL support
 export TF_NEED_MKL=0
 export CC_OPT_FLAGS="-march=nocona -mtune=haswell"
-export TF_NEED_GCP=1
-export TF_NEED_HDFS=1
-export TF_NEED_S3=1
-export TF_ENABLE_XLA=0
-export TF_NEED_GDR=0
-export TF_NEED_VERBS=0
+export TF_NEED_IGNITE=1
+export TF_ENABLE_XLA=1
 export TF_NEED_OPENCL=0
 export TF_NEED_OPENCL_SYCL=0
+export TF_NEED_ROCM=0
 export TF_NEED_MPI=0
+export TF_DOWNLOAD_CLANG=0
+export TF_SET_ANDROID_WORKSPACE=0
 
 # CUDA details
 export TF_NEED_CUDA=1
@@ -37,6 +34,7 @@ if [ ${cudnn} == "6.0" ]; then
     export TF_CUDNN_VERSION="6"
 fi
 export TF_CUDA_CLANG=0
+export TF_NEED_TENSORRT=0
 # Additional compute capabilities can be added if desired but these increase
 # the build time and size of the package. The ones here are the ones supported
 # by CUDA 7.5 and used in the devel-gpu tensorflow docker image:
@@ -65,7 +63,7 @@ export CUDNN_INSTALL_PATH="/usr/local/cuda/"
 # add the stubs directory to LD_LIBRARY_PATH so libcuda.so.1 can be found
 export LD_LIBRARY_PATH="/usr/local/cuda/lib64/stubs/:${LD_LIBRARY_PATH}"
 
-yes "" | ./configure
+./configure
 
 # build using bazel
 # for debugging the following lines may be helpful
