@@ -77,20 +77,16 @@ export PYTHON_LIB_PATH=${SP_DIR}
 export USE_DEFAULT_PYTHON_LIB_PATH=1
 
 # additional settings
-# disable jemmloc (needs MADV_HUGEPAGE macro which is not in glib <= 2.12)
-export TF_NEED_JEMALLOC=0
 export CC_OPT_FLAGS="-march=nocona -mtune=haswell"
-export TF_NEED_GCP=1
-export TF_NEED_HDFS=1
-export TF_NEED_S3=1
-export TF_ENABLE_XLA=0
-export TF_NEED_GDR=0
-export TF_NEED_VERBS=0
+export TF_NEED_IGNITE=1
 export TF_NEED_OPENCL=0
 export TF_NEED_OPENCL_SYCL=0
 export TF_NEED_CUDA=0
+export TF_NEED_ROCM=0
 export TF_NEED_MPI=0
-yes "" | ./configure
+export TF_DOWNLOAD_CLANG=0
+export TF_SET_ANDROID_WORKSPACE=0
+./configure
 
 # build using bazel
 bazel ${BAZEL_OPTS} build ${BUILD_OPTS} //tensorflow/tools/pip_package:build_pip_package
