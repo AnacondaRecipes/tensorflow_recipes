@@ -10,8 +10,6 @@ source:
   url: https://github.com/tensorflow/tensorflow/archive/v{{ version }}.tar.gz
   sha256: 3c87b81e37d4ed7f3da6200474fa5e656ffd20d8811068572f43610cae97ca92
   patches:
-    # from cpu variant
-    - 0010-patch-third-party-libs-to-support-glibc-2.11.patch         # [linux]
     # Patches need to get certain tests to pass on CentOS 6
     - 0003-stable-image-rotate-test.patch                             # [linux]
     - 0004-relax-tolerence-in-special_math_test.patch                 # [linux]
