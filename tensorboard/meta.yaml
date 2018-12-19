@@ -1,18 +1,18 @@
-{% set version = "1.12.0" %}
+{% set version = "1.12.1" %}
 
 package:
   name: tensorboard
   version: {{ version }}
 
 source:
-  fn: tensorflow-{{ version }}.tar.gz                                          # [unix]
+  fn: tensorboard-{{ version }}.tar.gz                                         # [unix]
   url: https://github.com/tensorflow/tensorboard/archive/{{ version }}.tar.gz  # [unix]
-  sha256: e263f1ebeadaef246ebbd6d81faa02292ecf0193e5f0ecd279ee38416f2be4b3     # [unix]
+  sha256: 3bc8e7449dd4a47fb648d680bea53b026a89b0769940f4ae9fa6f879f9be4eae     # [unix]
 
   # Rename this to dummy since we don't want CB to extract it
   fn: tensorboard-{{ version }}-py3-none-any.whl.dummy                                        # [win]
   url: https://pypi.io/packages/py3/t/tensorboard/tensorboard-{{ version }}-py3-none-any.whl  # [win]
-  sha256: ca275a7e39797946930d7d4460999369b73968e8191f2256e23bfb7924004d59                    # [win]
+  sha256: 8f5c158db581a70be4ea432875be8bea20c55e51b92973c8c330643a2bec4f77                    # [win]
 
 build:
   number: 0
