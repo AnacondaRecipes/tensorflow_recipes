@@ -1,0 +1,449 @@
+diff --git a/tensorboard/components/tf_backend/router.ts b/tensorboard/components/tf_backend/router.ts
+index 2f146318..86a78a79 100644
+--- a/tensorboard/components/tf_backend/router.ts
++++ b/tensorboard/components/tf_backend/router.ts
+@@ -17,52 +17,53 @@ namespace tf_backend {
+ export interface Router {
+   environment: () => string;
+   experiments: () => string;
+-  isDemoMode: () => boolean;
+-  pluginRoute: (pluginName: string, route: string) => string;
++  pluginRoute: (
++    pluginName: string,
++    route: string,
++    params?: URLSearchParams
++  ) => string;
+   pluginsListing: () => string;
+   runs: () => string;
+   runsForExperiment: (id: tf_backend.ExperimentId) => string;
+ };
+ 
++let _router: Router = createRouter();
++
+ /**
+  * Create a router for communicating with the TensorBoard backend. You
+  * can pass this to `setRouter` to make it the global router.
+  *
+- * @param dataDir {string} The base prefix for finding data on server.
+- * @param demoMode {boolean} Whether to modify urls for filesystem demo usage.
++ * @param dataDir {string=} The base prefix for data endpoints.
+  */
+-export function createRouter(dataDir = 'data', demoMode = false): Router {
+-  if (dataDir[dataDir.length - 1] === '/') {
++export function createRouter(dataDir = "data"): Router {
++  if (dataDir[dataDir.length - 1] === "/") {
+     dataDir = dataDir.slice(0, dataDir.length - 1);
+   }
+-  const createPath = demoMode ? createDemoPath : createProdPath;
+-  const ext = demoMode ? '.json' : '';
+   return {
+-    environment: () => createPath(dataDir, '/environment', ext),
+-    experiments: () => createPath(dataDir, '/experiments', ext),
+-    isDemoMode: () => demoMode,
+-    pluginRoute: (pluginName: string, route: string,
+-        params?: URLSearchParams, demoCustomExt = ext): string => {
+-
+-      return createPath(
+-          demoMode ? dataDir : dataDir + '/plugin',
+-          `/${pluginName}${route}`,
+-          demoCustomExt,
+-          params);
++    environment: () => createDataPath(dataDir, "/environment"),
++    experiments: () => createDataPath(dataDir, "/experiments"),
++    pluginRoute: (
++      pluginName: string,
++      route: string,
++      params?: URLSearchParams
++    ): string => {
++      return createDataPath(
++        dataDir + "/plugin",
++        `/${pluginName}${route}`,
++        params
++      );
+     },
+-    pluginsListing: () => createPath(dataDir, '/plugins_listing', ext),
+-    runs: () => createPath(dataDir, '/runs', ext),
+-    runsForExperiment: id => {
+-      return createPath(
+-          dataDir,
+-          '/experiment_runs',
+-          ext,
+-          createSearchParam({experiment: String(id)}));
++    pluginsListing: () => createDataPath(dataDir, "/plugins_listing"),
++    runs: () => createDataPath(dataDir, "/runs"),
++    runsForExperiment: (id) => {
++      return createDataPath(
++        dataDir,
++        "/experiment_runs",
++        createSearchParam({experiment: String(id)})
++      );
+     },
+   };
+-};
+-
+-let _router: Router = createRouter();
++}
+ 
+ /**
+  * @return {Router} the global router
+@@ -86,41 +87,17 @@ export function setRouter(router: Router): void {
+   _router = router;
+ }
+ 
+-function createProdPath(pathPrefix: string, path: string,
+-    ext: string, params?: URLSearchParams): string {
+-
+-  const url = new URL(`${window.location.origin}/${pathPrefix}${path}`);
+-  if (params) url.search = params.toString();
+-  return url.pathname + url.search;
+-}
+-
+-/**
+- * Creates a URL for demo.
+- * e.g.,
+- * > createDemoPath('a', '/b', '.json', {a: 1})
+- * < '/a/b_a_1.json'
+- */
+-function createDemoPath(pathPrefix: string, path: string,
+-    ext: string, params?: URLSearchParams): string {
+-
+-  // First, parse the path in a safe manner by constructing a URL. We don't
+-  // trust the path supplied by consumer.
+-  const prefixLessUrl = new URL(`${window.location.origin}/${path}`);
+-  let {pathname: normalizedPath} = prefixLessUrl;
+-  const encodedQueryParam = params ?
+-      params.toString().replace(/[&=%]/g, '_') : '';
+-
+-  // Strip leading slashes.
+-  normalizedPath = normalizedPath.replace(/^\/+/g, '');
+-  // Convert slashes to underscores.
+-  normalizedPath = normalizedPath.replace(/\//g, '_');
+-  // Add query parameter as path if it is present.
+-  if (encodedQueryParam) normalizedPath += `_${encodedQueryParam}`;
+-  const url = new URL(`${window.location.origin}`);
+-
+-  // All demo data are serialized in JSON format.
+-  url.pathname = `${pathPrefix}/${normalizedPath}${ext}`;
+-  return url.pathname + url.search;
++function createDataPath(
++  dataDir: string,
++  route: string,
++  params: URLSearchParams = new URLSearchParams()
++): string {
++  let relativePath = dataDir + route;
++  if (String(params)) {
++    const delimiter = route.includes("?") ? "&" : "?";
++    relativePath += delimiter + String(params);
++  }
++  return relativePath;
+ }
+ 
+ export function createSearchParam(params: QueryParams = {}): URLSearchParams {
+diff --git a/tensorboard/components/tf_backend/test/backendTests.ts b/tensorboard/components/tf_backend/test/backendTests.ts
+index 52652f25..93a18478 100644
+--- a/tensorboard/components/tf_backend/test/backendTests.ts
++++ b/tensorboard/components/tf_backend/test/backendTests.ts
+@@ -44,15 +44,6 @@ function assertIsDatum(x) {
+ }
+ 
+ describe('backend tests', () => {
+-  let rm: RequestManager;
+-  const base = 'data';
+-  const demoRouter = createRouter(base, /*demoMode=*/true);
+-
+-  beforeEach(() => {
+-    setRouter(demoRouter);
+-    rm = new RequestManager();
+-  });
+-
+   it('runToTag helpers work', () => {
+     const r2t: RunToTag = {
+       run1: ['foo', 'bar', 'zod'],
+@@ -76,173 +67,105 @@ describe('backend tests', () => {
+   });
+ 
+   describe('router', () => {
+-    it('removes trailing slash from base route', () => {
+-      const r = createRouter('foo/');
+-      assert.equal(r.runs(), '/foo/runs');
+-    });
+-
+     describe('prod mode', () => {
+-      beforeEach(function() {
+-        this.router = createRouter(base, /*demoMode=*/false);
++      let router: Router;
++      beforeEach(() => {
++        router = createRouter('data');
++      });
++
++      it('leading slash in pathPrefix is an absolute path', () => {
++        const router = createRouter('/data/');
++        assert.equal(router.runs(), '/data/runs');
+       });
+ 
+-      it('returns correct value for #environment', function() {
+-        assert.equal(this.router.environment(), '/data/environment');
++      it('returns complete pathname when pathPrefix omits slash', () => {
++        const router = createRouter('data/');
++        assert.equal(router.runs(), 'data/runs');
+       });
+ 
+-      it('returns correct value for #experiments', function() {
+-        assert.equal(this.router.experiments(), '/data/experiments');
++      it('does not prune many leading slashes that forms full url', () => {
++        const router = createRouter('///data/hello');
++        // This becomes 'http://data/hello/runs'
++        assert.equal(router.runs(), '///data/hello/runs');
+       });
+ 
+-      it('returns correct value for #isDemoMode', function() {
+-        assert.equal(this.router.isDemoMode(), false);
++      it('returns correct value for #environment', () => {
++        assert.equal(router.environment(), 'data/environment');
++      });
++
++      it('returns correct value for #experiments', () => {
++        assert.equal(router.experiments(), 'data/experiments');
+       });
+ 
+       describe('#pluginRoute', () => {
+-        it('encodes slash correctly', function() {
++        it('encodes slash correctly', () => {
+           assert.equal(
+-              this.router.pluginRoute('scalars', '/scalar'),
+-              '/data/plugin/scalars/scalar');
++              router.pluginRoute('scalars', '/scalar'),
++              'data/plugin/scalars/scalar');
+         });
+ 
+-        it('encodes query param correctly', function() {
++        it('encodes query param correctly', () => {
+           assert.equal(
+-              this.router.pluginRoute(
++              router.pluginRoute(
+                   'scalars',
+                   '/a',
+                   createSearchParam({b: 'c', d: ['1', '2']})),
+-              '/data/plugin/scalars/a?b=c&d=1&d=2');
++              'data/plugin/scalars/a?b=c&d=1&d=2');
+         });
+ 
+-        it('encodes parenthesis correctly', function() {
++        it('does not put ? when passed an empty URLSearchParams', () => {
+           assert.equal(
+-              this.router.pluginRoute('scalars', '/a',
+-              createSearchParam({foo: '()'})),
+-              '/data/plugin/scalars/a?foo=%28%29');
++              router.pluginRoute('scalars', '/a',
++                  new URLSearchParams()),
++              'data/plugin/scalars/a');
+         });
+ 
+-        it('encodes query param the same as #addParams', function() {
+-          assert.equal(
+-              this.router.pluginRoute(
+-                  'scalars',
+-                  '/a',
+-                  createSearchParam({b: 'c', d: ['1']})),
+-              addParams('/data/plugin/scalars/a', {b: 'c', d: ['1']}));
++        it('encodes parenthesis correctly', () => {
+           assert.equal(
+-              this.router.pluginRoute(
+-                  'scalars',
+-                  '/a',
++              router.pluginRoute('scalars', '/a',
+                   createSearchParam({foo: '()'})),
+-              addParams('/data/plugin/scalars/a', {foo: '()'}));
+-        });
+-
+-        it('ignores custom extension', function() {
+-          assert.equal(
+-              this.router.pluginRoute('scalars', '/a', undefined, 'meow'),
+-              '/data/plugin/scalars/a');
++              'data/plugin/scalars/a?foo=%28%29');
+         });
+-      });
+-
+-      it('returns correct value for #pluginsListing', function() {
+-        assert.equal(this.router.pluginsListing(), '/data/plugins_listing');
+-      });
+-
+-      it('returns correct value for #runs', function() {
+-        assert.equal(this.router.runs(), '/data/runs');
+-      });
+-
+-      it('returns correct value for #runsForExperiment', function() {
+-        // No experiment id is passed.
+-        assert.equal(
+-            this.router.runsForExperiment(''),
+-            '/data/experiment_runs');
+-        assert.equal(
+-            this.router.runsForExperiment('1'),
+-            '/data/experiment_runs?experiment=1');
+-        assert.equal(
+-            this.router.runsForExperiment('1&foo=false'),
+-            '/data/experiment_runs?experiment=1%26foo%3Dfalse');
+-      });
+-    });
+ 
+-    describe('demoMode', () => {
+-      beforeEach( function() {
+-        this.router = createRouter(base, /*demoMode=*/true);
+-      });
+-
+-      it('returns correct value for #environment', function() {
+-        assert.equal(this.router.environment(), '/data/environment.json');
+-      });
+-
+-      it('returns correct value for #experiments', function() {
+-        assert.equal(this.router.experiments(), '/data/experiments.json');
+-      });
+-
+-      it('returns correct value for #isDemoMode', function() {
+-        assert.equal(this.router.isDemoMode(), true);
+-      });
+-
+-      describe('#pluginRoute', () => {
+-        it('encodes slash correctly', function() {
++        it('deals with existing query param correctly', () => {
+           assert.equal(
+-              this.router.pluginRoute('scalars', '/scalar'),
+-              '/data/scalars_scalar.json');
++              router.pluginRoute('scalars', '/a?foo=bar',
++                  createSearchParam({hello: 'world'})),
++              'data/plugin/scalars/a?foo=bar&hello=world');
+         });
+ 
+-        it('encodes query param correctly', function() {
++        it('encodes query param the same as #addParams', () => {
+           assert.equal(
+-              this.router.pluginRoute(
++              router.pluginRoute(
+                   'scalars',
+                   '/a',
+-                  createSearchParam({b: 'c', d: ['1', '2']})),
+-              '/data/scalars_a_b_c_d_1_d_2.json');
+-        });
+-
+-        it('encodes parenthesis correctly', function() {
++                  createSearchParam({b: 'c', d: ['1']})),
++              addParams('data/plugin/scalars/a', {b: 'c', d: ['1']}));
+           assert.equal(
+-              this.router.pluginRoute(
++              router.pluginRoute(
+                   'scalars',
+                   '/a',
+                   createSearchParam({foo: '()'})),
+-              '/data/scalars_a_foo__28_29.json');
+-        });
+-
+-        it('uses custom extension if provided', function() {
+-          assert.equal(
+-              this.router.pluginRoute('scalars', '/a', undefined, ''),
+-              '/data/scalars_a');
+-          assert.equal(
+-              this.router.pluginRoute('scalars', '/a', undefined, '.meow'),
+-              '/data/scalars_a.meow');
+-          assert.equal(
+-              this.router.pluginRoute('scalars', '/a'),
+-              '/data/scalars_a.json');
++              addParams('data/plugin/scalars/a', {foo: '()'}));
+         });
+       });
+ 
+-      it('returns correct value for #pluginsListing', function() {
++      it('returns correct value for #pluginsListing', () => {
+         assert.equal(
+-            this.router.pluginsListing(),
+-            '/data/plugins_listing.json');
++            router.pluginsListing(), 'data/plugins_listing');
+       });
+ 
+-      it('returns correct value for #runs', function() {
+-        assert.equal(this.router.runs(), '/data/runs.json');
++      it('returns correct value for #runs', () => {
++        assert.equal(router.runs(), 'data/runs');
+       });
+ 
+-      it('returns correct value for #runsForExperiment', function() {
+-        // No experiment id is passed.
++      it('returns correct value for #runsForExperiment', () => {
+         assert.equal(
+-            this.router.runsForExperiment(''),
+-            '/data/experiment_runs.json');
+-        assert.equal(
+-            this.router.runsForExperiment('1'),
+-            '/data/experiment_runs_experiment_1.json');
+-        assert.equal(
+-            this.router.runsForExperiment('1&foo=false'),
+-            '/data/experiment_runs_experiment_1_26foo_3Dfalse.json');
++            router.runsForExperiment(1),
++            'data/experiment_runs?experiment=1');
+       });
+     });
++
+   });
+ });
+ 
+diff --git a/tensorboard/plugins/audio/tf_audio_dashboard/tf-audio-loader.html b/tensorboard/plugins/audio/tf_audio_dashboard/tf-audio-loader.html
+index ed0263b8..5af3f22f 100644
+--- a/tensorboard/plugins/audio/tf_audio_dashboard/tf-audio-loader.html
++++ b/tensorboard/plugins/audio/tf_audio_dashboard/tf-audio-loader.html
+@@ -222,7 +222,6 @@ backend.
+         this.requestManager.request(url).then(updateSteps);
+       },
+       _createStepDatum(audioMetadata) {
+-        const isDemoMode = tf_backend.getRouter().isDemoMode();
+         const searchParam = new URLSearchParams(audioMetadata.query);
+         // Include wall_time just to disambiguate the URL and force
+         // the browser to reload the audio when the URL changes. The
+@@ -231,8 +230,8 @@ backend.
+         const url = tf_backend.getRouter().pluginRoute(
+             'audio',
+             '/individualAudio',
+-            searchParam,
+-            /* demoCustomExt */ '.wav');
++            searchParam
++        );
+ 
+         return {
+           wall_time: tf_card_heading.formatDate(new Date(audioMetadata.wall_time * 1000)),
+diff --git a/tensorboard/plugins/graph/tf_graph_dashboard/tf-graph-dashboard.html b/tensorboard/plugins/graph/tf_graph_dashboard/tf-graph-dashboard.html
+index 66b01d51..21985772 100644
+--- a/tensorboard/plugins/graph/tf_graph_dashboard/tf-graph-dashboard.html
++++ b/tensorboard/plugins/graph/tf_graph_dashboard/tf-graph-dashboard.html
+@@ -292,17 +292,15 @@ Polymer({
+         tf_backend.getRouter().pluginRoute('debugger', '/numerics_alert_report'));
+   },
+   _graphUrl(run, limitAttrSize, largeAttrsKey) {
+-    const demoMode = tf_backend.getRouter().isDemoMode();
+-    const optional = (p) => (p != null && !demoMode || undefined) && p;
+     return tf_backend.getRouter().pluginRoute(
+         'graphs',
+         '/graph',
+         new URLSearchParams({
+           'run': run,
+-          'limit_attr_size': optional(limitAttrSize),
+-          'large_attrs_key': optional(largeAttrsKey),
++          'limit_attr_size': limitAttrSize,
++          'large_attrs_key': largeAttrsKey,
+         }),
+-        /* demoCustomExt */ '.pbtxt');
++    );
+   },
+   _shouldRequestHealthPills: function() {
+     // Do not load debugger data if the feature is disabled, if the user toggled off the feature,
+diff --git a/tensorboard/plugins/profile/tf_profile_dashboard/tf-profile-dashboard.html b/tensorboard/plugins/profile/tf_profile_dashboard/tf-profile-dashboard.html
+index 2a318025..794cd979 100644
+--- a/tensorboard/plugins/profile/tf_profile_dashboard/tf-profile-dashboard.html
++++ b/tensorboard/plugins/profile/tf_profile_dashboard/tf-profile-dashboard.html
+@@ -340,8 +340,7 @@ profile run can have multiple tools that present the performance profile as diff
+       // Set this to true so we only initialize once.
+       this._initialized = true;
+       const profileTagsURL =
+-        tf_backend.getRouter().pluginRoute('profile', '/tools') +
+-        (tf_backend.getRouter().isDemoMode() ? '.json' : '');
++        tf_backend.getRouter().pluginRoute('profile', '/tools');
+       // Reset the progress bar to 0.
+       this.set('progress', {
+         value: 0,

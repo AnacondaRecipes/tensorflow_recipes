@@ -2,12 +2,14 @@
 
 package:
   name: tensorboard
-  version: {{ version }}
+  version: {{ version }}.db1
 
 source:
   fn: tensorboard-{{ version }}.tar.gz                                         # [unix]
   url: https://github.com/tensorflow/tensorboard/archive/{{ version }}.tar.gz  # [unix]
   sha256: 3bc8e7449dd4a47fb648d680bea53b026a89b0769940f4ae9fa6f879f9be4eae     # [unix]
+  patches:
+    - db-0001-use-relative-path.patch
 
   # Rename this to dummy since we don't want CB to extract it
   fn: tensorboard-{{ version }}-py3-none-any.whl.dummy                                        # [win]
