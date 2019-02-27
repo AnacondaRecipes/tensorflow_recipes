@@ -1,0 +1,43 @@
+{% set version = "1.13.0" %}
+
+package:
+  name: tensorflow-estimator
+  version: {{ version }}
+
+source:
+  fn: tensorflow-estimator-{{ version }}.tar.gz
+  url: https://github.com/tensorflow/estimator/archive/v{{ version }}.tar.gz
+  sha256: a787b150ff436636df723e507019c72a5d6486cfe506886279d380166953f12f
+
+build:
+  number: 0
+  noarch: python
+
+requirements:
+  host:
+    - bazel
+    - python
+    - tensorflow-base 1.13.1
+    - pip
+  run:
+    - python
+    - absl-py >=0.1.6
+    - numpy >=1.13.3
+    - six >=1.10.0
+    - mock >=2.0.0
+
+test:
+  requires:
+    - tensorflow-base >=1.13.0,<1.14.0a0
+  imports:
+    - tensorflow_estimator 
+
+about:
+  home: https://www.tensorflow.org/guide/estimators
+  license: Apache 2.0
+  license_family: Apache
+  summary: TensorFlow Estimator
+  description: |
+    TensorFlow Estimator is a high-level API that encapsulates model
+    training, evaluation, prediction, and exporting.
+  dev_url: https://github.com/tensorflow/estimator
