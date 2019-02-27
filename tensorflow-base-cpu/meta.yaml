@@ -30,6 +30,7 @@ build:
     - tflite_convert = tensorflow.contrib.lite.python.tflite_convert:main
     - toco = tensorflow.contrib.lite.python.tflite_convert:main
     - saved_model_cli = tensorflow.python.tools.saved_model_cli:main
+    - tf_upgrade_v2 = tensorflow.tools.compatibility.tf_upgrade_v2_main:main
     # The tensorboard package adds this entry point.
     # - tensorboard = tensorboard.main:run_main
 
