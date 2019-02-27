@@ -1,4 +1,4 @@
-{% set version = "1.12.2" %}
+{% set version = "1.13.0" %}
 
 package:
   name: tensorboard
@@ -7,7 +7,7 @@ package:
 source:
   fn: tensorboard-{{ version }}.tar.gz                                         # [unix]
   url: https://github.com/tensorflow/tensorboard/archive/{{ version }}.tar.gz  # [unix]
-  sha256: 8f1fbf34652e80b66b35b948f2960e98742d38736369997861af781cdc4be3e8     # [unix]
+  sha256: deac786a38f7d119525c6ac737ffc07d36744f046ac36966cb72214c60decda4     # [unix]
 
   # Rename this to dummy since we don't want CB to extract it
   fn: tensorboard-{{ version }}-py3-none-any.whl.dummy                                        # [win]
@@ -35,17 +35,19 @@ requirements:
     - pip
   run:
     - python
-    - futures >=3.1.1  # [py27]
+    - absl-py >=0.4
     - grpcio >=1.6.3
     - markdown >=2.6.8
-    - numpy >=1.12
-    - protobuf >=3.4.0
+    - numpy >=1.12.0
+    - protobuf >=3.6.0
     - six >=1.10.0
-    - werkzeug >=0.11.10
+    - werkzeug >=0.11.15
+    - futures >=3.1.1  # [py27]
 
 test:
   requires:
-    - tensorflow-base >=1.12.0,<1.13.0
+    - tensorflow-base >=1.13.0,<1.14.0a0
+    - tensorflow-estimator 1.13.0
   imports:
     - tensorboard
   commands:
