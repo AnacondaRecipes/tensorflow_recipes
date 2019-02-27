@@ -1,7 +1,7 @@
-From f1937b26c37b5f38e6c7f71e591250208fde72fa Mon Sep 17 00:00:00 2001
+From 03d0d2bf4e47ac6b768d9f3371cdb941bf3d36e4 Mon Sep 17 00:00:00 2001
 From: Nehal J Wani <nehaljw.kkd1@gmail.com>
 Date: Thu, 23 Aug 2018 11:34:00 -0500
-Subject: [PATCH 09/11] Add (init) symbol names prefixed with an underscore
+Subject: [PATCH 7/8] Add (init) symbol names prefixed with an underscore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -27,10 +27,10 @@ xref: https://stackoverflow.com/a/37534357
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/tensorflow/tensorflow.bzl b/tensorflow/tensorflow.bzl
-index de13f1c..f86d98b 100644
+index b8438d2..f6850e3 100644
 --- a/tensorflow/tensorflow.bzl
 +++ b/tensorflow/tensorflow.bzl
-@@ -1536,7 +1536,7 @@ def _append_init_to_versionscript_impl(ctx):
+@@ -1594,7 +1594,7 @@ def _append_init_to_versionscript_impl(ctx):
              template = ctx.file.template_file,
              output = ctx.outputs.versionscript,
              substitutions = {
@@ -39,7 +39,7 @@ index de13f1c..f86d98b 100644
              },
              is_executable = False,
          )
-@@ -1545,7 +1545,7 @@ def _append_init_to_versionscript_impl(ctx):
+@@ -1603,7 +1603,7 @@ def _append_init_to_versionscript_impl(ctx):
              template = ctx.file.template_file,
              output = ctx.outputs.versionscript,
              substitutions = {
@@ -49,5 +49,5 @@ index de13f1c..f86d98b 100644
              is_executable = False,
          )
 -- 
-2.5.4 (Apple Git-61)
+2.7.4
 

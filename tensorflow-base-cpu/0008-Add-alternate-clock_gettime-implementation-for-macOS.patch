@@ -1,8 +1,8 @@
-From 8efa12956a8206f3647a5c18cc9752675eafea88 Mon Sep 17 00:00:00 2001
+From 2f0373b5f8ea3e1ab8708cb9c64c404922b96b81 Mon Sep 17 00:00:00 2001
 From: Nehal J Wani <nehaljw.kkd1@gmail.com>
 Date: Sun, 30 Sep 2018 09:16:53 -0500
-Subject: [PATCH 12/12] Add alternate clock_gettime() implementation for macOS
- < 10.12
+Subject: [PATCH 8/8] Add alternate clock_gettime() implementation for macOS <
+ 10.12
 
 clock_gettime is not available in macOS SDK < 10.12
 ---
@@ -50,5 +50,5 @@ index 59a67b1..88f8a6c 100644
              static_cast<uint64>(ts.tv_nsec));
    }
 -- 
-2.5.4 (Apple Git-61)
+2.7.4
 

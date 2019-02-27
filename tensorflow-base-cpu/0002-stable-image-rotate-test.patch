@@ -1,14 +1,14 @@
-From ba65640465d94cbfafee763fe718acc6b8f5cd7b Mon Sep 17 00:00:00 2001
+From 11a1f8a90ccffb2746c1d6a3356fc2033be38bea Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
 Date: Thu, 8 Jun 2017 10:48:30 -0500
-Subject: [PATCH 03/13] stable image rotate test
+Subject: [PATCH 2/8] stable image rotate test
 
 ---
  tensorflow/contrib/image/python/kernel_tests/image_ops_test.py | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/tensorflow/contrib/image/python/kernel_tests/image_ops_test.py b/tensorflow/contrib/image/python/kernel_tests/image_ops_test.py
-index 376c075..9a5cf92 100644
+index ba5cdfe..41ffac4 100644
 --- a/tensorflow/contrib/image/python/kernel_tests/image_ops_test.py
 +++ b/tensorflow/contrib/image/python/kernel_tests/image_ops_test.py
 @@ -54,7 +54,7 @@ class ImageOpsTest(test_util.TensorFlowTestCase):
