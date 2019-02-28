@@ -54,7 +54,10 @@ requirements:
     - gast >=0.2.0
     - keras-applications >=1.0.6
     - keras-preprocessing >=1.0.5
-    - numpy 1.13.3
+    - numpy 1.13.3  # [py<37]
+    # The requirement is numpy >=1.13 but no builds of numPy 1.13 are
+    # available for Python 3.7
+    - numpy 1.14.6  # [py==37]
     - six >=1.10.0
     - protobuf >=3.6.1
     - termcolor >=1.1.0
