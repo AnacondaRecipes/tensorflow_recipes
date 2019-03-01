@@ -58,7 +58,6 @@ else
     --copt=-ftree-vectorize
     --copt=-fPIC
     --copt=-fstack-protector-strong
-    --copt=-fno-plt
     --copt=-O2
     --cxxopt=-fvisibility-inlines-hidden
     --cxxopt=-fmessage-length=0
