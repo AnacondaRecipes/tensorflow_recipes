@@ -1,7 +1,7 @@
-From e2e57189180fb10285447335331ff2eefa0ea1a8 Mon Sep 17 00:00:00 2001
+From 41976fda4544f0c83e0e47872c7cc4669d63d388 Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
 Date: Mon, 12 Nov 2018 23:01:30 -0600
-Subject: [PATCH] do not include -B/usr/bin/ flag
+Subject: [PATCH 09/10] do not include -B/usr/bin/ flag
 
 ---
  third_party/gpus/crosstool/CROSSTOOL.tpl        | 2 --
@@ -11,10 +11,10 @@ Subject: [PATCH] do not include -B/usr/bin/ flag
  4 files changed, 1 insertion(+), 8 deletions(-)
 
 diff --git a/third_party/gpus/crosstool/CROSSTOOL.tpl b/third_party/gpus/crosstool/CROSSTOOL.tpl
-index 3189cf8..b91118c 100644
+index 1a13ac8..ceda8d6 100644
 --- a/third_party/gpus/crosstool/CROSSTOOL.tpl
 +++ b/third_party/gpus/crosstool/CROSSTOOL.tpl
-@@ -208,7 +208,6 @@ toolchain {
+@@ -184,7 +184,6 @@ toolchain {
        action: "c++-link-dynamic-library"
        action: "c++-link-nodeps-dynamic-library"
        flag_group {
@@ -22,7 +22,7 @@ index 3189cf8..b91118c 100644
        }
      }
    }
-@@ -446,7 +445,6 @@ toolchain {
+@@ -422,7 +421,6 @@ toolchain {
        action: "c++-link-dynamic-library"
        action: "c++-link-nodeps-dynamic-library"
        flag_group {
@@ -58,10 +58,10 @@ index f8e50ef..304b98a 100755
 \ No newline at end of file
 +}
 diff --git a/third_party/toolchains/cpus/arm/CROSSTOOL.tpl b/third_party/toolchains/cpus/arm/CROSSTOOL.tpl
-index f0e17d1..33e500e 100644
+index 8d51e9b..64c9863 100644
 --- a/third_party/toolchains/cpus/arm/CROSSTOOL.tpl
 +++ b/third_party/toolchains/cpus/arm/CROSSTOOL.tpl
-@@ -168,7 +168,6 @@ toolchain {
+@@ -148,7 +148,6 @@ toolchain {
    tool_path { name: "gcc" path: "/usr/bin/gcc" }
    cxx_flag: "-std=c++0x"
    linker_flag: "-lstdc++"
@@ -69,7 +69,7 @@ index f0e17d1..33e500e 100644
  
    # TODO(bazel-team): In theory, the path here ought to exactly match the path
    # used by gcc. That works because bazel currently doesn't track files at
-@@ -386,7 +385,6 @@ toolchain {
+@@ -366,7 +365,6 @@ toolchain {
    tool_path { name: "gcc" path: "/usr/bin/clang" }
    cxx_flag: "-std=c++0x"
    linker_flag: "-lstdc++"

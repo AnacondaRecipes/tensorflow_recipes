@@ -11,15 +11,15 @@ source:
   sha256: 7cd19978e6bc7edc2c847bce19f95515a742b34ea5e28e4389dade35348f58ed
   patches:
     # Patches need to get certain tests to pass on CentOS 6
-    - 0003-stable-image-rotate-test.patch                             # [linux]
-    - 0004-relax-tolerence-in-special_math_test.patch                 # [linux]
-    - 0005-skip-read-only-debugger_cli_common-test.patch              # [linux]
-    - 0006-fix-lookup_ops-test.patch                                  # [linux]
-    - 0007-relax-precision-in-matrix_log_op_test.patch                # [linux]
+    - 0002-stable-image-rotate-test.patch                               # [linux]
+    - 0003-relax-tolerence-in-special_math_test.patch                   # [linux]
+    - 0004-skip-read-only-debugger_cli_common-test.patch                # [linux]
+    - 0005-fix-lookup_ops-test.patch                                    # [linux]
+    - 0006-relax-precision-in-matrix_log_op_test.patch                  # [linux]
     # GPU patches
-    - 0011-do-not-include-B-usr-bin-flag.patch                        # [linux]
-    - 0012-add-additional-cuda-rpaths.patch                           # [linux]
-    - 0013-Add-patch-for-eigen-cuda-19198.patch                       # [win]
+    - 0009-do-not-include-B-usr-bin-flag.patch                        # [linux]
+    - 0010-add-additional-cuda-rpaths.patch                           # [linux]
+    #- 0013-Add-patch-for-eigen-cuda-19198.patch                       # [win]
 
 build:
   number: 0
