@@ -1,7 +1,7 @@
-From 21fba1b7b1aa919686053828276306da1089e17b Mon Sep 17 00:00:00 2001
+From 3146c288d1a3d1943911082ee013564d068a4344 Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
 Date: Thu, 4 Jan 2018 17:17:23 -0600
-Subject: [PATCH 05/13] skip read only debugger_cli_common test
+Subject: [PATCH 4/8] skip read only debugger_cli_common test
 
 If tensorflow is built as root the
 debugger_cli_common::testCommandHistoryHandlesWritingIOErrorGracoiusly test

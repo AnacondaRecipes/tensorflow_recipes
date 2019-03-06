@@ -1,20 +1,20 @@
-From 334be6da071fedf92f2149ef810ca6c9b5b902c6 Mon Sep 17 00:00:00 2001
+From cc7517cd6c0890ffd572c14001cdb9a259ec05b9 Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
 Date: Mon, 20 Aug 2018 12:19:04 -0500
-Subject: [PATCH 07/13] relax precision in matrix_log_op_test
+Subject: [PATCH 6/8] relax precision in matrix_log_op_test
 
 ---
  tensorflow/python/kernel_tests/matrix_logarithm_op_test.py | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tensorflow/python/kernel_tests/matrix_logarithm_op_test.py b/tensorflow/python/kernel_tests/matrix_logarithm_op_test.py
-index 723a15f..812d026 100644
+index 682ac12..4c576a2 100644
 --- a/tensorflow/python/kernel_tests/matrix_logarithm_op_test.py
 +++ b/tensorflow/python/kernel_tests/matrix_logarithm_op_test.py
-@@ -43,7 +43,7 @@ class LogarithmOpTest(test.TestCase):
+@@ -45,7 +45,7 @@ class LogarithmOpTest(test.TestCase):
        tf_ans = linalg_impl.matrix_exponential(
            gen_linalg_ops.matrix_logarithm(inp))
-       out = tf_ans.eval()
+       out = self.evaluate(tf_ans)
 -      self.assertAllClose(inp, out, rtol=1e-4, atol=1e-3)
 +      self.assertAllClose(inp, out, rtol=1e-3, atol=1e-3)
  
