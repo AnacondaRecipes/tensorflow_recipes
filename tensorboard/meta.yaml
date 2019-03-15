@@ -1,4 +1,4 @@
-{% set version = "1.13.0" %}
+{% set version = "1.13.1" %}
 
 package:
   name: tensorboard
@@ -12,7 +12,7 @@ source:
   # Rename this to dummy since we don't want CB to extract it
   fn: tensorboard-{{ version }}-py3-none-any.whl.dummy                                        # [win]
   url: https://pypi.io/packages/py3/t/tensorboard/tensorboard-{{ version }}-py3-none-any.whl  # [win]
-  sha256: 6f194519f41762bfdf5eb410ccf33226d1c252caf5ad8893288648bfbcf4d135                    # [win]
+  sha256: b664fe7772be5670d8b04200342e681af7795a12cd752709aed565c06c0cc196                    # [win]
 
 build:
   number: 0

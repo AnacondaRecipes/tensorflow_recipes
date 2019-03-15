@@ -26,6 +26,10 @@ export TF_NEED_HDFS=0
 export TF_NEED_OPENCL_SYCL=0
 echo "" | ./configure
 
+# Modern versions of bazel also inject user environment variables in additional
+# arguments. This causes the final command line argument length to explode on
+# Windows. This can be mitigated by keeping the global build matrix contents to
+# the absolute minimum.
 BUILD_OPTS="--define=override_eigen_strong_inline=true --experimental_shortened_obj_file_path=true ${BAZEL_MKL_OPT}"
 ${LIBRARY_BIN}/bazel --batch build -c opt $BUILD_OPTS tensorflow/tools/pip_package:build_pip_package || exit $?
 
@@ -34,7 +38,7 @@ ${LIBRARY_BIN}/bazel --batch build -c opt $BUILD_OPTS tensorflow/tools/pip_packa
 # While the build is running, open a shell and type the following:
 # export _param_file="/c/users/$USER/_bazel_$USER/xxxxxxxx/execroot/org_tensorflow/bazel-out/x64_windows-opt/bin/tensorflow/python/_pywrap_tensorflow_internal.so-2.params"
 # while true; do if [ -f $_param_file ]; then sed -i 's,^/WHOLEARCHIVE:\(.*external.*\),\1,' $_param_file;  sed -i 's,\(.*icuuc.lib\),\/WHOLEARCHIVE:\1,' $_param_file; echo done; break; fi; done
-# export _param_file="/c/users/$USER/_bazel_$USER/xxxxxxxx/execroot/org_tensorflow/bazel-out/x64_windows-opt/bin/tensorflow/contrib/lite/toco/python/_tensorflow_wrap_toco.so-2.params"
+# export _param_file="/c/users/$USER/_bazel_$USER/xxxxxxxx/execroot/org_tensorflow/bazel-out/x64_windows-opt/bin/tensorflow/lite/toco/python/_tensorflow_wrap_toco.so-2.params"
 # while true; do if [ -f $_param_file ]; then sed -i 's,^/WHOLEARCHIVE:\(.*external.*\),\1,' $_param_file; echo done; break; else sleep 1; fi; done
 
 PY_TEST_DIR="py_test_dir"
@@ -50,13 +54,15 @@ pip install ${PIP_NAME} --no-deps
 # The tensorboard package has the proper entrypoint
 rm -f ${PREFIX}/Scripts/tensorboard.exe
 
+
 # Test which are known to fail and do not effect the package
-KNOWN_FAIL="-${PY_TEST_DIR}/tensorflow/python/keras:local_test -${PY_TEST_DIR}/tensorflow/contrib/factorization/gmm_ops_test"
+KNOWN_FAIL=""
 
 ${LIBRARY_BIN}/bazel --batch test -c opt $BUILD_OPTS -k --test_output=errors \
   --define=no_tensorflow_py_deps=true --test_lang_filters=py \
   --build_tag_filters=-no_pip,-no_windows,-no_oss --build_tests_only \
   --test_timeout 9999999 --test_tag_filters=-no_pip,-no_windows,-no_oss \
+   --action_env=CONDA_DLL_SEARCH_MODIFICATION_ENABLE=1 \
   -- //${PY_TEST_DIR}/tensorflow/python/... \
      //${PY_TEST_DIR}/tensorflow/contrib/... \
      ${KNOWN_FAIL}
