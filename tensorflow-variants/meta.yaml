@@ -1,4 +1,4 @@
-{% set version = "1.12.0" %}
+{% set version = "1.13.1" %}
 
 package:
   name: tensorflow-{{ variant }}

@@ -30,10 +30,13 @@ fi
 if [ ${cudatoolkit} == "9.0" ]; then
     export TF_CUDA_COMPUTE_CAPABILITIES="3.0,3.5,5.2,6.0,6.1,7.0"
 fi
+if [ ${cudatoolkit} == "10.0" ]; then
+    export TF_CUDA_COMPUTE_CAPABILITIES="3.0,3.5,5.2,6.0,6.1,7.0,7.5"
+fi
 
 echo "" | ./configure
 
-BUILD_OPTS="--logging=6 --subcommands --define=override_eigen_strong_inline=true --experimental_shortened_obj_file_path=true"
+BUILD_OPTS="--logging=6 --subcommands --define=override_eigen_strong_inline=true --experimental_shortened_obj_file_path=true --define=no_tensorflow_py_deps=true"
 ${LIBRARY_BIN}/bazel --batch build -c opt $BUILD_OPTS tensorflow/tools/pip_package:build_pip_package || exit $?
 
 # xref: https://github.com/tensorflow/tensorflow/issues/21886
@@ -58,12 +61,13 @@ pip install ${PIP_NAME} --no-deps
 rm -f ${PREFIX}/Scripts/tensorboard.exe
 
 # Test which are known to fail and do not effect the package
-KNOWN_FAIL="-${PY_TEST_DIR}/tensorflow/python/keras:local_test -${PY_TEST_DIR}/tensorflow/python/kernel_tests:fft_ops_test"
+KNOWN_FAIL=""
 
 ${LIBRARY_BIN}/bazel --batch test -c opt ${BUILD_OPTS} -k --test_output=errors --flaky_test_attempts=3 \
    --define=no_tensorflow_py_deps=true --test_lang_filters=py --local_test_jobs=1 \
    --build_tag_filters=-no_pip,-no_windows,-no_windows_gpu,-no_gpu,-no_pip_gpu,-no_oss --build_tests_only \
    --test_timeout 9999999 --test_tag_filters=-no_pip,-no_windows,-no_windows_gpu,-no_gpu,-no_pip_gpu,-no_oss \
+   --action_env=CONDA_DLL_SEARCH_MODIFICATION_ENABLE=1 \
    -- //${PY_TEST_DIR}/tensorflow/python/... \
       //${PY_TEST_DIR}/tensorflow/contrib/... \
       ${KNOWN_FAIL}
