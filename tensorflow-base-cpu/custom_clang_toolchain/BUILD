@@ -19,6 +19,7 @@ cc_toolchain_suite(
     name = "toolchain",
     toolchains = {
         "darwin|compiler": ":cc-compiler-darwin",
+        "darwin": ":cc-compiler-darwin",
     },
 )
 
@@ -27,6 +28,7 @@ cc_toolchain(
     all_files = ":compiler_deps",
     compiler_files = ":compiler_deps",
     cpu = "darwin",
+    toolchain_identifier = "local",
     dwp_files = ":empty",
     dynamic_runtime_libs = [":empty"],
     linker_files = ":compiler_deps",
