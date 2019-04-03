@@ -1,0 +1,29 @@
+From b88c2f6d197a57681f55ae01e7ab32fb15f26db0 Mon Sep 17 00:00:00 2001
+From: Jonathan Helmus <jjhelmus@gmail.com>
+Date: Wed, 3 Apr 2019 11:34:43 -0500
+Subject: [PATCH 12/12] set default kmp variables
+
+---
+ tensorflow/api_template_v1.__init__.py | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/tensorflow/api_template_v1.__init__.py b/tensorflow/api_template_v1.__init__.py
+index 1e14ba2..7bc4a9e 100644
+--- a/tensorflow/api_template_v1.__init__.py
++++ b/tensorflow/api_template_v1.__init__.py
+@@ -18,6 +18,12 @@ from __future__ import absolute_import as _absolute_import
+ from __future__ import division as _division
+ from __future__ import print_function as _print_function
+ 
++# Set reasonable KMP defaults for MKL-DNN
++import os
++os.environ["KMP_BLOCKTIME"] = os.environ.get("KMP_BLOCKTIME", "0")
++os.environ["KMP_AFFINITY"] = os.environ.get("KMP_AFFINITY", "granularity=fine,verbose,compact,1,0")
++del os
++
+ import os as _os
+ 
+ # pylint: disable=g-bad-import-order
+-- 
+2.7.4
+
