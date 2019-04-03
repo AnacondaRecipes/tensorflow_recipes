@@ -18,6 +18,7 @@ source:
     - 0006-relax-precision-in-matrix_log_op_test.patch                  # [linux]
     - 0007-Add-init-symbol-names-prefixed-with-an-underscore.patch      # [osx]
     - 0008-Add-alternate-clock_gettime-implementation-for-macOS.patch   # [osx]
+    - 0012-set-default-kmp-variables.patch                              # [tflow_variant == 'mkl']
 
 build:
   number: 0
