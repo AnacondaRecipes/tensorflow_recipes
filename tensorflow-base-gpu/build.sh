@@ -37,10 +37,6 @@ export TF_NEED_TENSORRT=0
 # by CUDA 7.5 and used in the devel-gpu tensorflow docker image:
 # https://github.com/tensorflow/tensorflow/blob/master/tensorflow/tools/docker/Dockerfile.devel-gpu
 # 6.0 and 6.1 should be added with CUDA version 8.0
-export TF_CUDA_COMPUTE_CAPABILITIES="3.0,3.5,5.2"
-if [ ${cudatoolkit} == "8.0" ]; then
-    export TF_CUDA_COMPUTE_CAPABILITIES="3.0,3.5,5.2,6.0,6.1"
-fi
 if [ ${cudatoolkit} == "9.0" ]; then
     export TF_CUDA_COMPUTE_CAPABILITIES="3.0,3.5,5.2,6.0,6.1,7.0"
 fi
