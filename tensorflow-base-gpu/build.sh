@@ -6,7 +6,7 @@ set -vex
 sed -i -e "s:\${PREFIX}:${PREFIX}:" tensorflow/core/platform/default/build_config/BUILD
 
 mkdir -p ./bazel_output_base
-export BAZEL_OPTS="--batch "
+export BAZEL_OPTS=""
 
 # Compile tensorflow from source
 export PYTHON_BIN_PATH=${PYTHON}
@@ -33,10 +33,7 @@ export TF_CUDNN_VERSION="${cudnn}"
 export TF_CUDA_CLANG=0
 export TF_NEED_TENSORRT=0
 # Additional compute capabilities can be added if desired but these increase
-# the build time and size of the package. The ones here are the ones supported
-# by CUDA 7.5 and used in the devel-gpu tensorflow docker image:
-# https://github.com/tensorflow/tensorflow/blob/master/tensorflow/tools/docker/Dockerfile.devel-gpu
-# 6.0 and 6.1 should be added with CUDA version 8.0
+# the build time and size of the package.
 if [ ${cudatoolkit} == "9.0" ]; then
     export TF_CUDA_COMPUTE_CAPABILITIES="3.0,3.5,5.2,6.0,6.1,7.0"
 fi
