@@ -19,7 +19,7 @@ source:
     # GPU patches
     - 0009-do-not-include-B-usr-bin-flag.patch                        # [linux]
     - 0010-add-additional-cuda-rpaths.patch                           # [linux]
-    #- 0013-Add-patch-for-eigen-cuda-19198.patch                       # [win]
+    - 0011-patch-nccl-for-older-kernels.patch                         # [linux]
 
 build:
   number: 0
