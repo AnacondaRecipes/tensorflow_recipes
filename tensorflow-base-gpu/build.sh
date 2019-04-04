@@ -30,9 +30,6 @@ export TF_SET_ANDROID_WORKSPACE=0
 export TF_NEED_CUDA=1
 export TF_CUDA_VERSION="${cudatoolkit}"
 export TF_CUDNN_VERSION="${cudnn}"
-if [ ${cudnn} == "6.0" ]; then
-    export TF_CUDNN_VERSION="6"
-fi
 export TF_CUDA_CLANG=0
 export TF_NEED_TENSORRT=0
 # Additional compute capabilities can be added if desired but these increase
