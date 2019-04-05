@@ -1,6 +1,6 @@
 tflow_variant:
   - gpu
-# cuda 9.0, gcc 5.4, cudnn 7.1
+# cuda 9.0, gcc 5.4, cudnn 7.3
 # gcc 5.4 is required for CUDA 9.2 and 10.0 as TF has issues with gcc 7
 # see: https://github.com/tensorflow/tensorflow/issues/25323
 # cuda 9.2, gcc 5.4, cudnn 7.3
