@@ -3,7 +3,7 @@
 # This is the recipe for the "gpu" variant of tensorflow-base
 package:
   name: tensorflow-base
-  version: {{ version }}
+  version: {{ version }}.db1
 
 source:
   fn: tensorflow-{{ version }}.tar.gz
