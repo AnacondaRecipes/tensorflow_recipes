@@ -15,7 +15,7 @@ echo "TF_NEED_MKL: ${TF_NEED_MKL}"
 echo "BAZEL_MKL_OPT: ${BAZEL_MKL_OPT}"
 
 mkdir -p ./bazel_output_base
-export BAZEL_OPTS="--batch "
+export BAZEL_OPTS=""
 
 if [[ ${HOST} =~ .*darwin.* ]]; then
 
