@@ -1,7 +1,7 @@
-From 2f0373b5f8ea3e1ab8708cb9c64c404922b96b81 Mon Sep 17 00:00:00 2001
+From ab3eba9c9818a9ba68a8f19fcf1bc936c8433101 Mon Sep 17 00:00:00 2001
 From: Nehal J Wani <nehaljw.kkd1@gmail.com>
 Date: Sun, 30 Sep 2018 09:16:53 -0500
-Subject: [PATCH 8/8] Add alternate clock_gettime() implementation for macOS <
+Subject: [PATCH 6/7] Add alternate clock_gettime() implementation for macOS <
  10.12
 
 clock_gettime is not available in macOS SDK < 10.12
@@ -10,7 +10,7 @@ clock_gettime is not available in macOS SDK < 10.12
  1 file changed, 21 insertions(+)
 
 diff --git a/tensorflow/core/platform/posix/env_time.cc b/tensorflow/core/platform/posix/env_time.cc
-index 59a67b1..88f8a6c 100644
+index e765810865..6b4fb9369b 100644
 --- a/tensorflow/core/platform/posix/env_time.cc
 +++ b/tensorflow/core/platform/posix/env_time.cc
 @@ -18,6 +18,23 @@ limitations under the License.
@@ -39,7 +39,7 @@ index 59a67b1..88f8a6c 100644
  namespace {
 @@ -28,7 +45,11 @@ class PosixEnvTime : public EnvTime {
  
-   uint64 NowNanos() override {
+   uint64 NowNanos() const override {
      struct timespec ts;
 +#if defined __APPLE__ && __MAC_OS_X_VERSION_MIN_REQUIRED < 101200 // less than macOS 10.12
 +    alt_clock_gettime(CALENDAR_CLOCK, &ts);
@@ -50,5 +50,5 @@ index 59a67b1..88f8a6c 100644
              static_cast<uint64>(ts.tv_nsec));
    }
 -- 
-2.7.4
+2.17.1
 
