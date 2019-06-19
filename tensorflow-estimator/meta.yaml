@@ -21,14 +21,9 @@ requirements:
     - pip
   run:
     - python
-    - absl-py >=0.1.6
-    - numpy >=1.13.3
-    - six >=1.10.0
-    - mock >=2.0.0
+    - tensorflow-base >=1.14.0,<1.15.0a0
 
 test:
-  requires:
-    - tensorflow-base >=1.14.0,<1.15.0a0
   imports:
     - tensorflow_estimator
 
