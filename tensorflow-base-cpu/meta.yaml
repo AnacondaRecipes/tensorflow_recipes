@@ -86,7 +86,6 @@ requirements:
     - termcolor >=1.1.0
     - wrapt >=1.11.1
     - grpcio >=1.8.6
-    - wheel >=0.26
     - mock >=2.0.0                # [py2k]
     - backports.weakref >=1.0rc1  # [py2k]
     - enum34 >=1.1.6              # [py2k]
