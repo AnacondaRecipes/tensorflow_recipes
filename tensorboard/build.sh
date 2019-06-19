@@ -8,7 +8,7 @@ rm -rf "${SP_DIR}/setuptools/script (dev).tmpl"
 
 # build using bazel
 mkdir -p ./bazel_output_base
-BAZEL_OPTS="--batch"
+BAZEL_OPTS=""
 if [[ ${HOST} =~ .*darwin.* ]]; then
     # set up bazel config file for conda provided clang toolchain
     cp -r ${RECIPE_DIR}/custom_clang_toolchain .

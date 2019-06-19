@@ -12,7 +12,7 @@ source:
   # Rename this to dummy since we don't want CB to extract it
   fn: tensorboard-{{ version }}-py3-none-any.whl.dummy                                        # [win]
   url: https://pypi.io/packages/py3/t/tensorboard/tensorboard-{{ version }}-py3-none-any.whl  # [win]
-  sha256: bba9993f1b8fb0617ab537241bb5705bed370b04b96d5e96e31263fe273505be                    # [win]
+  sha256: 50e0b1bdcd488dbe39fd9416976e089b2ff4df18d9f1fab47abf4c498209c3fc                    # [win]
 
 build:
   number: 0
@@ -30,7 +30,7 @@ requirements:
   host:
     # Not using bazel on Windows due to issue with long paths
     # The package contents are not OS specific anyway
-    - bazel >=0.9.0  # [unix]
+    - bazel 0.22.0
     - python
     - pip
   run:
