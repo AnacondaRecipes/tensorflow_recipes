@@ -14,18 +14,9 @@ source:
     - 0002-stable-image-rotate-test.patch                               # [linux]
     - 0003-relax-tolerence-in-special_math_test.patch                   # [linux]
     - 0004-skip-read-only-debugger_cli_common-test.patch                # [linux]
-<<<<<<< HEAD
-    - 0005-fix-lookup_ops-test.patch                                    # [linux]
-    - 0006-relax-precision-in-matrix_log_op_test.patch                  # [linux]
-    #- 0007-Add-init-symbol-names-prefixed-with-an-underscore.patch      # [osx] # merged upstream
-    - 0008-Add-alternate-clock_gettime-implementation-for-macOS.patch   # [osx]
-    - 0012-set-default-kmp-variables.patch                              # [tflow_variant == 'mkl']
-    - 0001-disable-prompt-for-ios-support.patch                         # [osx]
-=======
     - 0005-relax-precision-in-matrix_log_op_test.patch                  # [linux]
     - 0006-Add-alternate-clock_gettime-implementation-for-macOS.patch   # [osx]
     - 0007-set-default-kmp-variables.patch                              # [tflow_variant == 'mkl']
->>>>>>> tf-base-cpu: update patches
 
 build:
   number: 0
@@ -46,15 +37,9 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-<<<<<<< HEAD
-    - bazel >=0.24
-  host:
-    - bazel >=0.24  # [win]
-=======
     - bazel >=0.24.1,<0.25.2
   host:
-    - bazel >=0.24.1 0.25.2 # [win]
->>>>>>> update tf-base-cpu to 1.14.0
+    - bazel >=0.24.1,<0.25.2 # [win]
     # conda build requirements
     - posix  # [win]
     - m2-patch  # [win]
