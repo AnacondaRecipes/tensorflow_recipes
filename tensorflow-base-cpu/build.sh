@@ -49,7 +49,8 @@ else
     # the following arguments are useful for debugging
     #    --logging=6
     #    --subcommands
-
+    # jobs can be used to limit parallel builds and reduce resource needs
+    #    --jobs=20
     # Set compiler and linker flags as bazel does not account for CFLAGS,
     # CXXFLAGS and LDFLAGS.
     BUILD_OPTS="
