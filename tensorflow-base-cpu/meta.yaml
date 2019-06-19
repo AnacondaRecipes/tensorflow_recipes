@@ -58,7 +58,6 @@ requirements:
     - numpy 1.14
     - six >=1.10.0
     - protobuf >=3.6.1
-    #- tensorflow-estimator >=1.14.0,<1.15.0a0
     - termcolor >=1.1.0
     - wrapt >=1.11.1
     - grpcio >=1.8.6
@@ -85,7 +84,6 @@ requirements:
     - {{ pin_compatible('numpy') }}
     - six >=1.10.0
     - protobuf >=3.6.1
-    #- tensorflow-estimator >=1.14.0,<1.15.0a0
     - termcolor >=1.1.0
     - wrapt >=1.11.1
     - grpcio >=1.8.6
