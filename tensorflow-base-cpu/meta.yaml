@@ -40,9 +40,15 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+<<<<<<< HEAD
     - bazel >=0.24
   host:
     - bazel >=0.24  # [win]
+=======
+    - bazel >=0.24.1,<0.25.2
+  host:
+    - bazel >=0.24.1 0.25.2 # [win]
+>>>>>>> update tf-base-cpu to 1.14.0
     # conda build requirements
     - posix  # [win]
     - m2-patch  # [win]
@@ -52,15 +58,18 @@ requirements:
     - swig
     - zlib
     # requirements specified by the package itself
-    - absl-py >=0.1.6
+    - absl-py >=0.7.0
     - astor >=0.6.0
     - gast >=0.2.0
+    - google-pasta >=0.1.6
     - keras-applications >=1.0.6
     - keras-preprocessing >=1.0.5
     - numpy 1.14
     - six >=1.10.0
     - protobuf >=3.6.1
+    #- tensorflow-estimator >=1.14.0,<1.15.0a0
     - termcolor >=1.1.0
+    - wrapt >=1.11.1
     - grpcio >=1.8.6
     - wheel >=0.26
     - mock >=2.0.0                # [py2k]
@@ -76,16 +85,20 @@ requirements:
     - mklml            # [win and tflow_variant == 'mkl']
   run:
     - python
-    - absl-py >=0.1.6
+    - absl-py >=0.7.0
     - astor >=0.6.0
     - gast >=0.2.0
+    - google-pasta >=0.1.6
     - keras-applications >=1.0.6
     - keras-preprocessing >=1.0.5
     - {{ pin_compatible('numpy') }}
     - six >=1.10.0
     - protobuf >=3.6.1
+    #- tensorflow-estimator >=1.14.0,<1.15.0a0
     - termcolor >=1.1.0
+    - wrapt >=1.11.1
     - grpcio >=1.8.6
+    - wheel >=0.26
     - mock >=2.0.0                # [py2k]
     - backports.weakref >=1.0rc1  # [py2k]
     - enum34 >=1.1.6              # [py2k]
