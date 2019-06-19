@@ -1,7 +1,7 @@
-From 3146c288d1a3d1943911082ee013564d068a4344 Mon Sep 17 00:00:00 2001
+From c9e9cbfa0d1bf2375cd65403b6b956e77af41db8 Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
 Date: Thu, 4 Jan 2018 17:17:23 -0600
-Subject: [PATCH 4/8] skip read only debugger_cli_common test
+Subject: [PATCH 4/7] skip read only debugger_cli_common test
 
 If tensorflow is built as root the
 debugger_cli_common::testCommandHistoryHandlesWritingIOErrorGracoiusly test
@@ -12,7 +12,7 @@ that depends on the read-only behavior of the log.
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/tensorflow/python/debug/cli/debugger_cli_common_test.py b/tensorflow/python/debug/cli/debugger_cli_common_test.py
-index aba95e5..9c8bc60 100644
+index aba95e5820..9c8bc6016e 100644
 --- a/tensorflow/python/debug/cli/debugger_cli_common_test.py
 +++ b/tensorflow/python/debug/cli/debugger_cli_common_test.py
 @@ -1057,7 +1057,9 @@ class CommandHistoryTest(test_util.TensorFlowTestCase):
@@ -27,5 +27,5 @@ index aba95e5..9c8bc60 100644
      self._restoreFileReadWritePermissions(self._history_file_path)
  
 -- 
-2.7.4
+2.17.1
 

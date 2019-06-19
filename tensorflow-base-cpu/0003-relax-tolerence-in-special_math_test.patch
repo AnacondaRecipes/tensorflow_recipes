@@ -1,14 +1,14 @@
-From b2944e66ace811cd2adf565277a00e78522effbd Mon Sep 17 00:00:00 2001
+From 94b89398f6a85123c2a21fed41310cc4e5f06465 Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
 Date: Tue, 20 Jun 2017 15:13:14 -0500
-Subject: [PATCH 3/8] relax tolerence in special_math_test
+Subject: [PATCH 3/7] relax tolerence in special_math_test
 
 ---
- tensorflow/python/kernel_tests/distributions/special_math_test.py | 2 +-
+ .../python/kernel_tests/distributions/special_math_test.py      | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tensorflow/python/kernel_tests/distributions/special_math_test.py b/tensorflow/python/kernel_tests/distributions/special_math_test.py
-index d97fcfa..ea4b53c 100644
+index 14f8280c37..57e5d14b88 100644
 --- a/tensorflow/python/kernel_tests/distributions/special_math_test.py
 +++ b/tensorflow/python/kernel_tests/distributions/special_math_test.py
 @@ -256,7 +256,7 @@ class LogNdtrTestUpper(NdtrTest):
@@ -21,5 +21,5 @@ index d97fcfa..ea4b53c 100644
  
  
 -- 
-2.7.4
+2.17.1
 

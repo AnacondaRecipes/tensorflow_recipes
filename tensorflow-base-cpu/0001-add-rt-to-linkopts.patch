@@ -1,7 +1,7 @@
-From 30a4ed9b097f1ea9a2a1e9303e044015d0041d63 Mon Sep 17 00:00:00 2001
+From d1f335d089cf2a5465cc5111d59d02a59612ef9f Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
 Date: Wed, 27 Jun 2018 12:46:18 -0500
-Subject: [PATCH 1/8] add rt to linkopts
+Subject: [PATCH 1/7] add rt to linkopts
 
 ---
  tensorflow/BUILD          | 1 +
@@ -9,31 +9,31 @@ Subject: [PATCH 1/8] add rt to linkopts
  2 files changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/tensorflow/BUILD b/tensorflow/BUILD
-index 823ad8f..96e12cb 100644
+index a04ddf9f8a..fb0596bb5d 100644
 --- a/tensorflow/BUILD
 +++ b/tensorflow/BUILD
-@@ -429,6 +429,7 @@ tf_cc_shared_object(
-         "//tensorflow:darwin": [],
+@@ -498,6 +498,7 @@ tf_cc_shared_object(
+         "//tensorflow:macos": [],
          "//tensorflow:windows": [],
          "//conditions:default": [
 +            "-lrt",
-             "-Wl,--version-script",  #  This line must be directly followed by the version_script.lds file
-             "$(location //tensorflow:tf_framework_version_script.lds)",
+             "-Wl,--version-script,$(location //tensorflow:tf_framework_version_script.lds)",
          ],
+     }),
 diff --git a/tensorflow/tensorflow.bzl b/tensorflow/tensorflow.bzl
-index d93e0df..b8438d2 100644
+index 98e2cf100b..1d4ce39599 100644
 --- a/tensorflow/tensorflow.bzl
 +++ b/tensorflow/tensorflow.bzl
-@@ -377,7 +377,7 @@ def tf_cc_shared_object(
+@@ -473,7 +473,7 @@ def tf_cc_shared_object(
          srcs = [],
          deps = [],
          data = [],
 -        linkopts = [],
 +        linkopts = ['-lrt'],
          framework_so = tf_binary_additional_srcs(),
+         soversion = None,
          kernels = [],
-         **kwargs):
-@@ -413,7 +413,7 @@ def tf_cc_binary(
+@@ -577,7 +577,7 @@ def tf_cc_binary(
          srcs = [],
          deps = [],
          data = [],
@@ -41,7 +41,7 @@ index d93e0df..b8438d2 100644
 +        linkopts = ['-lrt'],
          copts = tf_copts(),
          kernels = [],
-         **kwargs):
+         per_os_targets = False,  # Generate targets with SHARED_LIBRARY_NAME_PATTERNS
 -- 
-2.7.4
+2.17.1
 

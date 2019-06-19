@@ -14,11 +14,9 @@ source:
     - 0002-stable-image-rotate-test.patch                               # [linux]
     - 0003-relax-tolerence-in-special_math_test.patch                   # [linux]
     - 0004-skip-read-only-debugger_cli_common-test.patch                # [linux]
-    - 0005-fix-lookup_ops-test.patch                                    # [linux]
-    - 0006-relax-precision-in-matrix_log_op_test.patch                  # [linux]
-    - 0007-Add-init-symbol-names-prefixed-with-an-underscore.patch      # [osx]
-    - 0008-Add-alternate-clock_gettime-implementation-for-macOS.patch   # [osx]
-    - 0012-set-default-kmp-variables.patch                              # [tflow_variant == 'mkl']
+    - 0005-relax-precision-in-matrix_log_op_test.patch                  # [linux]
+    - 0006-Add-alternate-clock_gettime-implementation-for-macOS.patch   # [osx]
+    - 0007-set-default-kmp-variables.patch                              # [tflow_variant == 'mkl']
 
 build:
   number: 0
