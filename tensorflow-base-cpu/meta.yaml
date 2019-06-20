@@ -66,6 +66,7 @@ requirements:
     - backports.weakref >=1.0rc1  # [py2k]
     - future                      # [py2k]
     - enum34 >=1.1.6              # [py2k]
+    - future                      # [py2k]
     # the following packages are required for testing
     - m2-perl             # [win]
     - portpicker
