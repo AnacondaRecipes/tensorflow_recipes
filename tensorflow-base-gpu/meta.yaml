@@ -1,4 +1,4 @@
-{% set version = "1.13.1" %}
+{% set version = "1.14.0" %}
 
 # This is the recipe for the "gpu" variant of tensorflow-base
 package:
@@ -8,7 +8,7 @@ package:
 source:
   fn: tensorflow-{{ version }}.tar.gz
   url: https://github.com/tensorflow/tensorflow/archive/v{{ version }}.tar.gz
-  sha256: 7cd19978e6bc7edc2c847bce19f95515a742b34ea5e28e4389dade35348f58ed
+  sha256: aa2a6a1daafa3af66807cfe0bc77bfe1144a9a53df9a96bab52e3e575b3047ed
   patches:
     # Patches need to get certain tests to pass on CentOS 6
     - 0002-stable-image-rotate-test.patch                               # [linux]
@@ -41,9 +41,9 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - bazel >=0.19.0,<=0.21.0
+    - bazel >=0.24.1,<0.25.2
   host:
-    - bazel >=0.19.0,<=0.21.0  # [win]
+    - bazel >=0.24.1,<0.25.2 # [win]
     # conda build requirements
     - posix  # [win]
     - m2-patch  # [win]
@@ -57,24 +57,23 @@ requirements:
     - cudnn {{ cudnn }}*
     - cupti  # [not win]
     # requirements specified by the package itself
-    - absl-py >=0.1.6
+    - absl-py >=0.7.0
     - astor >=0.6.0
     - gast >=0.2.0
-    - keras-applications >=1.0.5
-    - keras-preprocessing >=1.0.3
-    - numpy 1.13.3  # [py<37]
-    # The requirement is numpy >=1.13 but no builds of numPy 1.13 are
-    # available for Python 3.7
-    - numpy 1.14.6  # [py==37]
+    - google-pasta >=0.1.6
+    - keras-applications >=1.0.6
+    - keras-preprocessing >=1.0.5
+    - numpy 1.14
     - six >=1.10.0
-    - protobuf >=3.6.0
+    - protobuf >=3.6.1
     - termcolor >=1.1.0
+    - wrapt >=1.11.1
     - grpcio >=1.8.6
     - wheel >=0.26
     - mock >=2.0.0                # [py2k]
     - backports.weakref >=1.0rc1  # [py2k]
     - enum34 >=1.1.6              # [py2k]
-    - tensorflow-estimator >=1.13.0,<1.14.0a0
+    - future                      # [py2k]
     # the following packages are required for testing
     - m2-perl             # [win]
     - portpicker
@@ -83,20 +82,22 @@ requirements:
     - scikit-learn
   run:
     - python
-    - absl-py >=0.1.6
+    - absl-py >=0.7.0
     - astor >=0.6.0
     - gast >=0.2.0
-    - keras-applications >=1.0.5
-    - keras-preprocessing >=1.0.3
+    - google-pasta >=0.1.6
+    - keras-applications >=1.0.6
+    - keras-preprocessing >=1.0.5
     - {{ pin_compatible('numpy') }}
     - six >=1.10.0
-    - protobuf >=3.6.0
+    - protobuf >=3.6.1
     - termcolor >=1.1.0
+    - wrapt >=1.11.1
     - grpcio >=1.8.6
     - mock >=2.0.0                # [py2k]
     - backports.weakref >=1.0rc1  # [py2k]
     - enum34 >=1.1.6              # [py2k]
-    - tensorflow-estimator >=1.13.0,<1.14.0a0
+    - future                      # [py2k]
     - {{ pin_compatible('cudatoolkit', max_pin='x.x') }}
     - {{ pin_compatible('cudnn') }}
     - cupti  # [not win]
