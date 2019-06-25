@@ -17,10 +17,10 @@ export USE_DEFAULT_PYTHON_LIB_PATH=1
 # do not build with MKL support
 export TF_NEED_MKL=0
 export CC_OPT_FLAGS="-march=nocona -mtune=haswell"
-export TF_NEED_IGNITE=1
 export TF_ENABLE_XLA=1
 export TF_NEED_OPENCL=0
 export TF_NEED_OPENCL_SYCL=0
+export TF_NEED_COMPUTECPP=0
 export TF_NEED_ROCM=0
 export TF_NEED_MPI=0
 export TF_DOWNLOAD_CLANG=0
@@ -47,8 +47,7 @@ export TF_NCCL_VERSION=""
 export GCC_HOST_COMPILER_PATH="${CC}"
 # Use system paths here rather than $PREFIX to allow Bazel to find the correct
 # libraries.  RPATH is adjusted post build to link to the DSOs in $PREFIX
-export CUDA_TOOLKIT_PATH="/usr/local/cuda"
-export CUDNN_INSTALL_PATH="/usr/local/cuda/"
+export TF_CUDA_PATHS="${PREFIX},/usr/local/cuda"
 
 # libcuda.so.1 needs to be symlinked to libcuda.so
 # ln -s /usr/local/cuda/lib64/stubs/libcuda.so /usr/local/cuda/lib64/stubs/libcuda.so.1
