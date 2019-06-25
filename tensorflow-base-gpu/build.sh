@@ -49,12 +49,6 @@ export GCC_HOST_COMPILER_PATH="${CC}"
 # libraries.  RPATH is adjusted post build to link to the DSOs in $PREFIX
 export TF_CUDA_PATHS="${PREFIX},/usr/local/cuda"
 
-# libcuda.so.1 needs to be symlinked to libcuda.so
-# ln -s /usr/local/cuda/lib64/stubs/libcuda.so /usr/local/cuda/lib64/stubs/libcuda.so.1
-# on a "real" system the so.1 library is typically in /usr/local/nvidia/lib64
-# add the stubs directory to LD_LIBRARY_PATH so libcuda.so.1 can be found
-export LD_LIBRARY_PATH="/usr/local/cuda/lib64/stubs/:${LD_LIBRARY_PATH}"
-
 ./configure
 
 # build using bazel
