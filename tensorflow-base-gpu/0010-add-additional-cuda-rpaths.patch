@@ -1,4 +1,4 @@
-From c0dcd8af80c2ed8394d1cd028ed73ab096a20a56 Mon Sep 17 00:00:00 2001
+From aa8ec83b6244d220e3c4085d5ddaec76db16efa4 Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
 Date: Mon, 20 Aug 2018 16:42:54 -0500
 Subject: [PATCH 10/10] add additional cuda rpaths
@@ -8,10 +8,10 @@ Subject: [PATCH 10/10] add additional cuda rpaths
  1 file changed, 3 insertions(+)
 
 diff --git a/tensorflow/core/platform/default/build_config/BUILD b/tensorflow/core/platform/default/build_config/BUILD
-index ee6936b..bd1e74d 100644
+index d917d44..7d7e6ab 100644
 --- a/tensorflow/core/platform/default/build_config/BUILD
 +++ b/tensorflow/core/platform/default/build_config/BUILD
-@@ -243,6 +243,9 @@ cc_library(
+@@ -283,6 +283,9 @@ cc_library(
          "//conditions:default": [
              "-Wl,-rpath,../local_config_cuda/cuda/lib64",
              "-Wl,-rpath,../local_config_cuda/cuda/extras/CUPTI/lib64",
