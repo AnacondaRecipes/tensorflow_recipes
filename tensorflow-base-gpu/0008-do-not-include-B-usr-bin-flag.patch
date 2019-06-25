@@ -1,35 +1,37 @@
-From 41976fda4544f0c83e0e47872c7cc4669d63d388 Mon Sep 17 00:00:00 2001
+From 13579bb562f3e059fd28e6dd327750814fa62e82 Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
 Date: Mon, 12 Nov 2018 23:01:30 -0600
-Subject: [PATCH 09/10] do not include -B/usr/bin/ flag
+Subject: [PATCH 08/10] do not include -B/usr/bin/ flag
 
 ---
- third_party/gpus/crosstool/CROSSTOOL.tpl        | 2 --
- third_party/sycl/crosstool/CROSSTOOL.tpl        | 4 +---
- third_party/toolchains/cpus/arm/CROSSTOOL.tpl   | 2 --
- third_party/toolchains/gpus/crosstool/CROSSTOOL | 1 -
- 4 files changed, 1 insertion(+), 8 deletions(-)
+ third_party/gpus/cuda_configure.bzl                           | 11 ++++++-----
+ third_party/sycl/crosstool/CROSSTOOL.tpl                      |  4 +---
+ third_party/toolchains/cpus/arm/CROSSTOOL.tpl                 |  2 --
+ .../toolchains/preconfig/ubuntu14.04/gcc-nvcc/CROSSTOOL       |  2 --
+ 4 files changed, 7 insertions(+), 12 deletions(-)
 
-diff --git a/third_party/gpus/crosstool/CROSSTOOL.tpl b/third_party/gpus/crosstool/CROSSTOOL.tpl
-index 1a13ac8..ceda8d6 100644
---- a/third_party/gpus/crosstool/CROSSTOOL.tpl
-+++ b/third_party/gpus/crosstool/CROSSTOOL.tpl
-@@ -184,7 +184,6 @@ toolchain {
-       action: "c++-link-dynamic-library"
-       action: "c++-link-nodeps-dynamic-library"
-       flag_group {
--        %{linker_bin_path_flag}
-       }
-     }
-   }
-@@ -422,7 +421,6 @@ toolchain {
-       action: "c++-link-dynamic-library"
-       action: "c++-link-nodeps-dynamic-library"
-       flag_group {
--        %{linker_bin_path_flag}
-       }
-     }
-   }
+diff --git a/third_party/gpus/cuda_configure.bzl b/third_party/gpus/cuda_configure.bzl
+index f250ecd..4d24000 100644
+--- a/third_party/gpus/cuda_configure.bzl
++++ b/third_party/gpus/cuda_configure.bzl
+@@ -1118,11 +1118,12 @@ def _create_local_cuda_repository(repository_ctx):
+     # TODO: when bazel stops adding '-B/usr/bin' by default, remove this
+     #       flag from the CROSSTOOL completely (see
+     #       https://github.com/bazelbuild/bazel/issues/5634)
+-    if should_download_clang:
+-        cuda_defines["%{linker_bin_path}"] = ""
+-    else:
+-        cuda_defines["%{linker_bin_path}"] = host_compiler_prefix
+-
++    #if should_download_clang:
++    #    cuda_defines["%{linker_bin_path}"] = ""
++    #else:
++    #    cuda_defines["%{linker_bin_path}"] = host_compiler_prefix
++    # Never add -B/usr/bin
++    cuda_defines["%{linker_bin_path}"] = ""
+     cuda_defines["%{extra_no_canonical_prefixes_flags}"] = ""
+     cuda_defines["%{unfiltered_compile_flags}"] = ""
+     if is_cuda_clang:
 diff --git a/third_party/sycl/crosstool/CROSSTOOL.tpl b/third_party/sycl/crosstool/CROSSTOOL.tpl
 index f8e50ef..304b98a 100755
 --- a/third_party/sycl/crosstool/CROSSTOOL.tpl
@@ -77,15 +79,23 @@ index 8d51e9b..64c9863 100644
  
    # TODO(bazel-team): In theory, the path here ought to exactly match the path
    # used by gcc. That works because bazel currently doesn't track files at
-diff --git a/third_party/toolchains/gpus/crosstool/CROSSTOOL b/third_party/toolchains/gpus/crosstool/CROSSTOOL
-index b8eeb31..4e89b05 100644
---- a/third_party/toolchains/gpus/crosstool/CROSSTOOL
-+++ b/third_party/toolchains/gpus/crosstool/CROSSTOOL
-@@ -216,7 +216,6 @@ toolchain {
+diff --git a/third_party/toolchains/preconfig/ubuntu14.04/gcc-nvcc/CROSSTOOL b/third_party/toolchains/preconfig/ubuntu14.04/gcc-nvcc/CROSSTOOL
+index a14ecea..8f0cf26 100755
+--- a/third_party/toolchains/preconfig/ubuntu14.04/gcc-nvcc/CROSSTOOL
++++ b/third_party/toolchains/preconfig/ubuntu14.04/gcc-nvcc/CROSSTOOL
+@@ -208,7 +208,6 @@ toolchain {
        action: "c++-link-dynamic-library"
        action: "c++-link-nodeps-dynamic-library"
        flag_group {
--        flag: "-B/usr/bin/"
+-        flag: "-B/usr/bin"
+       }
+     }
+   }
+@@ -447,7 +446,6 @@ toolchain {
+       action: "c++-link-dynamic-library"
+       action: "c++-link-nodeps-dynamic-library"
+       flag_group {
+-        flag: "-B/usr/bin"
        }
      }
    }

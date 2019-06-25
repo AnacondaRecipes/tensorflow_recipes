@@ -1,7 +1,7 @@
-From 31661ddb3c7b734f561c219fecd353b794e5a048 Mon Sep 17 00:00:00 2001
+From 1ffed24c68d29c676abad3cff7446726f9bb19b1 Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
 Date: Wed, 3 Apr 2019 11:34:12 -0500
-Subject: [PATCH 11/12] patch nccl for older kernels
+Subject: [PATCH 09/10] patch nccl for older kernels
 
 ---
  tensorflow/workspace.bzl           |  1 +
@@ -10,10 +10,10 @@ Subject: [PATCH 11/12] patch nccl for older kernels
  create mode 100644 third_party/nccl/nccl_socket.patch
 
 diff --git a/tensorflow/workspace.bzl b/tensorflow/workspace.bzl
-index dff1512..019c77f 100755
+index 55d7eb9..220b32a 100755
 --- a/tensorflow/workspace.bzl
 +++ b/tensorflow/workspace.bzl
-@@ -578,6 +578,7 @@ def tf_workspace(path_prefix = "", tf_repo_name = ""):
+@@ -602,6 +602,7 @@ def tf_workspace(path_prefix = "", tf_repo_name = ""):
      tf_http_archive(
          name = "nccl_archive",
          build_file = clean_dep("//third_party:nccl/archive.BUILD"),
