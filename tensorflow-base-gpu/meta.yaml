@@ -95,8 +95,7 @@ requirements:
     - wrapt >=1.11
 
 test:
-  # the tensorflow import is tested by the run_test.sh script.
-  # See comments in that file for the LD_LIBRARY_PATH requirements
+  # the tensorflow import is tested by the run_test.sh script
   #imports:
   #  - tensorflow
   files:
