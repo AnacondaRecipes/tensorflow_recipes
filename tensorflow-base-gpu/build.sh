@@ -91,31 +91,3 @@ pip install --no-deps $SRC_DIR/tensorflow_pkg/*.whl
 
 # The tensorboard package has the proper entrypoint
 rm -f ${PREFIX}/bin/tensorboard
-
-# Run unit tests on the pip installation
-# Logic here is based off run_pip_tests.sh in the tensorflow repo
-# https://github.com/tensorflow/tensorflow/blob/v1.1.0/tensorflow/tools/ci_build/builds/run_pip_tests.sh
-# Note that not all tensorflow tests are run here, only python specific
-
-# tests neeed to be moved into a sub-directory to prevent python from picking
-# up the local tensorflow directory
-PIP_TEST_PREFIX=bazel_pip
-PIP_TEST_ROOT=$(pwd)/${PIP_TEST_PREFIX}
-rm -rf $PIP_TEST_ROOT
-mkdir -p $PIP_TEST_ROOT
-ln -s $(pwd)/tensorflow ${PIP_TEST_ROOT}/tensorflow
-
-# Test which are known to fail on a given platform
-KNOWN_FAIL=""
-PIP_TEST_FILTER_TAG="-no_pip_gpu,-no_pip,-no_oss,-oss_serial"
-BAZEL_FLAGS="--define=no_tensorflow_py_deps=true --test_lang_filters=py \
-      --build_tests_only -k --test_tag_filters=${PIP_TEST_FILTER_TAG} \
-      --test_timeout 9999999"
-BAZEL_TEST_TARGETS="${PIP_TEST_PREFIX}/tensorflow/contrib/... \
-    ${PIP_TEST_PREFIX}/tensorflow/python/... \
-    ${PIP_TEST_PREFIX}/tensorflow/tensorboard/..."
-BAZEL_PARALLEL_TEST_FLAGS="--local_test_jobs=1"
-# Tests take ~3 hours to run and therefore are skipped in most builds
-# These should be run at least once for each new release
-#LD_LIBRARY_PATH="/usr/local/nvidia/lib64:/usr/local/cuda/extras/CUPTI/lib64:$LD_LIBRARY_PATH" bazel ${BAZEL_OPTS} test ${BAZEL_FLAGS} \
-#    ${BAZEL_PARALLEL_TEST_FLAGS} -- ${BAZEL_TEST_TARGETS} ${KNOWN_FAIL}
