@@ -12,7 +12,6 @@ source:
   patches:
     - 0008-do-not-include-B-usr-bin-flag.patch  # [linux]
     - 0009-patch-nccl-for-older-kernels.patch   # [linux]
-    - 0010-add-additional-cuda-rpaths.patch     # [linux]
 
 build:
   number: 0
