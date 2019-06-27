@@ -13,8 +13,11 @@
     cd tensorflow
     git checkout v1.14.0
 
-* Use the `run_test.sh` script in this directory to run the tests in in the
+* Use the `run_tests.sh` script in this directory to run the tests in in the
   activated environment:
     cp ../run_tests.sh
     conda activate tf_test
     ./run_tests.sh
+
+To test the GPU packages use the above instructions but create an environment
+with a gpu variant and use the `run_gpu_tests.sh` script.
