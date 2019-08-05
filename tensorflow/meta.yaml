@@ -1,4 +1,4 @@
-{% set version = "1.13.1" %}
+{% set version = "1.14.0" %}
 
 package:
   name: tensorflow
@@ -14,7 +14,8 @@ requirements:
     - python {{ py_version }}                     # [linux or win-64]
     - tensorflow-base =={{ full_base_version }}   # [linux or win-64]
     - _tflow_select =={{ select_version }}        # [linux or win-64]
-    - tensorboard >=1.13.0,<1.14.0
+    - tensorboard >=1.14.0,<1.15.0
+    - tensorflow-estimator >=1.14.0,<1.15.0
 
 test:
   imports:

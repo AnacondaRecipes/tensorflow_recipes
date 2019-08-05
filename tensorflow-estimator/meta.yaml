@@ -1,4 +1,4 @@
-{% set version = "1.13.0" %}
+{% set version = "1.14.0" %}
 
 package:
   name: tensorflow-estimator
@@ -7,7 +7,7 @@ package:
 source:
   fn: tensorflow-estimator-{{ version }}.tar.gz
   url: https://github.com/tensorflow/estimator/archive/v{{ version }}.tar.gz
-  sha256: a787b150ff436636df723e507019c72a5d6486cfe506886279d380166953f12f
+  sha256: 1f0b80b8067a52cc33bbe390d34791eb3e12453c506daa1b4c8fc07fbf962d9f
 
 build:
   number: 0
@@ -17,7 +17,7 @@ requirements:
   host:
     - bazel
     - python
-    - tensorflow-base 1.13.1
+    - tensorflow-base 1.14.0
     - pip
   run:
     - python
@@ -28,9 +28,9 @@ requirements:
 
 test:
   requires:
-    - tensorflow-base >=1.13.0,<1.14.0a0
+    - tensorflow-base >=1.14.0,<1.15.0a0
   imports:
-    - tensorflow_estimator 
+    - tensorflow_estimator
 
 about:
   home: https://www.tensorflow.org/guide/estimators

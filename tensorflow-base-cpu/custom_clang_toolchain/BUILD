@@ -30,10 +30,8 @@ cc_toolchain(
     cpu = "darwin",
     toolchain_identifier = "local",
     dwp_files = ":empty",
-    dynamic_runtime_libs = [":empty"],
     linker_files = ":compiler_deps",
     objcopy_files = ":empty",
-    static_runtime_libs = [":empty"],
     strip_files = ":empty",
     supports_param_files = 0,
 )
