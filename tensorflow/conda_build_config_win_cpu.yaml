@@ -1,8 +1,8 @@
 full_base_version:
-  - "1.13.1 eigen_py36hf8af7b3_0"
-  - "1.13.1 eigen_py37hf8af7b3_0"
-  - "1.13.1 mkl_py36hcaf7020_0"
-  - "1.13.1 mkl_py37hcaf7020_0"
+  - "1.14.0 eigen_py36hdbc3f0e_0"
+  - "1.14.0 eigen_py37hdbc3f0e_0"
+  - "1.14.0 mkl_py36ha978198_0"
+  - "1.14.0 mkl_py37ha978198_0"
 select_version:
   - "2.2.0 eigen"
   - "2.2.0 eigen"

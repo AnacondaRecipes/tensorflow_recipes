@@ -42,7 +42,6 @@ requirements:
     - {{ compiler('cxx') }}
     - bazel >=0.24
   host:
-    - ripgrep # [unix]
     - bazel >=0.24  # [win]
     # conda build requirements
     - posix  # [win]
@@ -91,6 +90,7 @@ requirements:
     - backports.weakref >=1.0rc1  # [py2k]
     - enum34 >=1.1.6              # [py2k]
     - future                      # [py2k]
+    - wrapt >=1.11
 
 test:
   imports:

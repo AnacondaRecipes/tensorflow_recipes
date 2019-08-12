@@ -100,6 +100,7 @@ requirements:
     - {{ pin_compatible('cudatoolkit', max_pin='x.x') }}
     - {{ pin_compatible('cudnn') }}
     - cupti  # [not win]
+    - wrapt >=1.11
 
 test:
   # the tensorflow import is tested by the run_test.sh script.
