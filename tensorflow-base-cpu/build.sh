@@ -68,7 +68,10 @@ else
     ${BAZEL_MKL_OPT}
     --config=opt"
     export TF_ENABLE_XLA=1
+fi
 
+if [[ ${HOST} =~ "2*" ]]; then
+    BUILD_OPTS="$BUILD_OPTS --config=v2"
 fi
 
 # Python settings

@@ -9,14 +9,13 @@ source:
   fn: tensorflow-{{ version }}.tar.gz
   url: https://github.com/tensorflow/tensorflow/archive/v{{ version }}.tar.gz
   sha256: 49b5f0495cd681cbcb5296a4476853d4aea19a43bdd9f179c928a977308a0617
-
   patches:
-    - 0001-add-rt-to-linkopts.patch                                     # [linux]
-    - 0002-stable-image-rotate-test.patch                               # [linux]
-    - 0003-relax-tolerence-in-special_math_test.patch                   # [linux]
-    - 0004-skip-read-only-debugger_cli_common-test.patch                # [linux]
-    - 0005-fix-lookup_ops-test.patch                                    # [linux]
-    - 0006-relax-precision-in-matrix_log_op_test.patch                  # [linux]
+    # - 0001-add-rt-to-linkopts.patch                                     # [linux]
+    # - 0002-stable-image-rotate-test.patch                               # [linux]
+    # - 0003-relax-tolerence-in-special_math_test.patch                   # [linux]
+    # - 0004-skip-read-only-debugger_cli_common-test.patch                # [linux]
+    # - 0005-fix-lookup_ops-test.patch                                    # [linux]
+    # - 0006-relax-precision-in-matrix_log_op_test.patch                  # [linux]
     #- 0007-Add-init-symbol-names-prefixed-with-an-underscore.patch      # [osx] # merged upstream
     - 0008-Add-alternate-clock_gettime-implementation-for-macOS.patch   # [osx]
     - 0012-set-default-kmp-variables.patch                              # [tflow_variant == 'mkl']
@@ -41,33 +40,38 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - bazel >=0.24,<0.25.2
+    - bazel >=0.24.1,<0.26.1a0
   host:
-    - ripgrep # [unix]
-    - bazel >=0.24,<0.25.2  # [win]
+    - bazel >=0.24.1,<0.26.1a0  # [win]
     # conda build requirements
     - posix  # [win]
     - m2-patch  # [win]
+    - pip >=19
+    - setuptools <=39.1.0
     - python
     - numpy 1.16
     - pip
     - swig
     - zlib
-    # during the build keras is imported, therefore these are host reqs
-    - keras-applications >=1.0.8
-    - keras-preprocessing >=1.0.5
-    - numpy 1.14
-    - six >=1.10.0
-    - protobuf >=3.6.1
-    - termcolor >=1.1.0
+    # requirements specified by the package itself
+    - absl-py 0.7
+    - astor 0.6.2
+    - gast 0.2.2
+    - google-pasta >=0.1.6
+    - keras-applications 1.0.8
+    - keras-preprocessing 1.0.5
+    - numpy-devel 1.16
+    - six 1.12.0
+    - protobuf 3.6.1
     - wrapt >=1.11.1
-    - grpcio >=1.8.6
+    - termcolor 1.1.0
+    # actual bound is 1.8, but 1.14 is the current baseline covered by builds on defaults
+    - grpcio 1.14
     - wheel >=0.26
-    - mock >=2.0.0                # [py2k]
-    - backports.weakref >=1.0rc1  # [py2k]
-    - future                      # [py2k]
-    - enum34 >=1.1.6              # [py2k]
-    - future                      # [py2k]
+    - mock 2.0.0                # [py2k]
+    - backports.weakref         # [py2k]
+    - future                    # [py2k]
+    - enum34 1.1.6              # [py2k]
     # the following packages are required for testing
     - m2-perl             # [win]
     - portpicker
@@ -77,24 +81,22 @@ requirements:
     - mklml            # [win and tflow_variant == 'mkl']
   run:
     - python
-    - absl-py >=0.7.0
-    - astor >=0.6.0
-    - gast ==0.2.2
-    - google-pasta >=0.1.6
-    - keras-applications >=1.0.8
-    - keras-preprocessing >=1.0.5
-    - {{ pin_compatible('numpy') }}
-    - opt_einsum >=2.3.2
-    - six >=1.10.0
-    - protobuf >=3.6.1
-    - termcolor >=1.1.0
-    - wrapt >=1.11.1
-    - grpcio >=1.8.6
-
-    - mock >=2.0.0                # [py2k]
-    - backports.weakref >=1.0rc1  # [py2k]
-    - enum34 >=1.1.6              # [py2k]
-    - future                      # [py2k]
+    # pin_compatible here is just to be lazy and define the dep versions in only one place.  These
+    #    don't have binary compatibility issues.
+    - {{ pin_compatible('absl-py') }}
+    - {{ pin_compatible('astor') }}
+    - {{ pin_compatible('gast', max_pin='x.x.x') }}
+    - {{ pin_compatible('keras-applications') }}
+    - {{ pin_compatible('keras-preprocessing') }}
+    - {{ pin_compatible('six') }}
+    - {{ pin_compatible('protobuf') }}
+    - {{ pin_compatible('termcolor') }}
+    - {{ pin_compatible('grpcio') }}
+    - {{ pin_compatible('mock') }}               # [py2k]
+    - {{ pin_compatible('backports.weakref') }}  # [py2k]
+    - {{ pin_compatible('enum34') }}             # [py2k]
+    - future                                     # [py2k]
+    - wrapt >=1.11
 
 test:
   imports:
