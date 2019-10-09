@@ -24,7 +24,15 @@ export TF_NEED_GCP=1
 export TF_NEED_KAFKA=0
 export TF_NEED_HDFS=0
 export TF_NEED_OPENCL_SYCL=0
+
+unset OLD_PATH
+unset ORIGINAL_PATH
+unset __VSCMD_PREINIT_PATH
+
+set CONDA_DLL_SEARCH_MODIFICATION_ENABLE=1
+
 echo "" | ./configure
+
 
 # Modern versions of bazel also inject user environment variables in additional
 # arguments. This causes the final command line argument length to explode on
