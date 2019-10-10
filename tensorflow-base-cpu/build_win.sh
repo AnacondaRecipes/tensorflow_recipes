@@ -69,14 +69,15 @@ pip install ${PIP_NAME} --no-deps
 rm -f ${PREFIX}/Scripts/tensorboard.exe
 
 
-# Test which are known to fail and do not effect the package
-KNOWN_FAIL=""
+# Tests are best run separately after the build
+# # Test which are known to fail and do not effect the package
+# KNOWN_FAIL=""
 
-${LIBRARY_BIN}/bazel --output_base $SRC_DIR --batch test -c opt $BUILD_OPTS -k --test_output=errors \
-  --define=no_tensorflow_py_deps=true --test_lang_filters=py \
-  --build_tag_filters=-no_pip,-no_windows,-no_oss --build_tests_only \
-  --test_timeout 9999999 --test_tag_filters=-no_pip,-no_windows,-no_oss \
-   --action_env=CONDA_DLL_SEARCH_MODIFICATION_ENABLE=1 \
-  -- //${PY_TEST_DIR}/tensorflow/python/... \
-     //${PY_TEST_DIR}/tensorflow/contrib/... \
-     ${KNOWN_FAIL}
+# ${LIBRARY_BIN}/bazel --output_base $SRC_DIR --batch test -c opt $BUILD_OPTS -k --test_output=errors \
+#   --define=no_tensorflow_py_deps=true --test_lang_filters=py \
+#   --build_tag_filters=-no_pip,-no_windows,-no_oss --build_tests_only \
+#   --test_timeout 9999999 --test_tag_filters=-no_pip,-no_windows,-no_oss \
+#    --action_env=CONDA_DLL_SEARCH_MODIFICATION_ENABLE=1 \
+#   -- //${PY_TEST_DIR}/tensorflow/python/... \
+#      //${PY_TEST_DIR}/tensorflow/contrib/... \
+#      ${KNOWN_FAIL}
