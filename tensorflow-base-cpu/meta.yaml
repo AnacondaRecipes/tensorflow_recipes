@@ -20,7 +20,7 @@ source:
     # https://github.com/tensorflow/tensorflow/issues/31520#issuecomment-524584978
     - 0001-rebatch-constants.patch
     - 0008-Add-alternate-clock_gettime-implementation-for-macOS.patch   # [osx]
-    - 0012-set-default-kmp-variables.patch                              # [tflow_variant == 'mkl']
+    - 0007-set-default-kmp-variables.patch                              # [tflow_variant == 'mkl']
     - 0001-disable-prompt-for-ios-support.patch                         # [osx]
 
 build:
