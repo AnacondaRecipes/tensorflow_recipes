@@ -28,8 +28,14 @@ export TF_NEED_OPENCL_SYCL=0
 unset OLD_PATH
 unset ORIGINAL_PATH
 unset __VSCMD_PREINIT_PATH
-
-set CONDA_DLL_SEARCH_MODIFICATION_ENABLE=1
+unset ACLOCAL_PATH
+unset WindowsSDK_ExecutablePath_x64
+unset SSH_AUTH_SOCK
+unset SSH_ASKPASS
+unset PSMODULEPATH
+unset PROMPT
+unset PRINTER
+unset PKG_CONFIG_PATH
 
 echo "" | ./configure
 
@@ -39,7 +45,7 @@ echo "" | ./configure
 # Windows. This can be mitigated by keeping the global build matrix contents to
 # the absolute minimum.
 BUILD_OPTS="--define=override_eigen_strong_inline=true --experimental_shortened_obj_file_path=true ${BAZEL_MKL_OPT}"
-${LIBRARY_BIN}/bazel --batch build -c opt $BUILD_OPTS tensorflow/tools/pip_package:build_pip_package || exit $?
+${LIBRARY_BIN}/bazel --output_base $SRC_DIR --batch build -c opt $BUILD_OPTS tensorflow/tools/pip_package:build_pip_package || exit $?
 
 # xref: https://github.com/tensorflow/tensorflow/issues/21886
 # xref: https://github.com/tensorflow/tensorflow/issues/6396
@@ -66,7 +72,7 @@ rm -f ${PREFIX}/Scripts/tensorboard.exe
 # Test which are known to fail and do not effect the package
 KNOWN_FAIL=""
 
-${LIBRARY_BIN}/bazel --batch test -c opt $BUILD_OPTS -k --test_output=errors \
+${LIBRARY_BIN}/bazel --output_base $SRC_DIR --batch test -c opt $BUILD_OPTS -k --test_output=errors \
   --define=no_tensorflow_py_deps=true --test_lang_filters=py \
   --build_tag_filters=-no_pip,-no_windows,-no_oss --build_tests_only \
   --test_timeout 9999999 --test_tag_filters=-no_pip,-no_windows,-no_oss \
