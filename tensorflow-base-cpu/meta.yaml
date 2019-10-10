@@ -59,13 +59,12 @@ requirements:
     - absl-py 0.7
     - astor 0.6.2
     - gast 0.2.2
-    - google-pasta >=0.1.6
+    - google-pasta 0.1.7
     - keras-applications 1.0.8
     - keras-preprocessing 1.0.5
     - numpy-devel 1.16
     - six 1.12.0
     - protobuf 3.6.1
-    - wrapt >=1.11.1
     - termcolor 1.1.0
     # actual bound is 1.8, but 1.14 is the current baseline covered by builds on defaults
     - grpcio 1.14
@@ -92,6 +91,7 @@ requirements:
     - {{ pin_compatible('keras-preprocessing') }}
     - {{ pin_compatible('six') }}
     - {{ pin_compatible('protobuf') }}
+    - {{ pin_compatible('google-pasta') }}
     - {{ pin_compatible('termcolor') }}
     - {{ pin_compatible('grpcio') }}
     - {{ pin_compatible('mock') }}               # [py2k]
