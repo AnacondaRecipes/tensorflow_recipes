@@ -16,14 +16,14 @@ build:
   skip: True  # [win and vc<14]
   string: {{ tflow_variant }}_py{{ CONDA_PY }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}
   entry_points:
-    - freeze_graph = tensorflow.python.tools.freeze_graph:run_main
     - toco_from_protos = tensorflow.lite.toco.python.toco_from_protos:main
     - tflite_convert = tensorflow.lite.python.tflite_convert:main
     - toco = tensorflow.lite.python.tflite_convert:main
     - saved_model_cli = tensorflow.python.tools.saved_model_cli:main
-    - tf_upgrade_v2 = tensorflow.tools.compatibility.tf_upgrade_v2_main:main
     # The tensorboard package adds this entry point.
     # - tensorboard = tensorboard.main:run_main
+    - tf_upgrade_v2 = tensorflow.tools.compatibility.tf_upgrade_v2_main:main
+    - estimator_ckpt_converter = tensorflow_estimator.python.estimator.tools.checkpoint_converter:main
 
 requirements:
   build:
@@ -88,11 +88,13 @@ test:
   imports:
     - tensorflow
   commands:
-    - freeze_graph --help
+    # estimator_ckpt_converter requires tensorflow-estimator
+    #- estimator_ckpt_converter --help
     - saved_model_cli --help
+    - tf_upgrade_v2 --help
     - tflite_convert --help     # [not win]
-    - toco_from_protos --help   # [not win]
     - toco --help               # [not win]
+    - toco_from_protos --help   # [not win]
 
 about:
   home: http://tensorflow.org/
