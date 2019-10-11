@@ -111,33 +111,3 @@ fi
 
 # The tensorboard package has the proper entrypoint
 rm -f ${PREFIX}/bin/tensorboard
-
-# Run unit tests on the pip installation
-# Logic here is based off run_pip_tests.sh in the tensorflow repo
-# https://github.com/tensorflow/tensorflow/blob/v1.1.0/tensorflow/tools/ci_build/builds/run_pip_tests.sh
-# Note that not all tensorflow tests are run here, only python specific
-
-# tests neeed to be moved into a sub-directory to prevent python from picking
-# up the local tensorflow directory
-PIP_TEST_PREFIX=bazel_pip
-PIP_TEST_ROOT=$(pwd)/${PIP_TEST_PREFIX}
-rm -rf $PIP_TEST_ROOT
-mkdir -p $PIP_TEST_ROOT
-ln -s $(pwd)/tensorflow ${PIP_TEST_ROOT}/tensorflow
-
-# Test which are known to fail and do not effect the package
-KNOWN_FAIL=""
-PIP_TEST_FILTER_TAG="-no_pip,-no_oss,-oss_serial"
-BAZEL_FLAGS="--define=no_tensorflow_py_deps=true --test_lang_filters=py \
-      --build_tests_only -k --test_tag_filters=${PIP_TEST_FILTER_TAG} \
-      --test_timeout 9999999"
-BAZEL_TEST_TARGETS="${PIP_TEST_PREFIX}/tensorflow/contrib/... \
-    ${PIP_TEST_PREFIX}/tensorflow/python/... \
-     -//${PIP_TEST_PREFIX}/tensorflow/contrib/tensorboard/..."
-BAZEL_PARALLEL_TEST_FLAGS="--local_test_jobs=${CPU_COUNT}"
-if [ "${CPU_COUNT}" -gt 20 ]; then
-    BAZEL_PARALLEL_TEST_FLAGS="--local_test_jobs=20"
-fi
-# to reduce build time on worker skip tests, run when testing
-#bazel ${BAZEL_OPTS} test ${BAZEL_FLAGS} \
-#    ${BAZEL_PARALLEL_TEST_FLAGS} -- ${BAZEL_TEST_TARGETS} ${KNOWN_FAIL}
