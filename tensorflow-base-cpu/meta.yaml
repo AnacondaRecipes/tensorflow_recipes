@@ -29,60 +29,43 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - bazel >=0.24.1,<0.25.2
+    - bazel
   host:
-    - bazel >=0.24.1,<0.25.2 # [win]
-    # conda build requirements
-    - posix  # [win]
+    - bazel     # [win]
+    - posix     # [win]
     - m2-patch  # [win]
-    - pip
-    - setuptools <=39.1.0
     - python
+    - numpy 1.16
+    - pip
     - swig
     - zlib
-    # requirements specified by the package itself
-    - absl-py >=0.7.0
-    - astor >=0.6.0
-    - gast >=0.2.0
-    - google-pasta >=0.1.6
-    - keras-applications >=1.0.6
+    # during the build keras is imported, therefore these are host reqs
+    - keras-applications >=1.0.8
     - keras-preprocessing >=1.0.5
-    - numpy 1.14
-    - six >=1.10.0
-    - protobuf >=3.6.1
-    - termcolor >=1.1.0
-    - wrapt >=1.11.1
-    - grpcio >=1.8.6
-    - wheel >=0.26
-    - mock >=2.0.0                # [py2k]
-    - backports.weakref >=1.0rc1  # [py2k]
-    - enum34 >=1.1.6              # [py2k]
-    - future                      # [py2k]
-    # the following packages are required for testing
-    - m2-perl             # [win]
-    - portpicker
-    - pyreadline          # [win]
-    - scipy
-    - scikit-learn
-    - mklml            # [win and tflow_variant == 'mkl']
   run:
     - python
     - absl-py >=0.7.0
     - astor >=0.6.0
-    - gast >=0.2.0
-    - google-pasta >=0.1.6
-    - keras-applications >=1.0.6
-    - keras-preprocessing >=1.0.5
-    - {{ pin_compatible('numpy') }}
-    - six >=1.10.0
-    - protobuf >=3.6.1
-    - termcolor >=1.1.0
-    - wrapt >=1.11.1
-    - grpcio >=1.8.6
-    - mock >=2.0.0                # [py2k]
     - backports.weakref >=1.0rc1  # [py2k]
     - enum34 >=1.1.6              # [py2k]
-    - future                      # [py2k]
+    - gast ==0.2.2
+    - google-pasta >=0.1.6
+    - keras-applications >=1.0.8
+    - keras-preprocessing >=1.0.5
+    - {{ pin_compatible('numpy') }}
+    - opt_einsum >=2.3.2
+    - six >=1.10.0
+    - protobuf >=3.6.1
+    # tensorboard and tensorflow_estimator are requirements of the tensorflow
+    # metapackage not tensorflow-base
+    # - tensorboard
+    # - tensorflow_estimator
+    - termcolor >=1.1.0
+    - wrapt >=1.11.1
+    - mock >=2.0.0                # [py2k]
+    # wheel is not needed at runtime
+    # - wheel
+    - grpcio >=1.8.6
 
 test:
   imports:
