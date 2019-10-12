@@ -25,7 +25,7 @@ export TF_NEED_OPENCL_SYCL=0
 export USE_MSVC_WRAPPER=1
 export TF_CUDA_VERSION=${cudatoolkit}
 export CUDA_TOOLKIT_PATH="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v${cudatoolkit}"
-export CUDNN_INSTALL_PATH="$LIBRARY_PREFIX"
+export CUDNN_INSTALL_PATH=$(cygpath -m "$LIBRARY_PREFIX")
 export TF_CUDNN_VERSION=${cudnn}
 
 export PATH="/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v${cudatoolkit}/bin:$PATH"
@@ -38,7 +38,7 @@ fi
 if [ ${cudatoolkit} == "9.0" ]; then
     export TF_CUDA_COMPUTE_CAPABILITIES="3.0,3.5,5.2,6.0,6.1,7.0"
 fi
-if [ ${cudatoolkit} == "10.0" ]; then
+if [[ ${cudatoolkit} =~ "10.*" ]]; then
     export TF_CUDA_COMPUTE_CAPABILITIES="3.0,3.5,5.2,6.0,6.1,7.0,7.5"
 fi
 
@@ -53,9 +53,22 @@ unset PSMODULEPATH
 unset PROMPT
 unset PRINTER
 unset PKG_CONFIG_PATH
+unset VS140COMNTOOLS
+unset __VSCMD_PREINIT_INCLUDE
+unset VSINSTALLDIR
+unset VCIDEInstallDir
+unset VS150COMNTOOLS
+unset pin_run_as_build
+unset HTMLHelpDir
+unset FrameworkDir
+unset FrameworkDIR64
+
+
+unset PATH_OVERRIDE
 
 echo "" | ./configure
 
+cp $RECIPE_DIR/vile_hack.sh ./
 bash vile_hack.sh &
 pid=$!
 
