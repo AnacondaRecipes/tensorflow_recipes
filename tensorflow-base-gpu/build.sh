@@ -40,10 +40,7 @@ fi
 if [ ${cudatoolkit} == "9.2" ]; then
     export TF_CUDA_COMPUTE_CAPABILITIES="3.0,3.5,5.2,6.0,6.1,7.0"
 fi
-if [ ${cudatoolkit} == "10.0" ]; then
-    export TF_CUDA_COMPUTE_CAPABILITIES="3.0,3.5,5.2,6.0,6.1,7.0,7.5"
-fi
-if [ ${cudatoolkit} == "10.1" ]; then
+if [[ ${cudatoolkit} == 10.* ]]; then
     export TF_CUDA_COMPUTE_CAPABILITIES="3.0,3.5,5.2,6.0,6.1,7.0,7.5"
 fi
 export TF_NCCL_VERSION=""
