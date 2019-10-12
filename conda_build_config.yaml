@@ -1,0 +1,38 @@
+# these are lower bounds specified in TF's requirements.  Some are higher than
+#    TF's lower bound.  These are higher because they are the lowest version that we have.
+absl_py:
+    - 0.7
+astor:
+    - 0.6.2
+bazel:
+    - 0.24.1
+enum34:
+    - 1.1.6
+gast:
+    - 0.2.2
+google_pasta:
+    - 0.1.7
+grpcio:
+    - 1.14
+keras_applications:
+    - 1.0.8
+keras_preprocessing:
+    - 1.0.5
+markdown:
+    - 2.6.11
+mock:
+    - 2.0.0
+numpy_devel:
+    - 1.16
+opt_einsum:
+    - 3.1
+protobuf:
+    - 3.6.1
+six:
+    - 1.12
+termcolor:
+    - 1.1.0
+wrapt:
+    - 1.11
+werkzeug:
+    - 0.14
