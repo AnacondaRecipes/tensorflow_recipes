@@ -6,9 +6,17 @@ set -ex
 rm -rf "${SP_DIR}/setuptools/command/launcher manifest.xml"
 rm -rf "${SP_DIR}/setuptools/script (dev).tmpl"
 
+export PYTHON_BIN_PATH="$PYTHON"
+export PYTHON_LIB_PATH="$SP_DIR"
+
 # build using bazel
 mkdir -p ./bazel_output_base
 BAZEL_OPTS=""
+# Bazel crappiness: https://github.com/bazelbuild/bazel/issues/7101
+# More Bazel crappiness: https://github.com/bazelbuild/bazel/issues/6473
+# More Bazel crappiness: https://github.com/bazelbuild/bazel/issues/4643
+# More Bazel crappiness: https://github.com/bazelbuild/bazel/issues/7026
+BUILD_OPTS="--action_env=PATH=$PATH --test_env=PATH=$PATH --incompatible_strict_action_env=false --distinct_host_configuration=false"
 if [[ ${HOST} =~ .*darwin.* ]]; then
     # set up bazel config file for conda provided clang toolchain
     cp -r ${RECIPE_DIR}/custom_clang_toolchain .
@@ -29,9 +37,7 @@ if [[ ${HOST} =~ .*darwin.* ]]; then
 
     # set build arguments
     export  BAZEL_USE_CPP_ONLY_TOOLCHAIN=1
-    BUILD_OPTS="
-        --crosstool_top=//custom_clang_toolchain:toolchain
-        --verbose_failures"
+    BUILD_OPTS="$BUILD_OPTS --crosstool_top=//custom_clang_toolchain:toolchain"
 fi
 bazel ${BAZEL_OPTS} build ${BUILD_OPTS:-} //tensorboard/pip_package:build_pip_package
 
