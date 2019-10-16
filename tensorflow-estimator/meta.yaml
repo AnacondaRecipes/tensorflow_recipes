@@ -17,11 +17,11 @@ requirements:
   host:
     - bazel
     - python
-    - tensorflow-base >=2.0.0,<2.1.0a0
+    - tensorflow-base {{ version }}
     - pip
   run:
     - python
-    - tensorflow-base >=2.0.0,<2.1.0a0
+    - {{ pin_compatible('tensorflow-base', max_pin='x.x') }}
 
 test:
   imports:
