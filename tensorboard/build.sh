@@ -9,14 +9,27 @@ rm -rf "${SP_DIR}/setuptools/script (dev).tmpl"
 export PYTHON_BIN_PATH="$PYTHON"
 export PYTHON_LIB_PATH="$SP_DIR"
 
+rm .bazelrc
+echo <<EOF > .bazelrc
+build --announce_rc
+build --noincompatible_strict_action_env
+build --incompatible_use_python_toolchains=false
+build --action_env=PATH="$PATH"
+build --action_env=PYTHON_BIN_PATH="$PYTHON"
+build --action_env=PYTHON_LIB_PATH="$SP_DIR"
+build --action_env=PREFIX="$PREFIX"
+build --python_path="$PYTHON"
+build --distinct_host_configuration=false
+EOF
+
 # build using bazel
 mkdir -p ./bazel_output_base
 BAZEL_OPTS=""
-# Bazel crappiness: https://github.com/bazelbuild/bazel/issues/7101
-# More Bazel crappiness: https://github.com/bazelbuild/bazel/issues/6473
-# More Bazel crappiness: https://github.com/bazelbuild/bazel/issues/4643
-# More Bazel crappiness: https://github.com/bazelbuild/bazel/issues/7026
-BUILD_OPTS="--action_env=PATH=$PATH --test_env=PATH=$PATH --incompatible_strict_action_env=false --distinct_host_configuration=false"
+# https://github.com/bazelbuild/bazel/issues/7101
+# https://github.com/bazelbuild/bazel/issues/6473
+# https://github.com/bazelbuild/bazel/issues/4643
+# https://github.com/bazelbuild/bazel/issues/7026
+BUILD_OPTS=""
 if [[ ${HOST} =~ .*darwin.* ]]; then
     # set up bazel config file for conda provided clang toolchain
     cp -r ${RECIPE_DIR}/custom_clang_toolchain .
