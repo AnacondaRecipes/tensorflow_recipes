@@ -1,3 +1,6 @@
+# NOTE: bazel refuses to use our python in this build, despite many hacky attempts you can see in build.sh
+#    To make this recipe build, /usr/bin/python must exist.  I symlinked /usr/bin/python3 to /usr/bin/python
+#    and that was sufficient.
 {% set version = "2.0.0" %}
 
 package:
@@ -19,6 +22,10 @@ build:
   # packages as it conflicts with a file in this package.
   entry_points:
     - tensorboard = tensorboard.main:run_main
+  ignore_run_exports:
+    - libgcc-ng
+    - libstdcxx-ng
+    - libcxx
 
 requirements:
   build:
@@ -39,6 +46,8 @@ requirements:
     - six >={{six}}
     - werkzeug >={{werkzeug}}
     - futures >=3.1.1  # [py27]
+    # this one should be vendored.  It is a dep of html5lib, which tensorboard vendors.
+    - webencodings
 
 test:
   requires:
