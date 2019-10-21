@@ -11,8 +11,7 @@ source:
   sha256: 49b5f0495cd681cbcb5296a4476853d4aea19a43bdd9f179c928a977308a0617
   patches:
     - 0001-rebatch-constants.patch
-    - 0008-do-not-include-B-usr-bin-flag.patch  # [linux]
-    - 0009-patch-nccl-for-older-kernels.patch   # [linux]
+    - 0002-do-not-include-B-usr-bin-flag.patch             # [linux]
 
 build:
   number: 0

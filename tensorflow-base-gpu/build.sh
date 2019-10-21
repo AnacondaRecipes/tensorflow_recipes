@@ -5,6 +5,10 @@ set -vex
 # expand PREFIX in BUILD file
 sed -i -e "s:\${PREFIX}:${PREFIX}:" tensorflow/core/platform/default/build_config/BUILD
 
+# TF added a patch in 2.0 release: https://github.com/tensorflow/tensorflow/blob/9621ac4de0864be4e44a298edef6a9c3637849a3/third_party/nccl/archive.patch
+#    We extend that to add on our NCCL socket patch for older kernels
+cp $RECIPE_DIR/nccl_archive.patch third_party/nccl/archive.patch
+
 mkdir -p ./bazel_output_base
 export BAZEL_OPTS=""
 

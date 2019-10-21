@@ -1,0 +1,82 @@
+From c05b45d2f785b72292239efb7d16b7d31518dfdb Mon Sep 17 00:00:00 2001
+From: Mike Sarahan <msarahan@gmail.com>
+Date: Fri, 18 Oct 2019 16:18:49 -0500
+Subject: [PATCH] do not include -B/usr/bin/ flag
+
+---
+ third_party/gpus/cuda_configure.bzl           | 10 ++++++----
+ third_party/sycl/crosstool/CROSSTOOL.tpl      |  4 +---
+ third_party/toolchains/cpus/arm/CROSSTOOL.tpl |  2 --
+ 3 files changed, 7 insertions(+), 9 deletions(-)
+
+diff --git a/third_party/gpus/cuda_configure.bzl b/third_party/gpus/cuda_configure.bzl
+index cf63adcb..f80dc0a5 100644
+--- a/third_party/gpus/cuda_configure.bzl
++++ b/third_party/gpus/cuda_configure.bzl
+@@ -1118,10 +1118,12 @@ def _create_local_cuda_repository(repository_ctx):
+     # TODO: when bazel stops adding '-B/usr/bin' by default, remove this
+     #       flag from the CROSSTOOL completely (see
+     #       https://github.com/bazelbuild/bazel/issues/5634)
+-    if should_download_clang:
+-        cuda_defines["%{linker_bin_path}"] = ""
+-    else:
+-        cuda_defines["%{linker_bin_path}"] = host_compiler_prefix
++    # if should_download_clang:
++    #     cuda_defines["%{linker_bin_path}"] = ""
++    # else:
++    #     cuda_defines["%{linker_bin_path}"] = host_compiler_prefix
++    # Never add -B/usr/bin
++    cuda_defines["%{linker_bin_path}"] = ""
+ 
+     cuda_defines["%{extra_no_canonical_prefixes_flags}"] = ""
+     cuda_defines["%{unfiltered_compile_flags}"] = ""
+diff --git a/third_party/sycl/crosstool/CROSSTOOL.tpl b/third_party/sycl/crosstool/CROSSTOOL.tpl
+index f8e50efc..304b98aa 100755
+--- a/third_party/sycl/crosstool/CROSSTOOL.tpl
++++ b/third_party/sycl/crosstool/CROSSTOOL.tpl
+@@ -41,7 +41,6 @@ toolchain {
+   cxx_flag: "%{c++_std}"
+   linker_flag: "-Wl,-no-as-needed"
+   linker_flag: "-lstdc++"
+-  linker_flag: "-B/usr/bin/"
+ 
+   # TODO(bazel-team): In theory, the path here ought to exactly match the path
+   # used by gcc. That works because bazel currently doesn't track files at
+@@ -152,7 +151,6 @@ toolchain {
+   cxx_flag: "-std=c++11"
+   linker_flag: "-Wl,-no-as-needed"
+   linker_flag: "-lstdc++"
+-  linker_flag: "-B/usr/bin/"
+ 
+   # TODO(bazel-team): In theory, the path here ought to exactly match the path
+   # used by gcc. That works because bazel currently doesn't track files at
+@@ -214,4 +212,4 @@ toolchain {
+     compiler_flag: "-O2"
+     compiler_flag: "-DNDEBUG"
+   }
+-}
+\ No newline at end of file
++}
+diff --git a/third_party/toolchains/cpus/arm/CROSSTOOL.tpl b/third_party/toolchains/cpus/arm/CROSSTOOL.tpl
+index d98fcc84..8fbd3a5b 100644
+--- a/third_party/toolchains/cpus/arm/CROSSTOOL.tpl
++++ b/third_party/toolchains/cpus/arm/CROSSTOOL.tpl
+@@ -155,7 +155,6 @@ toolchain {
+   tool_path { name: "gcc" path: "/usr/bin/gcc" }
+   cxx_flag: "-std=c++0x"
+   linker_flag: "-lstdc++"
+-  linker_flag: "-B/usr/bin/"
+ 
+   # TODO(bazel-team): In theory, the path here ought to exactly match the path
+   # used by gcc. That works because bazel currently doesn't track files at
+@@ -373,7 +372,6 @@ toolchain {
+   tool_path { name: "gcc" path: "/usr/bin/clang" }
+   cxx_flag: "-std=c++0x"
+   linker_flag: "-lstdc++"
+-  linker_flag: "-B/usr/bin/"
+ 
+   # TODO(bazel-team): In theory, the path here ought to exactly match the path
+   # used by gcc. That works because bazel currently doesn't track files at
+-- 
+2.20.1
+

@@ -16,8 +16,8 @@ requirements:
     - tensorflow-estimator {{version}}
   run:
     - python {{ py_version }}                     # [linux or win-64]
-    - tensorflow-base =={{ full_base_version }}   # [linux or win-64]
-    - _tflow_select =={{ select_version }}        # [linux or win-64]
+    - tensorflow-base {{ full_base_version }}   # [linux or win-64]
+    - _tflow_select   {{ select_version }}        # [linux or win-64]
     - {{ pin_compatible('tensorboard', max_pin='x.x') }}
     - {{ pin_compatible('tensorflow-estimator', max_pin='x.x') }}
 
