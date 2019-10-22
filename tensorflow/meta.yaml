@@ -7,19 +7,15 @@ package:
 build:
   number: 0
   skip: True  # [not x86_64]
-  string: {{ tflow_variant }}_py{{ py_version | replace(".", "") }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}  # [linux or win-64]
+  string: {{ tflow_variant }}_py{{ py_version | replace(".", "") }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}
 
 requirements:
-  host:
-    # use these here so we can use pin_compatible
-    - tensorboard {{version}}
-    - tensorflow-estimator {{version}}
   run:
-    - python {{ py_version }}                     # [linux or win-64]
-    - tensorflow-base {{ full_base_version }}   # [linux or win-64]
-    - _tflow_select   {{ select_version }}        # [linux or win-64]
-    - {{ pin_compatible('tensorboard', max_pin='x.x') }}
-    - {{ pin_compatible('tensorflow-estimator', max_pin='x.x') }}
+    - tensorflow-base {{ full_base_version }}
+    - _tflow_select   {{ select_version }}
+    - tensorboard            >={{version}}
+    - tensorflow-estimator   >={{version}}
+    - python  {{ py_version }}
 
 test:
   imports:
