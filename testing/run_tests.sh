@@ -25,8 +25,6 @@ PIP_TEST_FILTER_TAG="-no_pip,-no_oss,-oss_serial,-benchmark-test"
 BAZEL_FLAGS="--define=no_tensorflow_py_deps=true --test_lang_filters=py \
       --build_tests_only -k --test_tag_filters=${PIP_TEST_FILTER_TAG} \
       --test_timeout 9999999"
-BAZEL_TEST_TARGETS="${PIP_TEST_PREFIX}/tensorflow/contrib/... \
-    ${PIP_TEST_PREFIX}/tensorflow/python/... \
-     -//${PIP_TEST_PREFIX}/tensorflow/contrib/tensorboard/..."
+BAZEL_TEST_TARGETS="${PIP_TEST_PREFIX}/tensorflow/python/..."
 BAZEL_PARALLEL_TEST_FLAGS="--local_test_jobs=$(grep -c ^processor /proc/cpuinfo)"
 bazel test ${BAZEL_FLAGS} ${BAZEL_PARALLEL_TEST_FLAGS} -- ${BAZEL_TEST_TARGETS}
