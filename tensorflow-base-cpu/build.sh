@@ -15,7 +15,7 @@ echo "TF_NEED_MKL: ${TF_NEED_MKL}"
 echo "BAZEL_MKL_OPT: ${BAZEL_MKL_OPT}"
 
 mkdir -p ./bazel_output_base
-export BAZEL_OPTS="--batch "
+export BAZEL_OPTS=""
 
 if [[ ${HOST} =~ .*darwin.* ]]; then
 
@@ -49,7 +49,8 @@ else
     # the following arguments are useful for debugging
     #    --logging=6
     #    --subcommands
-
+    # jobs can be used to limit parallel builds and reduce resource needs
+    #    --jobs=20
     # Set compiler and linker flags as bazel does not account for CFLAGS,
     # CXXFLAGS and LDFLAGS.
     BUILD_OPTS="
@@ -67,7 +68,10 @@ else
     ${BAZEL_MKL_OPT}
     --config=opt"
     export TF_ENABLE_XLA=1
+fi
 
+if [[ ${HOST} =~ "2*" ]]; then
+    BUILD_OPTS="$BUILD_OPTS --config=v2"
 fi
 
 # Python settings
@@ -77,10 +81,12 @@ export USE_DEFAULT_PYTHON_LIB_PATH=1
 
 # additional settings
 export CC_OPT_FLAGS="-march=nocona -mtune=haswell"
-export TF_NEED_IGNITE=1
 export TF_NEED_OPENCL=0
 export TF_NEED_OPENCL_SYCL=0
+export TF_NEED_COMPUTECPP=0
 export TF_NEED_CUDA=0
+export TF_CUDA_CLANG=0
+export TF_NEED_TENSORRT=0
 export TF_NEED_ROCM=0
 export TF_NEED_MPI=0
 export TF_DOWNLOAD_CLANG=0
@@ -108,33 +114,3 @@ fi
 
 # The tensorboard package has the proper entrypoint
 rm -f ${PREFIX}/bin/tensorboard
-
-# Run unit tests on the pip installation
-# Logic here is based off run_pip_tests.sh in the tensorflow repo
-# https://github.com/tensorflow/tensorflow/blob/v1.1.0/tensorflow/tools/ci_build/builds/run_pip_tests.sh
-# Note that not all tensorflow tests are run here, only python specific
-
-# tests neeed to be moved into a sub-directory to prevent python from picking
-# up the local tensorflow directory
-PIP_TEST_PREFIX=bazel_pip
-PIP_TEST_ROOT=$(pwd)/${PIP_TEST_PREFIX}
-rm -rf $PIP_TEST_ROOT
-mkdir -p $PIP_TEST_ROOT
-ln -s $(pwd)/tensorflow ${PIP_TEST_ROOT}/tensorflow
-
-# Test which are known to fail and do not effect the package
-KNOWN_FAIL=""
-PIP_TEST_FILTER_TAG="-no_pip,-no_oss,-oss_serial"
-BAZEL_FLAGS="--define=no_tensorflow_py_deps=true --test_lang_filters=py \
-      --build_tests_only -k --test_tag_filters=${PIP_TEST_FILTER_TAG} \
-      --test_timeout 9999999"
-BAZEL_TEST_TARGETS="${PIP_TEST_PREFIX}/tensorflow/contrib/... \
-    ${PIP_TEST_PREFIX}/tensorflow/python/... \
-     -//${PIP_TEST_PREFIX}/tensorflow/contrib/tensorboard/..."
-BAZEL_PARALLEL_TEST_FLAGS="--local_test_jobs=${CPU_COUNT}"
-if [ "${CPU_COUNT}" -gt 20 ]; then
-    BAZEL_PARALLEL_TEST_FLAGS="--local_test_jobs=20"
-fi
-# to reduce build time on worker skip tests, run when testing
-#bazel ${BAZEL_OPTS} test ${BAZEL_FLAGS} \
-#    ${BAZEL_PARALLEL_TEST_FLAGS} -- ${BAZEL_TEST_TARGETS} ${KNOWN_FAIL}

@@ -4,14 +4,14 @@ To build a conda tensorflow package with GPU support
 
     Dockerfiles can be found at: https://github.com/jjhelmus/docker-images
 
-    CUDA  9.0: pkg_build_centos6_cuda90_cudnn7
-    CUDA  9.2: pkg_build_centos6_cuda92_cudnn7
-    CUDA 10.0: pkg_build_centos6_cuda100_cudnn7
+    CUDA  9.0: pkg_build_cos6_cuda90
+    CUDA  9.2: pkg_build_cos6_cuda92
+    CUDA 10.0: pkg_build_cos6_cuda100
 
 * Start the docker container using:
 
     ```
-    sudo nvidia-docker run -v `pwd`:/io -it pkg_build_centos6_cuda100_cudnn7
+    sudo nvidia-docker run -v `pwd`:/io -it pkg_build_cos6_cuda100
     ```
 
 * Create a symlink for libcuda.so.1

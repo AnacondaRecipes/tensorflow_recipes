@@ -1,4 +1,4 @@
-{% set version = "1.14.0" %}
+{% set version = "2.0.0" %}
 
 # This is the recipe for the "mkl" and "eigen" variants of tensorflow-base
 package:
@@ -8,17 +8,12 @@ package:
 source:
   fn: tensorflow-{{ version }}.tar.gz
   url: https://github.com/tensorflow/tensorflow/archive/v{{ version }}.tar.gz
-  sha256: aa2a6a1daafa3af66807cfe0bc77bfe1144a9a53df9a96bab52e3e575b3047ed
+  sha256: 49b5f0495cd681cbcb5296a4476853d4aea19a43bdd9f179c928a977308a0617
   patches:
-    - 0001-add-rt-to-linkopts.patch                                     # [linux]
-    - 0002-stable-image-rotate-test.patch                               # [linux]
-    - 0003-relax-tolerence-in-special_math_test.patch                   # [linux]
-    - 0004-skip-read-only-debugger_cli_common-test.patch                # [linux]
-    - 0005-fix-lookup_ops-test.patch                                    # [linux]
-    - 0006-relax-precision-in-matrix_log_op_test.patch                  # [linux]
-    #- 0007-Add-init-symbol-names-prefixed-with-an-underscore.patch      # [osx] # merged upstream
+    # https://github.com/tensorflow/tensorflow/issues/31520#issuecomment-524584978
+    - 0001-rebatch-constants.patch
     - 0008-Add-alternate-clock_gettime-implementation-for-macOS.patch   # [osx]
-    - 0012-set-default-kmp-variables.patch                              # [tflow_variant == 'mkl']
+    - 0007-set-default-kmp-variables.patch                              # [tflow_variant == 'mkl']
     - 0001-disable-prompt-for-ios-support.patch                         # [osx]
 
 build:
@@ -27,80 +22,98 @@ build:
   skip: True  # [win and vc<14]
   string: {{ tflow_variant }}_py{{ CONDA_PY }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}
   entry_points:
-    - freeze_graph = tensorflow.python.tools.freeze_graph:run_main
     - toco_from_protos = tensorflow.lite.toco.python.toco_from_protos:main
     - tflite_convert = tensorflow.lite.python.tflite_convert:main
     - toco = tensorflow.lite.python.tflite_convert:main
     - saved_model_cli = tensorflow.python.tools.saved_model_cli:main
-    - tf_upgrade_v2 = tensorflow.tools.compatibility.tf_upgrade_v2_main:main
     # The tensorboard package adds this entry point.
     # - tensorboard = tensorboard.main:run_main
+    - tf_upgrade_v2 = tensorflow.tools.compatibility.tf_upgrade_v2_main:main
+    - estimator_ckpt_converter = tensorflow_estimator.python.estimator.tools.checkpoint_converter:main
 
 requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - bazel >=0.24
+    # required here for all OS's, and ALSO below for windows
+    - bazel
   host:
-    - bazel >=0.24  # [win]
-    # conda build requirements
-    - posix  # [win]
+    # conda build requirements for .sh scripts on win
+    - posix     # [win]
     - m2-patch  # [win]
-    - pip
-    - setuptools <=39.1.0
-    - python
-    - swig
-    - zlib
+    - bazel     # [win]
     # requirements specified by the package itself
-    - absl-py >=0.1.6
-    - astor >=0.6.0
-    - gast >=0.2.0
-    - keras-applications >=1.0.6
-    - keras-preprocessing >=1.0.5
-    - numpy 1.14
-    - six >=1.10.0
-    - protobuf >=3.6.1
-    - termcolor >=1.1.0
-    - grpcio >=1.8.6
-    - wheel >=0.26
-    - mock >=2.0.0                # [py2k]
-    - backports.weakref >=1.0rc1  # [py2k]
-    - future                      # [py2k]
-    - enum34 >=1.1.6              # [py2k]
-    # the following packages are required for testing
-    - m2-perl             # [win]
-    - portpicker
-    - pyreadline          # [win]
-    - scipy
-    - scikit-learn
+    - absl-py
+    - astor
+    - gast
+    - google-pasta
+    - grpcio
+    - keras-applications
+    - keras-preprocessing
+    - markdown
+    # has run_exports, doesn't need a run dep below
     - mklml            # [win and tflow_variant == 'mkl']
+    - numpy-devel
+    - opt_einsum
+    # >=19, but that's current, so a pin really isn't necessary.  Omit for maintenance.
+    - pip
+    - protobuf
+    - python
+    # >=41, but that's current, so a pin really isn't necessary.  Omit for maintenance.
+    - setuptools
+    - six
+    - swig
+    - termcolor
+    # >=0.26, but that's current, so a pin really isn't necessary.  Omit for maintenance.
+    - wheel
+    - wrapt
+    - werkzeug
+    - zlib
+    {% if py2k -%}
+    - mock
+    - backports.weakref
+    - future
+    - enum34
+    {%- endif %}
+
   run:
     - python
-    - absl-py >=0.1.6
-    - astor >=0.6.0
-    - gast >=0.2.0
-    - keras-applications >=1.0.6
-    - keras-preprocessing >=1.0.5
-    - {{ pin_compatible('numpy') }}
-    - six >=1.10.0
-    - protobuf >=3.6.1
-    - termcolor >=1.1.0
-    - grpcio >=1.8.6
-    - mock >=2.0.0                # [py2k]
-    - backports.weakref >=1.0rc1  # [py2k]
-    - enum34 >=1.1.6              # [py2k]
-    - future                      # [py2k]
-    - wrapt >=1.11
+    # pin_compatible here is just to be lazy and define the dep versions in only one place.  These
+    #    don't have binary compatibility issues.
+    - {{ pin_compatible('absl-py') }}
+    - {{ pin_compatible('astor') }}
+    - {{ pin_compatible('gast', max_pin='x.x.x') }}
+    - {{ pin_compatible('google-pasta') }}
+    - {{ pin_compatible('grpcio') }}
+    - {{ pin_compatible('keras-applications') }}
+    - {{ pin_compatible('keras-preprocessing') }}
+    - {{ pin_compatible('markdown', max_pin=None) }}
+    - {{ pin_compatible('opt_einsum')}}
+    - {{ pin_compatible('protobuf') }}
+    - {{ pin_compatible('six') }}
+    - {{ pin_compatible('termcolor') }}
+    - {{ pin_compatible('werkzeug') }}
+    - {{ pin_compatible('wrapt') }}
+    {% if py2k -%}
+    - {{ pin_compatible('backports.weakref') }}
+    - {{ pin_compatible('enum34') }}
+    - {{ pin_compatible('mock') }}
+    - future
+    {%- endif %}
 
 test:
   imports:
     - tensorflow
   commands:
-    - freeze_graph --help
+    # estimator_ckpt_converter requires tensorflow-estimator
+    #- estimator_ckpt_converter --help
     - saved_model_cli --help
-    - tflite_convert --help     # [not win]
-    - toco_from_protos --help   # [not win]
-    - toco --help               # [not win]
+    - tf_upgrade_v2 --help
+    {% if unix -%}
+    - tflite_convert --help
+    - toco --help
+    - toco_from_protos --help
+    {%- endif %}
 
 about:
   home: http://tensorflow.org/

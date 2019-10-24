@@ -5,6 +5,10 @@ set -vex
 # expand PREFIX in BUILD file
 sed -i -e "s:\${PREFIX}:${PREFIX}:" tensorflow/core/platform/default/build_config/BUILD
 
+# TF added a patch in 2.0 release: https://github.com/tensorflow/tensorflow/blob/9621ac4de0864be4e44a298edef6a9c3637849a3/third_party/nccl/archive.patch
+#    We extend that to add on our NCCL socket patch for older kernels
+cp $RECIPE_DIR/nccl_archive.patch third_party/nccl/archive.patch
+
 mkdir -p ./bazel_output_base
 export BAZEL_OPTS=""
 
@@ -17,10 +21,10 @@ export USE_DEFAULT_PYTHON_LIB_PATH=1
 # do not build with MKL support
 export TF_NEED_MKL=0
 export CC_OPT_FLAGS="-march=nocona -mtune=haswell"
-export TF_NEED_IGNITE=1
 export TF_ENABLE_XLA=1
 export TF_NEED_OPENCL=0
 export TF_NEED_OPENCL_SYCL=0
+export TF_NEED_COMPUTECPP=0
 export TF_NEED_ROCM=0
 export TF_NEED_MPI=0
 export TF_DOWNLOAD_CLANG=0
@@ -40,21 +44,14 @@ fi
 if [ ${cudatoolkit} == "9.2" ]; then
     export TF_CUDA_COMPUTE_CAPABILITIES="3.0,3.5,5.2,6.0,6.1,7.0"
 fi
-if [ ${cudatoolkit} == "10.0" ]; then
+if [[ ${cudatoolkit} == 10.* ]]; then
     export TF_CUDA_COMPUTE_CAPABILITIES="3.0,3.5,5.2,6.0,6.1,7.0,7.5"
 fi
 export TF_NCCL_VERSION=""
 export GCC_HOST_COMPILER_PATH="${CC}"
 # Use system paths here rather than $PREFIX to allow Bazel to find the correct
 # libraries.  RPATH is adjusted post build to link to the DSOs in $PREFIX
-export CUDA_TOOLKIT_PATH="/usr/local/cuda"
-export CUDNN_INSTALL_PATH="/usr/local/cuda/"
-
-# libcuda.so.1 needs to be symlinked to libcuda.so
-# ln -s /usr/local/cuda/lib64/stubs/libcuda.so /usr/local/cuda/lib64/stubs/libcuda.so.1
-# on a "real" system the so.1 library is typically in /usr/local/nvidia/lib64
-# add the stubs directory to LD_LIBRARY_PATH so libcuda.so.1 can be found
-export LD_LIBRARY_PATH="/usr/local/cuda/lib64/stubs/:${LD_LIBRARY_PATH}"
+export TF_CUDA_PATHS="${PREFIX},/usr/local/cuda,/usr"
 
 ./configure
 
@@ -92,31 +89,3 @@ pip install --no-deps $SRC_DIR/tensorflow_pkg/*.whl
 
 # The tensorboard package has the proper entrypoint
 rm -f ${PREFIX}/bin/tensorboard
-
-# Run unit tests on the pip installation
-# Logic here is based off run_pip_tests.sh in the tensorflow repo
-# https://github.com/tensorflow/tensorflow/blob/v1.1.0/tensorflow/tools/ci_build/builds/run_pip_tests.sh
-# Note that not all tensorflow tests are run here, only python specific
-
-# tests neeed to be moved into a sub-directory to prevent python from picking
-# up the local tensorflow directory
-PIP_TEST_PREFIX=bazel_pip
-PIP_TEST_ROOT=$(pwd)/${PIP_TEST_PREFIX}
-rm -rf $PIP_TEST_ROOT
-mkdir -p $PIP_TEST_ROOT
-ln -s $(pwd)/tensorflow ${PIP_TEST_ROOT}/tensorflow
-
-# Test which are known to fail on a given platform
-KNOWN_FAIL=""
-PIP_TEST_FILTER_TAG="-no_pip_gpu,-no_pip,-no_oss,-oss_serial"
-BAZEL_FLAGS="--define=no_tensorflow_py_deps=true --test_lang_filters=py \
-      --build_tests_only -k --test_tag_filters=${PIP_TEST_FILTER_TAG} \
-      --test_timeout 9999999"
-BAZEL_TEST_TARGETS="${PIP_TEST_PREFIX}/tensorflow/contrib/... \
-    ${PIP_TEST_PREFIX}/tensorflow/python/... \
-    ${PIP_TEST_PREFIX}/tensorflow/tensorboard/..."
-BAZEL_PARALLEL_TEST_FLAGS="--local_test_jobs=1"
-# Tests take ~3 hours to run and therefore are skipped in most builds
-# These should be run at least once for each new release
-#LD_LIBRARY_PATH="/usr/local/nvidia/lib64:/usr/local/cuda/extras/CUPTI/lib64:$LD_LIBRARY_PATH" bazel ${BAZEL_OPTS} test ${BAZEL_FLAGS} \
-#    ${BAZEL_PARALLEL_TEST_FLAGS} -- ${BAZEL_TEST_TARGETS} ${KNOWN_FAIL}

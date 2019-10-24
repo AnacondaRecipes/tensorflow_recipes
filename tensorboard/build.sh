@@ -6,9 +6,43 @@ set -ex
 rm -rf "${SP_DIR}/setuptools/command/launcher manifest.xml"
 rm -rf "${SP_DIR}/setuptools/script (dev).tmpl"
 
+export PYTHON_BIN_PATH="$PYTHON"
+export PYTHON_LIB_PATH="$SP_DIR"
+
+# forcing bazel to use our python - scattershot floundering
+# https://github.com/bazelbuild/bazel/issues/7101
+# https://github.com/bazelbuild/bazel/issues/6473
+# https://github.com/bazelbuild/bazel/issues/4643
+# https://github.com/bazelbuild/bazel/issues/7026
+cat <<EOF >> .bazelrc
+build --announce_rc
+build --noincompatible_strict_action_env
+build --distinct_host_configuration=false
+build --action_env=PATH="$PATH"
+build --action_env=PYTHON_BIN_PATH="$PYTHON_BIN_PATH"
+build --action_env=PYTHON_LIB_PATH="$PYTHON_LIB_PATH"
+build --action_env=PREFIX="$PREFIX"
+build --python_path="$PYTHON"
+build --java_toolchain=@bazel_tools//tools/jdk:toolchain_hostjdk8
+EOF
+
+# rm .bazelrc
+# cat <<EOF > .bazelrc
+# build --announce_rc
+# build --noincompatible_strict_action_env
+# build --incompatible_use_python_toolchains=false
+# build --action_env=PATH="$PATH"
+# build --action_env=PYTHON_BIN_PATH="$PYTHON"
+# build --action_env=PYTHON_LIB_PATH="$SP_DIR"
+# build --action_env=PREFIX="$PREFIX"
+# build --python_path="$PYTHON"
+# build --distinct_host_configuration=false
+# EOF
+
 # build using bazel
 mkdir -p ./bazel_output_base
-BAZEL_OPTS="--batch"
+BAZEL_OPTS=""
+BUILD_OPTS=""
 if [[ ${HOST} =~ .*darwin.* ]]; then
     # set up bazel config file for conda provided clang toolchain
     cp -r ${RECIPE_DIR}/custom_clang_toolchain .
@@ -29,9 +63,7 @@ if [[ ${HOST} =~ .*darwin.* ]]; then
 
     # set build arguments
     export  BAZEL_USE_CPP_ONLY_TOOLCHAIN=1
-    BUILD_OPTS="
-        --crosstool_top=//custom_clang_toolchain:toolchain
-        --verbose_failures"
+    BUILD_OPTS="$BUILD_OPTS --crosstool_top=//custom_clang_toolchain:toolchain"
 fi
 bazel ${BAZEL_OPTS} build ${BUILD_OPTS:-} //tensorboard/pip_package:build_pip_package
 

@@ -1,10 +1,11 @@
 tflow_variant:
   - gpu
 # cuda 9.0, gcc 5.4, cudnn 7.3
-# gcc 5.4 is required for CUDA 9.2 and 10.0 as TF has issues with gcc 7
+# gcc 5.4 is required for CUDA 9.2+ TF has issues with gcc 7
 # see: https://github.com/tensorflow/tensorflow/issues/25323
 # cuda 9.2, gcc 5.4, cudnn 7.3
 # cuda 10.0, gcc 5.4, cudnn 7.3
+# cuda 10.1, gcc 5.4, cudnn 7.6
 c_compiler_version:    # [linux]
   - 5.4                # [linux]
 cxx_compiler_version:  # [linux]
@@ -12,8 +13,9 @@ cxx_compiler_version:  # [linux]
 cudatoolkit:
   - 10.0
 cudnn:
-  - 7.3
-python:
-  - 2.7  # [not win]
-  - 3.6
-  - 3.7
+  - 7.6
+# conda-build has an issue right now where looping over things doesn't work the way it should
+# python:
+#   - 2.7  # [not win]
+#   - 3.6
+#   - 3.7

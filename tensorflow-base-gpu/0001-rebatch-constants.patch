@@ -1,0 +1,28 @@
+From a769bbf7ae87d7ad2c7e287f787369676c26e322 Mon Sep 17 00:00:00 2001
+From: Mike Sarahan <msarahan@gmail.com>
+Date: Tue, 8 Oct 2019 13:39:39 -0500
+Subject: [PATCH] rebatch constants
+
+---
+ tensorflow/core/grappler/optimizers/data/rebatch.cc | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/tensorflow/core/grappler/optimizers/data/rebatch.cc b/tensorflow/core/grappler/optimizers/data/rebatch.cc
+index c62088e9..1c637bbf 100644
+--- a/tensorflow/core/grappler/optimizers/data/rebatch.cc
++++ b/tensorflow/core/grappler/optimizers/data/rebatch.cc
+@@ -62,8 +62,9 @@ constexpr char kMapAndBatchOp[] = "MapAndBatchDataset";
+ constexpr char kExperimentalMapAndBatchOp[] = "ExperimentalMapAndBatchDataset";
+ 
+ constexpr std::array<const char*, 6> kBatchDatasetOps = {
+-    kBatchOp,       kBatchV2Op,      kMapAndBatchOp, kExperimentalMapAndBatchOp,
+-    kPaddedBatchOp, kPaddedBatchV2Op};
++    "BatchDataset", "BatchDatasetV2", "MapAndBatchDataset", "ExperimentalMapAndBatchDataset",
++    "PaddedBatchDataset", "PaddedBatchDatasetV2"
++    };
+ 
+ constexpr std::array<const char*, 2> kMultipleInputsDatasetOps = {
+     "ConcatenateDataset",
+-- 
+2.20.1.windows.1
+

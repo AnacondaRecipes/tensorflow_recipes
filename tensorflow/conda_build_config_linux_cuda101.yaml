@@ -1,8 +1,8 @@
-# configuration for linux-64 gpu, cuda 9.0
+# configuration for linux-64 gpu, cuda 10.1
 full_base_version:
-  - "1.13.1 gpu_py27h8f37b9b_0"
-  - "1.13.1 gpu_py36h8f37b9b_0"
-  - "1.13.1 gpu_py37h8f37b9b_0"
+  - "2.0.0 gpu_py27he45bfe2_0"
+  - "2.0.0 gpu_py36he45bfe2_0"
+  - "2.0.0 gpu_py37he45bfe2_0"
 select_version:
   - "2.1.0 gpu"
   - "2.1.0 gpu"

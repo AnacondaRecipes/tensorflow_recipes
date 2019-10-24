@@ -1,14 +1,14 @@
 From 5fb5cc2e59c53ab61654ab8adb6c06b84c93ab9f Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
 Date: Wed, 3 Apr 2019 11:34:43 -0500
-Subject: [PATCH 12/12] set default kmp variables
+Subject: [PATCH 7/7] set default kmp variables
 
 ---
  tensorflow/api_template_v1.__init__.py | 6 ++++++
  1 file changed, 6 insertions(+)
 
 diff --git a/tensorflow/api_template_v1.__init__.py b/tensorflow/api_template_v1.__init__.py
-index a83ff3a1..fa4c8ba5 100644
+index a83ff3a16c..fa4c8ba569 100644
 --- a/tensorflow/api_template_v1.__init__.py
 +++ b/tensorflow/api_template_v1.__init__.py
 @@ -18,6 +18,12 @@ from __future__ import absolute_import as _absolute_import
@@ -26,4 +26,3 @@ index a83ff3a1..fa4c8ba5 100644
  import os as _os
 -- 
 2.21.0 (Apple Git-120)
-
