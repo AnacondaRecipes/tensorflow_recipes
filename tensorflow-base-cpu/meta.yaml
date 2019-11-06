@@ -1,4 +1,4 @@
-{% set version = "2.0.0" %}
+{% set version = "1.15.0" %}
 
 # This is the recipe for the "mkl" and "eigen" variants of tensorflow-base
 package:
@@ -8,7 +8,7 @@ package:
 source:
   fn: tensorflow-{{ version }}.tar.gz
   url: https://github.com/tensorflow/tensorflow/archive/v{{ version }}.tar.gz
-  sha256: 49b5f0495cd681cbcb5296a4476853d4aea19a43bdd9f179c928a977308a0617
+  sha256: a5d49c00a175a61da7431a9b289747d62339be9cf37600330ad63b611f7f5dc9
   patches:
     # https://github.com/tensorflow/tensorflow/issues/31520#issuecomment-524584978
     - 0001-rebatch-constants.patch
@@ -36,12 +36,13 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     # required here for all OS's, and ALSO below for windows
-    - bazel
+    # lower bound defined by this issue: https://github.com/bazelbuild/bazel/issues/7821
+    - bazel 0.26.1
   host:
     # conda build requirements for .sh scripts on win
     - posix     # [win]
     - m2-patch  # [win]
-    - bazel     # [win]
+    - bazel 0.26.1    # [win]
     # requirements specified by the package itself
     - absl-py
     - astor
