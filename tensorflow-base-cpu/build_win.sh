@@ -36,6 +36,16 @@ unset PSMODULEPATH
 unset PROMPT
 unset PRINTER
 unset PKG_CONFIG_PATH
+unset VS140COMNTOOLS
+unset __VSCMD_PREINIT_INCLUDE
+unset VSINSTALLDIR
+unset VCIDEInstallDir
+unset VS150COMNTOOLS
+unset pin_run_as_build
+unset HTMLHelpDir
+unset FrameworkDir
+unset FrameworkDIR64
+unset PATH_OVERRIDE
 
 echo "" | ./configure
 

@@ -62,8 +62,6 @@ unset pin_run_as_build
 unset HTMLHelpDir
 unset FrameworkDir
 unset FrameworkDIR64
-
-
 unset PATH_OVERRIDE
 
 echo "" | ./configure

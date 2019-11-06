@@ -35,9 +35,9 @@ requirements:
     - bazel 0.26.1
   host:
     # conda build requirements for .sh scripts on win
-    - posix  0.26.1   # [win]
+    - posix     # [win]
     - m2-patch  # [win]
-    - bazel     # [win]
+    - bazel  0.26.1   # [win]
     # requirements specified by the package itself
     - absl-py
     - astor

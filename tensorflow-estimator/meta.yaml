@@ -7,18 +7,22 @@ package:
 source:
   fn: tensorflow-estimator-{{ version }}.tar.gz
   url: https://github.com/tensorflow/estimator/archive/v{{ version }}.tar.gz
-  sha256:
+  sha256: b9e6eac80f1b2423196bc753dd0ca14aa41398790909447263a646dcac7031ce
 
 build:
   number: 0
   noarch: python
 
 requirements:
-  host:
+  build:
     - bazel
-    - python
-    - tensorflow-base 1.15
+  host:
+    - bazel  # [win]
+    - m2-patch  # [win]
     - pip
+    - posix   # [win]
+    - python
+    - tensorflow-base 1.15.0
   run:
     - python
     - {{ pin_compatible('tensorflow-base', max_pin='x.x') }}
