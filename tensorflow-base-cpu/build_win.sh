@@ -46,9 +46,17 @@ unset HTMLHelpDir
 unset FrameworkDir
 unset FrameworkDIR64
 unset PATH_OVERRIDE
+unset INSPECTOR_XE_2016_DIR
+unset INSPECTOR_XE_2013_DIR
+unset INTEL_LICENSE_FILE
+unset ICPP_COMPILER14
+unset ICPP_COMPILER16
+unset CONDA_PROMPT_MODIFIER
+unset CONDA_DEFAULT_ENV
+unset STDLIB_DIR
+unset SCRIPTS
 
 echo "" | ./configure
-
 
 # Modern versions of bazel also inject user environment variables in additional
 # arguments. This causes the final command line argument length to explode on
