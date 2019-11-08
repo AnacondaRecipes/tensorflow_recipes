@@ -1,0 +1,79 @@
+From e19ba5dd5341cc66ffdb09f13f90136c0c37ea0c Mon Sep 17 00:00:00 2001
+From: Mike Sarahan <msarahan@gmail.com>
+Date: Fri, 8 Nov 2019 14:59:32 -0600
+Subject: [PATCH] no werror
+
+---
+ BUILD                                                    | 1 -
+ src/CMakeLists.txt                                       | 2 +-
+ src/third_party/googletest/cmake/internal_utils.cmake    | 2 +-
+ src/third_party/googletest/xcode/Config/General.xcconfig | 2 +-
+ src/util/BUILD.toplevel                                  | 1 -
+ 5 files changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/BUILD b/BUILD
+index d7c731b..885ec19 100644
+--- a/BUILD
++++ b/BUILD
+@@ -67,7 +67,6 @@ posix_copts = [
+ 
+     # This list of warnings should match those in the top-level CMakeLists.txt.
+     "-Wall",
+-    "-Werror",
+     "-Wformat=2",
+     "-Wsign-compare",
+     "-Wmissing-field-initializers",
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 4eb0d0d..83ac067 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -52,7 +52,7 @@ endif()
+ if(CMAKE_COMPILER_IS_GNUCXX OR CLANG)
+   # Note clang-cl is odd and sets both CLANG and MSVC. We base our configuration
+   # primarily on our normal Clang one.
+-  set(C_CXX_FLAGS "-Werror -Wformat=2 -Wsign-compare -Wmissing-field-initializers -Wwrite-strings")
++  set(C_CXX_FLAGS "-Wformat=2 -Wsign-compare -Wmissing-field-initializers -Wwrite-strings")
+   if(MSVC)
+     # clang-cl sets different default warnings than clang. It also treats -Wall
+     # as -Weverything, to match MSVC. Instead -W3 is the alias for -Wall.
+diff --git a/src/third_party/googletest/cmake/internal_utils.cmake b/src/third_party/googletest/cmake/internal_utils.cmake
+index c54bc94..f7fda5a 100644
+--- a/src/third_party/googletest/cmake/internal_utils.cmake
++++ b/src/third_party/googletest/cmake/internal_utils.cmake
+@@ -94,7 +94,7 @@ macro(config_compiler_and_linker)
+     set(cxx_no_exception_flags "-D_HAS_EXCEPTIONS=0")
+     set(cxx_no_rtti_flags "-GR-")
+   elseif (CMAKE_COMPILER_IS_GNUCXX)
+-    set(cxx_base_flags "-Wall -Wshadow -Werror")
++    set(cxx_base_flags "-Wall -Wshadow")
+     set(cxx_exception_flags "-fexceptions")
+     set(cxx_no_exception_flags "-fno-exceptions")
+     # Until version 4.3.2, GCC doesn't define a macro to indicate
+diff --git a/src/third_party/googletest/xcode/Config/General.xcconfig b/src/third_party/googletest/xcode/Config/General.xcconfig
+index f23e322..ac07337 100644
+--- a/src/third_party/googletest/xcode/Config/General.xcconfig
++++ b/src/third_party/googletest/xcode/Config/General.xcconfig
+@@ -17,7 +17,7 @@ ZERO_LINK = NO
+ PREBINDING = NO
+ 
+ // Strictest warning policy
+-WARNING_CFLAGS = -Wall -Werror -Wendif-labels -Wnewline-eof -Wno-sign-compare -Wshadow
++WARNING_CFLAGS = -Wall -Wendif-labels -Wnewline-eof -Wno-sign-compare -Wshadow
+ 
+ // Work around Xcode bugs by using external strip. See:
+ // http://lists.apple.com/archives/Xcode-users/2006/Feb/msg00050.html
+diff --git a/src/util/BUILD.toplevel b/src/util/BUILD.toplevel
+index d7c731b..885ec19 100644
+--- a/src/util/BUILD.toplevel
++++ b/src/util/BUILD.toplevel
+@@ -67,7 +67,6 @@ posix_copts = [
+ 
+     # This list of warnings should match those in the top-level CMakeLists.txt.
+     "-Wall",
+-    "-Werror",
+     "-Wformat=2",
+     "-Wsign-compare",
+     "-Wmissing-field-initializers",
+-- 
+2.20.1
+

@@ -12,6 +12,7 @@ source:
   patches:
     # https://github.com/tensorflow/tensorflow/issues/31520#issuecomment-524584978
     - 0001-rebatch-constants.patch
+    - 0003-no-werror.patch                                              # [osx]
     - 0008-Add-alternate-clock_gettime-implementation-for-macOS.patch   # [osx]
     - 0007-set-default-kmp-variables.patch                              # [tflow_variant == 'mkl']
     - 0001-disable-prompt-for-ios-support.patch                         # [osx]
