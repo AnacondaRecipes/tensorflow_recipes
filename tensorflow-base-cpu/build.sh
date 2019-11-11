@@ -41,6 +41,10 @@ if [[ ${HOST} =~ .*darwin.* ]]; then
     BUILD_OPTS="
         --crosstool_top=//custom_clang_toolchain:toolchain
         --verbose_failures
+        --linkopt=-framework
+        --linkopt=CoreFoundation
+        --copt=-Wl,-framework
+        --copt=-Wl,CoreFoundation
         ${BAZEL_MKL_OPT}
         --config=opt"
     export TF_ENABLE_XLA=0
