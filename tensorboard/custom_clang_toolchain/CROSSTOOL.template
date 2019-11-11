@@ -34,6 +34,8 @@ toolchain {
   linker_flag: "-lc++"
   linker_flag: "-undefined"
   linker_flag: "dynamic_lookup"
+  linker_flag: "-framework"
+  linker_flag: "CoreFoundation"
   cxx_builtin_include_directory: "${PREFIX}/include/c++/v1"
   cxx_builtin_include_directory: "${PREFIX}/lib/clang/4.0.1/include"
   cxx_builtin_include_directory: "${CONDA_BUILD_SYSROOT}/usr/include"
