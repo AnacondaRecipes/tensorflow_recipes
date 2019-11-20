@@ -46,8 +46,6 @@ requirements:
     - six >={{six}}
     - werkzeug >={{werkzeug}}
     - futures >=3.1.1  # [py27]
-    # this one should be vendored.  It is a dep of html5lib, which tensorboard vendors.
-    - webencodings
     # reported missing dep on OSX.  Apply to all, just to be safe.
     - wheel
 
