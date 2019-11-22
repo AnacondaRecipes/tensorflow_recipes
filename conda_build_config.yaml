@@ -29,6 +29,9 @@ opt_einsum:
     - <3.0a0  # [py2k]
 protobuf:
     - 3.6.1
+# tensorboard has this as a requirement
+setuptools:
+    - 41.0.0
 six:
     - 1.12
 termcolor:

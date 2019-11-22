@@ -13,7 +13,7 @@ source:
   sha256: b535414d818350f9d879d04bc3d1ed0026b09e55ffea5131456cd8758806287a
 
 build:
-  number: 0
+  number: 1
   # we build it noarch on win for py3.x, and we skip win with py27.
   skip: True  # [win]
   skip: True  # [not x86_64]
@@ -44,6 +44,7 @@ requirements:
     - numpy >={{numpy_devel}}
     - protobuf >={{protobuf}}
     - six >={{six}}
+    - setuptools >={{setuptools}}
     - werkzeug >={{werkzeug}}
     - futures >=3.1.1  # [py27]
     # reported missing dep on OSX.  Apply to all, just to be safe.
