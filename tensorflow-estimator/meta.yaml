@@ -1,4 +1,4 @@
-{% set version = "1.15.1" %}
+{% set version = "2.1" %}
 
 package:
   name: tensorflow-estimator
@@ -7,7 +7,7 @@ package:
 source:
   fn: tensorflow-estimator-{{ version }}.tar.gz
   url: https://github.com/tensorflow/estimator/archive/v{{ version }}.tar.gz
-  sha256: b9e6eac80f1b2423196bc753dd0ca14aa41398790909447263a646dcac7031ce
+  sha256: 1d74c8181b981748976fa33ad97d3434c3cf2b7e29a0b00861365fe8329dbc4e
 
 build:
   number: 0
@@ -22,10 +22,12 @@ requirements:
     - pip
     - posix   # [win]
     - python
-    - tensorflow-base 1.15.0
+    - tensorflow-base {{ version }}
+    - tensorboard >={{ version }}
   run:
     - python
     - {{ pin_compatible('tensorflow-base', max_pin='x.x') }}
+    - tensorboard >={{ version }}
 
 test:
   imports:
