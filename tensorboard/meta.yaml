@@ -40,12 +40,15 @@ requirements:
     - python >=3.5  # [py3k]
     - absl-py >={{absl_py}}
     - grpcio >={{grpcio}}
+    - google-auth >=1.6.3,<2
+    - google-auth-oauthlib >=0.4.1,<0.5
     - markdown >={{markdown}}
-    - numpy >={{numpy_devel}}
+    - numpy >={{numpy}}
     - protobuf >={{protobuf}}
-    - six >={{six}}
+    - requests >=2.21.0,<3
     - setuptools >={{setuptools}}
-    - werkzeug >={{werkzeug}}
+    - six >={{six}}
+    - werkzeug >=0.11.15
     - futures >=3.1.1  # [py27]
     # reported missing dep on OSX.  Apply to all, just to be safe.
     - wheel
