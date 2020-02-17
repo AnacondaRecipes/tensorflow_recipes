@@ -36,13 +36,12 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     # required here for all OS's, and ALSO below for windows
-    # lower bound defined by this issue: https://github.com/bazelbuild/bazel/issues/7821
-    - bazel   0.28.1
+    - bazel
   host:
     # conda build requirements for .sh scripts on win
     - posix     # [win]
     - m2-patch  # [win]
-    - bazel   0.28.1   # [win]
+    - bazel     # [win]
     # requirements specified by the package itself
     - absl-py
     - astor
