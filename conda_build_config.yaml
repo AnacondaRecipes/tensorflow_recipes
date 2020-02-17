@@ -5,9 +5,12 @@ absl_py:
 astor:
     - 0.6.2
 bazel:
-    - 0.24.1
+    - 0.29.1  # [not win]
+    - 0.28.1  # [win]
 enum34:
     - 1.1.6
+functools32:
+    - 3.2.3
 gast:
     - 0.2.2
 google_pasta:
@@ -17,26 +20,28 @@ grpcio:
 keras_applications:
     - 1.0.8
 keras_preprocessing:
-    - 1.0.5
+    - 1.1.0
 markdown:
     - 2.6.11
 mock:
     - 2.0.0
-numpy_devel:
+numpy:
     - 1.16
 opt_einsum:
     - 3.1     # [py3k]
     - <3.0a0  # [py2k]
 protobuf:
-    - 3.6.1
+    - 3.8.0
 # tensorboard has this as a requirement
 setuptools:
     - 41.0.0
+# pinned to an exact version in the wheel, loosen for the conda package
+scipy:
+   - 1.2.1   # [py2k]
+   - 1.4.1   # [py3k]
 six:
     - 1.12
 termcolor:
     - 1.1.0
 wrapt:
     - 1.11
-werkzeug:
-    - 0.14

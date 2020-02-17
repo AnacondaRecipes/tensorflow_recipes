@@ -32,7 +32,8 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - bazel 0.28.1
+    # required here for all OS's, and ALSO below for windows
+    - bazel
   host:
     # conda build requirements for .sh scripts on win
     - posix     # [win]
@@ -46,30 +47,33 @@ requirements:
     - grpcio
     - keras-applications
     - keras-preprocessing
-    - markdown
     # has run_exports, doesn't need a run dep below
     - mklml            # [win and tflow_variant == 'mkl']
-    - numpy-devel
+    - numpy
     - opt_einsum
-    # >=19, but that's current, so a pin really isn't necessary.  Omit for maintenance.
+    # build only requirement, doesn't need a run dep below
     - pip
     - protobuf
     - python
-    # >=41, but that's current, so a pin really isn't necessary.  Omit for maintenance.
+    # build only requirement, doesn't need a run dep below
     - setuptools
+    - scipy
     - six
+    # build only requirement, doesn't need a run dep below
     - swig
     - termcolor
     # >=0.26, but that's current, so a pin really isn't necessary.  Omit for maintenance.
     - wheel
     - wrapt
-    - werkzeug
+    # has run_exports, doesn't need a run dep below
     - zlib
     {% if py2k -%}
-    - mock
     - backports.weakref
-    - future
     - enum34
+    - functools32
+    # requirement is not declared but seems necessary
+    - future
+    - mock
     {%- endif %}
     # GPU requirements
     - cudatoolkit {{ cudatoolkit }}*
@@ -80,27 +84,28 @@ requirements:
     - python
     # pin_compatible here is just to be lazy and define the dep versions in only one place.  These
     #    don't have binary compatibility issues.
-    - {{ pin_compatible('absl-py') }}
-    - {{ pin_compatible('astor') }}
+    - {{ pin_compatible('absl-py', max_pin=None) }}
+    - {{ pin_compatible('astor', max_pin=None) }}
     - {{ pin_compatible('gast', max_pin='x.x.x') }}
-    - {{ pin_compatible('google-pasta') }}
-    - {{ pin_compatible('grpcio') }}
-    - {{ pin_compatible('keras-applications') }}
-    - {{ pin_compatible('keras-preprocessing') }}
-    - {{ pin_compatible('markdown', max_pin=None) }}
-    - {{ pin_compatible('opt_einsum')}}
-    - {{ pin_compatible('protobuf') }}
-    - {{ pin_compatible('six') }}
-    - {{ pin_compatible('termcolor') }}
-    - {{ pin_compatible('werkzeug') }}
-    - {{ pin_compatible('wrapt') }}
+    - {{ pin_compatible('google-pasta', max_pin=None) }}
+    - {{ pin_compatible('grpcio', max_pin=None) }}
+    - {{ pin_compatible('keras-applications', max_pin=None) }}
+    - {{ pin_compatible('keras-preprocessing', max_pin=None) }}
+    - {{ pin_compatible('numpy') }}
+    - {{ pin_compatible('opt_einsum', max_pin=None)}}
+    - {{ pin_compatible('protobuf', max_pin=None) }}
+    - {{ pin_compatible('scipy', max_pin=None) }}
+    - {{ pin_compatible('six', max_pin=None) }}
+    - {{ pin_compatible('termcolor', max_pin=None) }}
+    - {{ pin_compatible('wrapt', max_pin=None) }}
     {% if py2k -%}
-    - {{ pin_compatible('backports.weakref') }}
-    - {{ pin_compatible('enum34') }}
-    - {{ pin_compatible('mock') }}
+    - {{ pin_compatible('enum34', max_pin=None) }}
+    - {{ pin_compatible('functools32', max_pin=None) }}
+    - {{ pin_compatible('mock', max_pin=None) }}
+    # pin this manually since the current package has a odd version (1.0.post1)
+    - backports.weakref >=1.0
     - future
     {%- endif %}
-    - python
     - {{ pin_compatible('cudatoolkit', max_pin='x.x') }}
     - {{ pin_compatible('cudnn') }}
     - cupti  # [not win]
