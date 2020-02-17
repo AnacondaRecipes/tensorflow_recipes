@@ -39,7 +39,7 @@ requirements:
     - python        # [py2k]
     - python >=3.5  # [py3k]
     - absl-py >={{absl_py}}
-    - grpcio >={{grpcio}}
+    - grpcio >=1.24.3
     - google-auth >=1.6.3,<2
     - google-auth-oauthlib >=0.4.1,<0.5
     - markdown >={{markdown}}
