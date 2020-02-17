@@ -13,7 +13,7 @@ source:
   sha256: 84a61d5b06c7f41402133b57b3e8bcb2d233911b26a837c4b873fdbf3b1abc4b
 
 build:
-  number: 1
+  number: 0
   # we build it noarch on win for py3.x, and we skip win with py27.
   skip: True  # [win]
   skip: True  # [not x86_64]
