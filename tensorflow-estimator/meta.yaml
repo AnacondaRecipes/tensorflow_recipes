@@ -24,11 +24,9 @@ requirements:
     - posix   # [win]
     - python
     - tensorflow-base {{ version }}
-    - tensorboard >={{ version }}
   run:
     - python
     - {{ pin_compatible('tensorflow-base', max_pin='x.x') }}
-    - tensorboard >={{ version }}
 
 test:
   imports:
