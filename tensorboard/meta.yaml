@@ -12,16 +12,21 @@ source:
   url: https://github.com/tensorflow/tensorboard/archive/{{ version }}.tar.gz
   sha256: 84a61d5b06c7f41402133b57b3e8bcb2d233911b26a837c4b873fdbf3b1abc4b
 
+# tensorboard is built as two noarch packages, one for Python 2.7, the other Python 3.
+# Both can be built on a Linux system.
+# During the build, an executable is downloaded that requires a newer
+# version of libstdc++ than that provided by CentOS 6,  Ubuntu 16.04 works.
 build:
   number: 0
-  # we build it noarch on win for py3.x, and we skip win with py27.
-  skip: True  # [win]
-  skip: True  # [not x86_64]
-  noarch: python  # [py3k]
+  noarch: python
+  string: py2_{{ PKG_BUILDNUM }}  # [py2k]
+  string: py3_{{ PKG_BUILDNUM }}  # [py3k]
   # Make sure there is no tensorboard entry point in the tensorflow-{gpu-,}base
   # packages as it conflicts with a file in this package.
   entry_points:
     - tensorboard = tensorboard.main:run_main
+  # Although compilers are needed for the build, the output is pure python,
+  # javascript and html. Therefore the run_exports can be ignored.
   ignore_run_exports:
     - libgcc-ng
     - libstdcxx-ng
@@ -36,8 +41,8 @@ requirements:
     - python
     - pip
   run:
-    - python        # [py2k]
-    - python >=3.5  # [py3k]
+    - python >=2.7,<2.8.0a0  # [py2k]
+    - python >=3.5           # [py3k]
     - absl-py >={{absl_py}}
     - grpcio >=1.24.3
     - google-auth >=1.6.3,<2
