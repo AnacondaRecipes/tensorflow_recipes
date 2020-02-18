@@ -9,12 +9,6 @@ source:
   fn: tensorflow-{{ version }}.tar.gz
   url: https://github.com/tensorflow/tensorflow/archive/v{{ version }}.tar.gz
   sha256: 638e541a4981f52c69da4a311815f1e7989bf1d67a41d204511966e1daed14f7
-  patches:
-    # https://github.com/tensorflow/tensorflow/issues/31520#issuecomment-524584978
-    # - 0001-rebatch-constants.patch
-    - 0008-Add-alternate-clock_gettime-implementation-for-macOS.patch   # [osx]
-    - 0007-set-default-kmp-variables.patch                              # [tflow_variant == 'mkl']
-    - 0001-disable-prompt-for-ios-support.patch                         # [osx]
 
 build:
   number: 0
