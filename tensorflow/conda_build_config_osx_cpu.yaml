@@ -1,10 +1,10 @@
 full_base_version:
-  - "2.0.0 eigen_py27hb6beb60_0"
-  - "2.0.0 eigen_py36h185a06a_0"
-  - "2.0.0 eigen_py37h5f9a4e7_0"
-  - "2.0.0 mkl_py27h445f0f8_0"
-  - "2.0.0 mkl_py36h655c25b_0"
-  - "2.0.0 mkl_py37h5a24fda_0"
+  - "1.15.0 eigen_py27hb6beb60_0"
+  - "1.15.0 eigen_py36h185a06a_0"
+  - "1.15.0 eigen_py37h5f9a4e7_0"
+  - "1.15.0 mkl_py27h445f0f8_0"
+  - "1.15.0 mkl_py36h655c25b_0"
+  - "1.15.0 mkl_py37h5a24fda_0"
 select_version:
   - "2.2.0 eigen"
   - "2.2.0 eigen"

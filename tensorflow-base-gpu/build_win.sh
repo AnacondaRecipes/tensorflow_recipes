@@ -62,9 +62,28 @@ unset pin_run_as_build
 unset HTMLHelpDir
 unset FrameworkDir
 unset FrameworkDIR64
-
-
 unset PATH_OVERRIDE
+unset INSPECTOR_XE_2016_DIR
+unset INSPECTOR_XE_2013_DIR
+unset INTEL_LICENSE_FILE
+unset ICPP_COMPILER14
+unset ICPP_COMPILER16
+unset CONDA_PROMPT_MODIFIER
+unset CONDA_DEFAULT_ENV
+unset STDLIB_DIR
+unset SCRIPTS
+unset HOME
+unset ICPP_COMPILER19
+unset IFORT_COMPILER14
+unset IFORT_COMPILER16
+unset IFORT_COMPILER19
+unset INFOPATH
+unset INSPECTOR_2019_DIR
+unset INTEL_DEV_REDIST
+unset LIBRARY_LIB
+unset LIBRARY_INC
+unset LIBRARY_PREFIX
+
 
 echo "" | ./configure
 

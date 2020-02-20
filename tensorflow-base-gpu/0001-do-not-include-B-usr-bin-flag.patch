@@ -1,19 +1,19 @@
-From c05b45d2f785b72292239efb7d16b7d31518dfdb Mon Sep 17 00:00:00 2001
+From a4fdfe2c56d30e5edf56cac230dc19ff9efdf9c9 Mon Sep 17 00:00:00 2001
 From: Mike Sarahan <msarahan@gmail.com>
 Date: Fri, 18 Oct 2019 16:18:49 -0500
 Subject: [PATCH] do not include -B/usr/bin/ flag
 
 ---
- third_party/gpus/cuda_configure.bzl           | 10 ++++++----
- third_party/sycl/crosstool/CROSSTOOL.tpl      |  4 +---
- third_party/toolchains/cpus/arm/CROSSTOOL.tpl |  2 --
- 3 files changed, 7 insertions(+), 9 deletions(-)
+ third_party/gpus/cuda_configure.bzl               | 10 ++++++----
+ third_party/sycl/crosstool/CROSSTOOL.tpl          |  4 +---
+ third_party/toolchains/cpus/arm/cc_config.bzl.tpl |  1 -
+ 3 files changed, 7 insertions(+), 8 deletions(-)
 
 diff --git a/third_party/gpus/cuda_configure.bzl b/third_party/gpus/cuda_configure.bzl
-index cf63adcb..f80dc0a5 100644
+index af1bc96f00..a93d9428dd 100644
 --- a/third_party/gpus/cuda_configure.bzl
 +++ b/third_party/gpus/cuda_configure.bzl
-@@ -1118,10 +1118,12 @@ def _create_local_cuda_repository(repository_ctx):
+@@ -1156,10 +1156,12 @@ def _create_local_cuda_repository(repository_ctx):
      # TODO: when bazel stops adding '-B/usr/bin' by default, remove this
      #       flag from the CROSSTOOL completely (see
      #       https://github.com/bazelbuild/bazel/issues/5634)
@@ -31,7 +31,7 @@ index cf63adcb..f80dc0a5 100644
      cuda_defines["%{extra_no_canonical_prefixes_flags}"] = ""
      cuda_defines["%{unfiltered_compile_flags}"] = ""
 diff --git a/third_party/sycl/crosstool/CROSSTOOL.tpl b/third_party/sycl/crosstool/CROSSTOOL.tpl
-index f8e50efc..304b98aa 100755
+index f8e50efcc6..304b98aa58 100755
 --- a/third_party/sycl/crosstool/CROSSTOOL.tpl
 +++ b/third_party/sycl/crosstool/CROSSTOOL.tpl
 @@ -41,7 +41,6 @@ toolchain {
@@ -57,26 +57,18 @@ index f8e50efc..304b98aa 100755
 -}
 \ No newline at end of file
 +}
-diff --git a/third_party/toolchains/cpus/arm/CROSSTOOL.tpl b/third_party/toolchains/cpus/arm/CROSSTOOL.tpl
-index d98fcc84..8fbd3a5b 100644
---- a/third_party/toolchains/cpus/arm/CROSSTOOL.tpl
-+++ b/third_party/toolchains/cpus/arm/CROSSTOOL.tpl
-@@ -155,7 +155,6 @@ toolchain {
-   tool_path { name: "gcc" path: "/usr/bin/gcc" }
-   cxx_flag: "-std=c++0x"
-   linker_flag: "-lstdc++"
--  linker_flag: "-B/usr/bin/"
- 
-   # TODO(bazel-team): In theory, the path here ought to exactly match the path
-   # used by gcc. That works because bazel currently doesn't track files at
-@@ -373,7 +372,6 @@ toolchain {
-   tool_path { name: "gcc" path: "/usr/bin/clang" }
-   cxx_flag: "-std=c++0x"
-   linker_flag: "-lstdc++"
--  linker_flag: "-B/usr/bin/"
- 
-   # TODO(bazel-team): In theory, the path here ought to exactly match the path
-   # used by gcc. That works because bazel currently doesn't track files at
+diff --git a/third_party/toolchains/cpus/arm/cc_config.bzl.tpl b/third_party/toolchains/cpus/arm/cc_config.bzl.tpl
+index bfe91e711b..58b504eebd 100644
+--- a/third_party/toolchains/cpus/arm/cc_config.bzl.tpl
++++ b/third_party/toolchains/cpus/arm/cc_config.bzl.tpl
+@@ -450,7 +450,6 @@ def _impl(ctx):
+                         flag_group(
+                             flags = [
+                                 "-lstdc++",
+-                                "-B/usr/bin/",
+                                 "-Wl,-z,relro,-z,now",
+                                 "-no-canonical-prefixes",
+                                 "-pass-exit-codes",
 -- 
 2.20.1
 

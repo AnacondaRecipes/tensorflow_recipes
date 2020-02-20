@@ -1,7 +1,7 @@
 # NOTE: bazel refuses to use our python in this build, despite many hacky attempts you can see in build.sh
 #    To make this recipe build, /usr/bin/python must exist.  I symlinked /usr/bin/python3 to /usr/bin/python
 #    and that was sufficient.
-{% set version = "2.0.0" %}
+{% set version = "2.1.0" %}
 
 package:
   name: tensorboard
@@ -10,18 +10,23 @@ package:
 source:
   fn: tensorboard-{{ version }}.tar.gz
   url: https://github.com/tensorflow/tensorboard/archive/{{ version }}.tar.gz
-  sha256: b535414d818350f9d879d04bc3d1ed0026b09e55ffea5131456cd8758806287a
+  sha256: 84a61d5b06c7f41402133b57b3e8bcb2d233911b26a837c4b873fdbf3b1abc4b
 
+# tensorboard is built as two noarch packages, one for Python 2.7, the other Python 3.
+# Both can be built on a Linux system.
+# During the build, an executable is downloaded that requires a newer
+# version of libstdc++ than that provided by CentOS 6,  Ubuntu 16.04 works.
 build:
-  number: 1
-  # we build it noarch on win for py3.x, and we skip win with py27.
-  skip: True  # [win]
-  skip: True  # [not x86_64]
-  noarch: python  # [py3k]
+  number: 0
+  noarch: python
+  string: py2_{{ PKG_BUILDNUM }}  # [py2k]
+  string: py3_{{ PKG_BUILDNUM }}  # [py3k]
   # Make sure there is no tensorboard entry point in the tensorflow-{gpu-,}base
   # packages as it conflicts with a file in this package.
   entry_points:
     - tensorboard = tensorboard.main:run_main
+  # Although compilers are needed for the build, the output is pure python,
+  # javascript and html. Therefore the run_exports can be ignored.
   ignore_run_exports:
     - libgcc-ng
     - libstdcxx-ng
@@ -32,20 +37,23 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
-    - bazel >=0.26.1
+    - bazel >=0.29.1
     - python
     - pip
   run:
-    - python        # [py2k]
-    - python >=3.5  # [py3k]
+    - python >=2.7,<2.8.0a0  # [py2k]
+    - python >=3.5           # [py3k]
     - absl-py >={{absl_py}}
-    - grpcio >={{grpcio}}
+    - grpcio >=1.24.3
+    - google-auth >=1.6.3,<2
+    - google-auth-oauthlib >=0.4.1,<0.5
     - markdown >={{markdown}}
-    - numpy >={{numpy_devel}}
+    - numpy >={{numpy}}
     - protobuf >={{protobuf}}
-    - six >={{six}}
+    - requests >=2.21.0,<3
     - setuptools >={{setuptools}}
-    - werkzeug >={{werkzeug}}
+    - six >={{six}}
+    - werkzeug >=0.11.15
     - futures >=3.1.1  # [py27]
     # reported missing dep on OSX.  Apply to all, just to be safe.
     - wheel

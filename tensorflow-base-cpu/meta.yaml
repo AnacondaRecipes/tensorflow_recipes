@@ -1,4 +1,4 @@
-{% set version = "2.0.0" %}
+{% set version = "2.1.0" %}
 
 # This is the recipe for the "mkl" and "eigen" variants of tensorflow-base
 package:
@@ -8,13 +8,7 @@ package:
 source:
   fn: tensorflow-{{ version }}.tar.gz
   url: https://github.com/tensorflow/tensorflow/archive/v{{ version }}.tar.gz
-  sha256: 49b5f0495cd681cbcb5296a4476853d4aea19a43bdd9f179c928a977308a0617
-  patches:
-    # https://github.com/tensorflow/tensorflow/issues/31520#issuecomment-524584978
-    - 0001-rebatch-constants.patch
-    - 0008-Add-alternate-clock_gettime-implementation-for-macOS.patch   # [osx]
-    - 0007-set-default-kmp-variables.patch                              # [tflow_variant == 'mkl']
-    - 0001-disable-prompt-for-ios-support.patch                         # [osx]
+  sha256: 638e541a4981f52c69da4a311815f1e7989bf1d67a41d204511966e1daed14f7
 
 build:
   number: 0
@@ -50,54 +44,59 @@ requirements:
     - grpcio
     - keras-applications
     - keras-preprocessing
-    - markdown
     # has run_exports, doesn't need a run dep below
     - mklml            # [win and tflow_variant == 'mkl']
-    - numpy-devel
+    - numpy
     - opt_einsum
-    # >=19, but that's current, so a pin really isn't necessary.  Omit for maintenance.
+    # build only requirement, doesn't need a run dep below
     - pip
     - protobuf
     - python
-    # >=41, but that's current, so a pin really isn't necessary.  Omit for maintenance.
+    # build only requirement, doesn't need a run dep below
     - setuptools
+    - scipy
     - six
+    # build only requirement, doesn't need a run dep below
     - swig
     - termcolor
     # >=0.26, but that's current, so a pin really isn't necessary.  Omit for maintenance.
     - wheel
     - wrapt
-    - werkzeug
+    # has run_exports, doesn't need a run dep below
     - zlib
     {% if py2k -%}
-    - mock
     - backports.weakref
-    - future
     - enum34
+    - functools32
+    # requirement is not declared but seems necessary
+    - future
+    - mock
     {%- endif %}
 
   run:
     - python
     # pin_compatible here is just to be lazy and define the dep versions in only one place.  These
     #    don't have binary compatibility issues.
-    - {{ pin_compatible('absl-py') }}
-    - {{ pin_compatible('astor') }}
+    - {{ pin_compatible('absl-py', max_pin=None) }}
+    - {{ pin_compatible('astor', max_pin=None) }}
     - {{ pin_compatible('gast', max_pin='x.x.x') }}
-    - {{ pin_compatible('google-pasta') }}
-    - {{ pin_compatible('grpcio') }}
-    - {{ pin_compatible('keras-applications') }}
-    - {{ pin_compatible('keras-preprocessing') }}
-    - {{ pin_compatible('markdown', max_pin=None) }}
-    - {{ pin_compatible('opt_einsum')}}
-    - {{ pin_compatible('protobuf') }}
-    - {{ pin_compatible('six') }}
-    - {{ pin_compatible('termcolor') }}
-    - {{ pin_compatible('werkzeug') }}
-    - {{ pin_compatible('wrapt') }}
+    - {{ pin_compatible('google-pasta', max_pin=None) }}
+    - {{ pin_compatible('grpcio', max_pin=None) }}
+    - {{ pin_compatible('keras-applications', max_pin=None) }}
+    - {{ pin_compatible('keras-preprocessing', max_pin=None) }}
+    - {{ pin_compatible('numpy') }}
+    - {{ pin_compatible('opt_einsum', max_pin=None)}}
+    - {{ pin_compatible('protobuf', max_pin=None) }}
+    - {{ pin_compatible('scipy', max_pin=None) }}
+    - {{ pin_compatible('six', max_pin=None) }}
+    - {{ pin_compatible('termcolor', max_pin=None) }}
+    - {{ pin_compatible('wrapt', max_pin=None) }}
     {% if py2k -%}
-    - {{ pin_compatible('backports.weakref') }}
-    - {{ pin_compatible('enum34') }}
-    - {{ pin_compatible('mock') }}
+    - {{ pin_compatible('enum34', max_pin=None) }}
+    - {{ pin_compatible('functools32', max_pin=None) }}
+    - {{ pin_compatible('mock', max_pin=None) }}
+    # pin this manually since the current package has a odd version (1.0.post1)
+    - backports.weakref >=1.0
     - future
     {%- endif %}
 
