@@ -12,6 +12,7 @@ source:
 
 build:
   number: 0
+  skip: True  # [py27]
   skip: True  # [not x86_64]
   skip: True  # [win and vc<14]
   string: {{ tflow_variant }}_py{{ CONDA_PY }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}
@@ -64,14 +65,6 @@ requirements:
     - wrapt
     # has run_exports, doesn't need a run dep below
     - zlib
-    {% if py2k -%}
-    - backports.weakref
-    - enum34
-    - functools32
-    # requirement is not declared but seems necessary
-    - future
-    - mock
-    {%- endif %}
 
   run:
     - python
@@ -91,14 +84,6 @@ requirements:
     - {{ pin_compatible('six', max_pin=None) }}
     - {{ pin_compatible('termcolor', max_pin=None) }}
     - {{ pin_compatible('wrapt', max_pin=None) }}
-    {% if py2k -%}
-    - {{ pin_compatible('enum34', max_pin=None) }}
-    - {{ pin_compatible('functools32', max_pin=None) }}
-    - {{ pin_compatible('mock', max_pin=None) }}
-    # pin this manually since the current package has a odd version (1.0.post1)
-    - backports.weakref >=1.0
-    - future
-    {%- endif %}
 
 test:
   imports:
