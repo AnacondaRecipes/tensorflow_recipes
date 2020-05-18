@@ -2,34 +2,28 @@
 #    TF's lower bound.  These are higher because they are the lowest version that we have.
 absl_py:
     - 0.7
-astor:
-    - 0.6.2
+astunparse:
+    - 1.6.3
 bazel:
-    - 0.29.1  # [not win]
-    - 0.28.1  # [win]
-enum34:
-    - 1.1.6
-functools32:
-    - 3.2.3
+    - 2.0.0
 gast:
-    - 0.2.2
+    - 0.3.3
 google_pasta:
-    - 0.1.7
+    - 0.1.8
+# minimum in the wheel is 1.8.6, bump this for py37 support
 grpcio:
     - 1.14
-keras_applications:
-    - 1.0.8
+h5py:
+    - 2.10.0
 keras_preprocessing:
     - 1.1.0
+# tensorboard has this as a requirement
 markdown:
-    - 2.6.11
-mock:
-    - 2.0.0
+    - 2.6.8
 numpy:
     - 1.16
 opt_einsum:
-    - 3.1     # [py3k]
-    - <3.0a0  # [py2k]
+    - 2.3.2
 protobuf:
     - 3.8.0
 # tensorboard has this as a requirement
@@ -37,11 +31,10 @@ setuptools:
     - 41.0.0
 # pinned to an exact version in the wheel, loosen for the conda package
 scipy:
-   - 1.2.1   # [py2k]
-   - 1.4.1   # [py3k]
+   - 1.4.1
 six:
     - 1.12
 termcolor:
     - 1.1.0
 wrapt:
-    - 1.11
+    - 1.11.1
