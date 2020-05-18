@@ -39,11 +39,11 @@ requirements:
     - bazel     # [win]
     # requirements specified by the package itself
     - absl-py
-    - astor
+    - astunparse
     - gast
     - google-pasta
     - grpcio
-    - keras-applications
+    - h5py
     - keras-preprocessing
     # has run_exports, doesn't need a run dep below
     - mklml            # [win and tflow_variant == 'mkl']
@@ -71,11 +71,11 @@ requirements:
     # pin_compatible here is just to be lazy and define the dep versions in only one place.  These
     #    don't have binary compatibility issues.
     - {{ pin_compatible('absl-py', max_pin=None) }}
-    - {{ pin_compatible('astor', max_pin=None) }}
+    - {{ pin_compatible('astunparse', max_pin='x.x.x') }}
     - {{ pin_compatible('gast', max_pin='x.x.x') }}
     - {{ pin_compatible('google-pasta', max_pin=None) }}
     - {{ pin_compatible('grpcio', max_pin=None) }}
-    - {{ pin_compatible('keras-applications', max_pin=None) }}
+    - {{ pin_compatible('h5py', max_pin='x.x') }}
     - {{ pin_compatible('keras-preprocessing', max_pin=None) }}
     - {{ pin_compatible('numpy') }}
     - {{ pin_compatible('opt_einsum', max_pin=None)}}
