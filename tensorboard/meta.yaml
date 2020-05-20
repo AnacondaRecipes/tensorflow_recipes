@@ -1,7 +1,8 @@
 # NOTE: bazel refuses to use our python in this build, despite many hacky attempts you can see in build.sh
 #    To make this recipe build, /usr/bin/python must exist.  I symlinked /usr/bin/python3 to /usr/bin/python
 #    and that was sufficient.
-{% set version = "2.1.0" %}
+{% set version = "2.2.1" %}
+{% set tf_version = "2.2.0" %}
 
 package:
   name: tensorboard
@@ -10,17 +11,14 @@ package:
 source:
   fn: tensorboard-{{ version }}.tar.gz
   url: https://github.com/tensorflow/tensorboard/archive/{{ version }}.tar.gz
-  sha256: 84a61d5b06c7f41402133b57b3e8bcb2d233911b26a837c4b873fdbf3b1abc4b
+  sha256: 1d1e810ccf6ada114456cdac0d687afb2ec8c4d110dbcf8fd7afbe3d9f86e32c
 
-# tensorboard is built as two noarch packages, one for Python 2.7, the other Python 3.
-# Both can be built on a Linux system.
+# tensorboard is built as a noarch packages on a Linux system
 # During the build, an executable is downloaded that requires a newer
 # version of libstdc++ than that provided by CentOS 6,  Ubuntu 16.04 works.
 build:
   number: 0
   noarch: python
-  string: py2_{{ PKG_BUILDNUM }}  # [py2k]
-  string: py3_{{ PKG_BUILDNUM }}  # [py3k]
   # Make sure there is no tensorboard entry point in the tensorflow-{gpu-,}base
   # packages as it conflicts with a file in this package.
   entry_points:
@@ -41,8 +39,7 @@ requirements:
     - python
     - pip
   run:
-    - python >=2.7,<2.8.0a0  # [py2k]
-    - python >=3.5           # [py3k]
+    - python >=3.5
     - absl-py >={{absl_py}}
     - grpcio >=1.24.3
     - google-auth >=1.6.3,<2
@@ -53,15 +50,14 @@ requirements:
     - requests >=2.21.0,<3
     - setuptools >={{setuptools}}
     - six >={{six}}
+    - tensorboard-plugin-wit >=1.6.0
     - werkzeug >=0.11.15
-    - futures >=3.1.1  # [py27]
-    # reported missing dep on OSX.  Apply to all, just to be safe.
-    - wheel
+    - wheel >=0.26
 
 test:
   requires:
-    - tensorflow-base {{version}}
-    - tensorflow-estimator {{version}}
+    - tensorflow-base {{tf_version}}
+    - tensorflow-estimator {{tf_version}}
   imports:
     - tensorboard
   commands:

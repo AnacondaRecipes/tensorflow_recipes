@@ -84,6 +84,7 @@ cp -LR "${RUNFILES}/org_tensorflow_tensorboard/tensorboard" .
 mv -f "tensorboard/pip_package/LICENSE" .
 mv -f "tensorboard/pip_package/MANIFEST.in" .
 mv -f "tensorboard/pip_package/README.rst" .
+mv -f "tensorboard/pip_package/requirements.txt" .
 mv -f "tensorboard/pip_package/setup.cfg" .
 mv -f "tensorboard/pip_package/setup.py" .
 rm -rf tensorboard/pip_package
@@ -97,7 +98,6 @@ touch tensorboard/_vendor/__init__.py
 cp -LR "${RUNFILES}/org_html5lib/html5lib" tensorboard/_vendor
 cp -LR "${RUNFILES}/org_mozilla_bleach/bleach" tensorboard/_vendor
 cp -LR "${RUNFILES}/org_pythonhosted_webencodings/webencodings" tensorboard/_vendor
-cp -LR "${RUNFILES}/org_tensorflow_serving_api/tensorflow_serving" tensorboard/_vendor
 chmod -R u+w,go+r .
 
 find tensorboard -name \*.py |
@@ -108,7 +108,6 @@ find tensorboard -name \*.py |
     s/^from bleach/from tensorboard._vendor.bleach/
     s/^import webencodings$/from tensorboard._vendor import webencodings/
     s/^from webencodings/from tensorboard._vendor.webencodings/
-    s/from tensorflow_serving/from tensorboard._vendor.tensorflow_serving/
   '
 # install the package
 python -m pip install . --no-deps --ignore-installed -vvv
