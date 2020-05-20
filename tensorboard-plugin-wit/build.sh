@@ -9,9 +9,9 @@ bazel build //tensorboard_plugin_wit/pip_package:build_pip_package
 RUNFILES=$(pwd)/bazel-bin/tensorboard_plugin_wit/pip_package/build_pip_package.runfiles
 
 if [ "$(uname)" = "Darwin" ]; then
-      sedi="sed -i ''"
+    sedi="sed -i ''"
 else
-        sedi="sed -i"
+    sedi="sed -i"
 fi
 
 plugin_runfile_dir="${RUNFILES}/ai_google_pair_wit"

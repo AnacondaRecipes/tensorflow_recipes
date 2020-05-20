@@ -13,15 +13,23 @@ source:
   git_url: https://github.com/PAIR-code/what-if-tool.git
   git_hash: 01fcc6aa68cc26e5b234270550944262047aa263
 
+# tensorboard-plugin-wit is built as a noarch packages on a Linux system
+# During the build, an executable is downloaded that requires a newer
+# version of libstdc++ than that provided by CentOS 6,  Ubuntu 16.04 works.
 build:
   number: 0
   noarch: python
   string: py_{{ PKG_BUILDNUM }}
-  entry_points:
-    - wit = tensorboard_plugin_wit.wit_plugin_loader:WhatIfToolPluginLoader
+  # Although compilers are needed for the build, the output is pure python,
+  # javascript and html. Therefore the run_exports can be ignored.
+  ignore_run_exports:
+    - libgcc-ng
+    - libstdcxx-ng
 
 requirements:
   build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
     - bazel
   host:
     - pip
@@ -34,9 +42,6 @@ requirements:
 test:
   imports:
     - tensorboard_plugin_wit
-  # The wit command requires tensorboard so we do not test it here
-  #commands:
-  #  - wit --help
 
 about:
   home: https://github.com/PAIR-code/what-if-tool 
