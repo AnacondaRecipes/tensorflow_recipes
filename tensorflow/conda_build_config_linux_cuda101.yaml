@@ -2,7 +2,7 @@
 full_base_version:
   - "2.2.0 gpu_py36h8a81be8_0"
   - "2.2.0 gpu_py37h8a81be8_0"
-  - "2.2.0 gpu_py38h8a81be8_0"
+  - "2.2.0 gpu_py38h83e3d50_0"
 select_version:
   - "2.1.0 gpu"
   - "2.1.0 gpu"
