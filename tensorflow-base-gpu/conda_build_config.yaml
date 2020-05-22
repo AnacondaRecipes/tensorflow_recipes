@@ -14,8 +14,3 @@ cudatoolkit:
   - 10.1
 cudnn:
   - 7.6
-# conda-build has an issue right now where looping over things doesn't work the way it should
-# python:
-#   - 2.7  # [not win]
-#   - 3.6
-#   - 3.7
