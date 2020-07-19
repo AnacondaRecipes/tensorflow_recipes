@@ -9,6 +9,8 @@ source:
   fn: tensorflow-{{ version }}.tar.gz
   url: https://github.com/tensorflow/tensorflow/archive/v{{ version }}.tar.gz
   sha256: 69cd836f87b8c53506c4f706f655d423270f5a563b76dc1cfa60fbc3184185a3
+  patches:
+    - 0001-remove-batch.patch  # [win]
 
 build:
   number: 0

@@ -1,0 +1,25 @@
+From 7f5b583402514bf88cd6d09142c6cfac296f434d Mon Sep 17 00:00:00 2001
+From: Angela Gloyna <angela.gloyna@gmail.com>
+Date: Sun, 19 Jul 2020 11:38:05 -0500
+Subject: [PATCH] remove batch
+
+---
+ configure.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.py b/configure.py
+index f2c6e0c4dc..0ec75d4d89 100644
+--- a/configure.py
++++ b/configure.py
+@@ -480,7 +480,7 @@ def check_bazel_version(min_version, max_version):
+     print('Cannot find bazel. Please install bazel.')
+     sys.exit(0)
+   curr_version = run_shell(
+-      ['bazel', '--batch', '--bazelrc=/dev/null', 'version'])
++      ['bazel', '--bazelrc=/dev/null', 'version'])
+ 
+   for line in curr_version.split('\n'):
+     if 'Build label: ' in line:
+-- 
+2.21.1 (Apple Git-122.3)
+

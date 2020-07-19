@@ -63,7 +63,7 @@ echo "" | ./configure
 # Windows. This can be mitigated by keeping the global build matrix contents to
 # the absolute minimum.
 BUILD_OPTS="--define=override_eigen_strong_inline=true --experimental_shortened_obj_file_path=true ${BAZEL_MKL_OPT}"
-${LIBRARY_BIN}/bazel --output_base $SRC_DIR/../bazel --batch build -c opt $BUILD_OPTS tensorflow/tools/pip_package:build_pip_package || exit $?
+${LIBRARY_BIN}/bazel --output_base $SRC_DIR/../bazel build -c opt $BUILD_OPTS tensorflow/tools/pip_package:build_pip_package || exit $?
 
 # xref: https://github.com/tensorflow/tensorflow/issues/21886
 # xref: https://github.com/tensorflow/tensorflow/issues/6396
