@@ -5,8 +5,8 @@ absl_py:
     - 0.8.1  # [py==38]
 astunparse:
     - 1.6.3
-bazel:
-    - 2.0.0
+#bazel:
+#    - 2.0.0
 gast:
     - 0.3.3
 google_pasta:

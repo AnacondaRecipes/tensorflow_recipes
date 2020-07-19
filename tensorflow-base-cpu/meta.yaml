@@ -39,6 +39,7 @@ requirements:
     - posix     # [win]
     - m2-patch  # [win]
     - bazel     # [win]
+    - git       # [win]
     # requirements specified by the package itself
     - absl-py
     - astunparse
