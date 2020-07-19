@@ -34,12 +34,13 @@ requirements:
     - {{ compiler('cxx') }}
     # required here for all OS's, and ALSO below for windows
     - bazel
+    - git
   host:
     # conda build requirements for .sh scripts on win
     - posix     # [win]
     - m2-patch  # [win]
     - bazel     # [win]
-    - git       # [win]
+    - git
     # requirements specified by the package itself
     - absl-py
     - astunparse
