@@ -1,5 +1,5 @@
-{% set version = "2.2.0" %}
-{% set tarball_version = "2.2.0" %}
+{% set version = "2.3.0" %}
+{% set tarball_version = "2.3.0" %}
 
 package:
   name: tensorflow-estimator

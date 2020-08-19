@@ -18,13 +18,20 @@ export PYTHON_BIN_PATH="$PYTHON"
 export PYTHON_LIB_PATH="$SP_DIR"
 
 export TF_NEED_CUDA=0
-export TF_ENABLE_XLA=0
+export TF_ENABLE_XLA=1
 export TF_NEED_VERBS=0
 export TF_NEED_GCP=1
 export TF_NEED_KAFKA=0
 export TF_NEED_HDFS=0
+export TF_NEED_OPENCL=0
 export TF_NEED_OPENCL_SYCL=0
-
+export TF_NEED_CLANG=0
+export TF_NEED_TENSORRT=0
+export TF_SET_ANDROID_WORKSPACE=0
+export TF_DOWNLOAD_CLANG=0
+export TF_NEED_ROCM=0
+export TF_NEED_MPI=0
+export TF_NEED_COMPUTECPP=0
 unset OLD_PATH
 unset ORIGINAL_PATH
 unset __VSCMD_PREINIT_PATH
@@ -56,13 +63,15 @@ unset CONDA_DEFAULT_ENV
 unset STDLIB_DIR
 unset SCRIPTS
 
+# rm -rf .bazelrc
+cp -f ${RECIPE_DIR}/def_bazelrc .bazelrc
 echo "" | ./configure
 
 # Modern versions of bazel also inject user environment variables in additional
 # arguments. This causes the final command line argument length to explode on
 # Windows. This can be mitigated by keeping the global build matrix contents to
 # the absolute minimum.
-BUILD_OPTS="--define=override_eigen_strong_inline=true --experimental_shortened_obj_file_path=true ${BAZEL_MKL_OPT}"
+BUILD_OPTS="--define=override_eigen_strong_inline=true ${BAZEL_MKL_OPT}"
 ${LIBRARY_BIN}/bazel --output_base $SRC_DIR/../bazel --batch build -c opt $BUILD_OPTS tensorflow/tools/pip_package:build_pip_package || exit $?
 
 # xref: https://github.com/tensorflow/tensorflow/issues/21886

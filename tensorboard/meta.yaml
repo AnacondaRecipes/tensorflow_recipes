@@ -1,8 +1,8 @@
 # NOTE: bazel refuses to use our python in this build, despite many hacky attempts you can see in build.sh
 #    To make this recipe build, /usr/bin/python must exist.  I symlinked /usr/bin/python3 to /usr/bin/python
 #    and that was sufficient.
-{% set version = "2.2.1" %}
-{% set tf_version = "2.2.0" %}
+{% set version = "2.3.0" %}
+{% set tf_version = "2.3.0" %}
 
 package:
   name: tensorboard
