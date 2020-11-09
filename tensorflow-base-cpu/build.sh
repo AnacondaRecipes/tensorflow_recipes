@@ -27,17 +27,18 @@ if [[ ${HOST} =~ .*darwin.* ]]; then
         -e "s:\${CONDA_BUILD_SYSROOT}:${CONDA_BUILD_SYSROOT}:" \
         cc_wrapper.sh.template > cc_wrapper.sh
     chmod +x cc_wrapper.sh
-    sed -e "s:\${PREFIX}:${BUILD_PREFIX}:" \
-        -e "s:\${LD}:${LD}:" \
-        -e "s:\${NM}:${NM}:" \
-        -e "s:\${STRIP}:${STRIP}:" \
-        -e "s:\${LIBTOOL}:${LIBTOOL}:" \
-        -e "s:\${CONDA_BUILD_SYSROOT}:${CONDA_BUILD_SYSROOT}:" \
-        CROSSTOOL.template > CROSSTOOL
+    sed -i "" "s:\${PREFIX}:${BUILD_PREFIX}:" cc_toolchain_config.bzl
+    sed -i "" "s:\${BUILD_PREFIX}:${BUILD_PREFIX}:" cc_toolchain_config.bzl
+    sed -i "" "s:\${CONDA_BUILD_SYSROOT}:${CONDA_BUILD_SYSROOT}:" cc_toolchain_config.bzl
+    sed -i "" "s:\${LD}:${LD}:" cc_toolchain_config.bzl
+    sed -i "" "s:\${NM}:${NM}:" cc_toolchain_config.bzl
+    sed -i "" "s:\${STRIP}:${STRIP}:" cc_toolchain_config.bzl
+    sed -i "" "s:\${LIBTOOL}:${LIBTOOL}:" cc_toolchain_config.bzl
     cd ..
 
     # set build arguments
     export  BAZEL_USE_CPP_ONLY_TOOLCHAIN=1
+    export TF_CONFIGURE_IOS=0
     BUILD_OPTS="
         --crosstool_top=//custom_clang_toolchain:toolchain
         --verbose_failures
