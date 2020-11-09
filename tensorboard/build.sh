@@ -6,6 +6,7 @@ set -ex
 rm -rf "${SP_DIR}/setuptools/command/launcher manifest.xml"
 rm -rf "${SP_DIR}/setuptools/script (dev).tmpl"
 
+rm -rf ~/^.cache/bazel/
 export PYTHON_BIN_PATH="$PYTHON"
 export PYTHON_LIB_PATH="$SP_DIR"
 
@@ -14,6 +15,7 @@ export PYTHON_LIB_PATH="$SP_DIR"
 # https://github.com/bazelbuild/bazel/issues/6473
 # https://github.com/bazelbuild/bazel/issues/4643
 # https://github.com/bazelbuild/bazel/issues/7026
+rm -f .bazelrc
 cat <<EOF >> .bazelrc
 build --announce_rc
 build --noincompatible_strict_action_env

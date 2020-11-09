@@ -11,7 +11,7 @@ package:
 source:
   fn: tensorboard-{{ version }}.tar.gz
   url: https://github.com/tensorflow/tensorboard/archive/{{ version }}.tar.gz
-  sha256: 1d1e810ccf6ada114456cdac0d687afb2ec8c4d110dbcf8fd7afbe3d9f86e32c
+  sha256: 947a58702c2841eb4559637dbf8639633f79de9a0f422be9737f3563a1725440
 
 # tensorboard is built as a noarch packages on a Linux system
 # During the build, an executable is downloaded that requires a newer
@@ -36,10 +36,10 @@ requirements:
     - {{ compiler('cxx') }}
   host:
     - bazel >=0.29.1
-    - python
+    - python >=3.7
     - pip
   run:
-    - python >=3.5
+    - python >=3.7
     - absl-py >={{absl_py}}
     - grpcio >=1.24.3
     - google-auth >=1.6.3,<2
@@ -52,6 +52,7 @@ requirements:
     - six >={{six}}
     - tensorboard-plugin-wit >=1.6.0
     - werkzeug >=0.11.15
+    - markdown >=2.6.8
     - wheel >=0.26
 
 test:

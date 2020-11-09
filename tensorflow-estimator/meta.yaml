@@ -8,7 +8,7 @@ package:
 source:
   fn: tensorflow-estimator-{{ version }}.tar.gz
   url: https://github.com/tensorflow/estimator/archive/v{{ tarball_version }}.tar.gz
-  sha256: 2d68cb6e6442e7dcbfa2e092aa25bdcb0eda420536a829b85d732854a4c85d46
+  sha256: 75403e7de7e8ec30ec0781ede56ed84cbe5e90daad64a9c242cd489c8fe63a17
 
 build:
   number: 0

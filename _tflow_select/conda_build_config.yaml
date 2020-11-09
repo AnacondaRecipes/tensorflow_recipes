@@ -1,21 +1,19 @@
 tflow_variant_version:
 # 1.x series for tensorflow 1.8.0
 # eigen variant is the default
-  - 1.1.0  # [not osx]
   - 1.2.0
   - 1.3.0
 # 2.x series are for tensorflow 1.9 and above
 # mkl variant is the default
-  - 2.1.0  # [not osx]
-  - 2.2.0
+  - 2.3.0
   - 2.3.0
 tflow_variant_str:
 # 1.x series
-  - gpu    # [not osx]
+  # - gpu    # [not osx]
   - mkl
   - eigen
 # 2.x series
-  - gpu    # [not osx]
+  # - gpu    # [not osx]
   - eigen
   - mkl
 zip_keys:

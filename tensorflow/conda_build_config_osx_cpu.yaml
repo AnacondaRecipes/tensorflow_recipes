@@ -6,9 +6,9 @@ full_base_version:
   - "1.15.0 mkl_py36h655c25b_0"
   - "1.15.0 mkl_py37h5a24fda_0"
 select_version:
-  - "2.2.0 eigen"
-  - "2.2.0 eigen"
-  - "2.2.0 eigen"
+  - "2.3.0 eigen"
+  - "2.3.0 eigen"
+  - "2.3.0 eigen"
   - "2.3.0 mkl"
   - "2.3.0 mkl"
   - "2.3.0 mkl"
