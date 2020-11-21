@@ -1,0 +1,13 @@
+Index: work/configure.py
+===================================================================
+--- work.orig/configure.py
++++ work/configure.py
+@@ -1278,7 +1278,7 @@ def set_windows_build_flags(environ_cp):
+     # conv_grad_ops_3d.cc and conv_ops_3d.cc by 20 minutes,
+     # but this also hurts the performance. Let users decide what they want.
+     write_to_bazelrc('build --define=override_eigen_strong_inline=true')
+-
++  write_to_bazelrc('build --define=no_tensorflow_py_deps=true')
+ 
+ def config_info_line(name, help_text):
+   """Helper function to print formatted help text for Bazel config options."""

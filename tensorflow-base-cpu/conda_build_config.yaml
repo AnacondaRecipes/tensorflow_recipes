@@ -4,6 +4,10 @@ c_compiler_version:    # [linux]
   - 5.4                # [linux]
 cxx_compiler_version:  # [linux]
   - 5.4                # [linux]
+cxx_compiler:  # [win]
+  - vs2019     # [win]
+c_compiler:    # [win]
+  - vs2019     # [win]
 tflow_variant:
   - mkl
   - eigen

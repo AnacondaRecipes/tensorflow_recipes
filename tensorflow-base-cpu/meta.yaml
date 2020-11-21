@@ -9,6 +9,8 @@ source:
   fn: tensorflow-{{ version }}.tar.gz
   url: https://github.com/tensorflow/tensorflow/archive/v{{ version }}.tar.gz
   sha256: 2595a5c401521f20a2734c4e5d54120996f8391f00bb62a57267d930bce95350
+  patches:  # [win]
+    - tensorflow_win_zip64.patch  # [win]
 
 build:
   number: 0
@@ -25,7 +27,6 @@ build:
     # - tensorboard = tensorboard.main:run_main
     - tf_upgrade_v2 = tensorflow.tools.compatibility.tf_upgrade_v2_main:main
     - estimator_ckpt_converter = tensorflow_estimator.python.estimator.tools.checkpoint_converter:main
-
 requirements:
   build:
     - {{ compiler('c') }}
@@ -42,8 +43,9 @@ requirements:
     - astunparse
     - gast
     - google-pasta
-    - grpcio
+    - grpcio  # [py<38]
     - h5py
+    - keras-applications
     - keras-preprocessing
     # has run_exports, doesn't need a run dep below
     - mklml            # [win and tflow_variant == 'mkl']
@@ -77,6 +79,7 @@ requirements:
     - {{ pin_compatible('grpcio', max_pin=None) }}
     - {{ pin_compatible('h5py', max_pin='x.x') }}
     - {{ pin_compatible('keras-preprocessing', max_pin=None) }}
+    - {{ pin_compatible('keras-applications', max_pin=None) }}
     - {{ pin_compatible('numpy') }}
     - {{ pin_compatible('opt_einsum', max_pin=None)}}
     - {{ pin_compatible('protobuf', max_pin=None) }}
