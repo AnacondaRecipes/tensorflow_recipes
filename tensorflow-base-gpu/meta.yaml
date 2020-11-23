@@ -11,6 +11,7 @@ source:
   sha256: 2595a5c401521f20a2734c4e5d54120996f8391f00bb62a57267d930bce95350
   patches:
     - 0001-do-not-include-B-usr-bin-flag.patch             # [linux]
+    - tensorflow_win_zip64.patch                           # [win]
 
 build:
   number: 0
@@ -22,11 +23,11 @@ build:
     - tflite_convert = tensorflow.lite.python.tflite_convert:main
     - toco = tensorflow.lite.python.tflite_convert:main
     - saved_model_cli = tensorflow.python.tools.saved_model_cli:main
+    - freeze_graph = tensorflow.python.tools.freeze_graph:main
     # The tensorboard package adds this entry point.
     # - tensorboard = tensorboard.main:run_main
     - tf_upgrade_v2 = tensorflow.tools.compatibility.tf_upgrade_v2_main:main
     - estimator_ckpt_converter = tensorflow_estimator.python.estimator.tools.checkpoint_converter:main
-
 requirements:
   build:
     - {{ compiler('c') }}
@@ -43,8 +44,9 @@ requirements:
     - astunparse
     - gast
     - google-pasta
-    - grpcio
+    - grpcio  # [py<38]
     - h5py
+    - keras-applications
     - keras-preprocessing
     # has run_exports, doesn't need a run dep below
     - mklml            # [win and tflow_variant == 'mkl']
@@ -81,6 +83,7 @@ requirements:
     - {{ pin_compatible('google-pasta', max_pin=None) }}
     - {{ pin_compatible('grpcio', max_pin=None) }}
     - {{ pin_compatible('h5py', max_pin='x.x') }}
+    - {{ pin_compatible('keras-applications', max_pin=None) }}
     - {{ pin_compatible('keras-preprocessing', max_pin=None) }}
     - {{ pin_compatible('numpy') }}
     - {{ pin_compatible('opt_einsum', max_pin=None)}}

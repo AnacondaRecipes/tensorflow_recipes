@@ -14,12 +14,14 @@ export PYTHON_BIN_PATH="$PYTHON"
 export PYTHON_LIB_PATH="$SP_DIR"
 
 export TF_NEED_CUDA=1
-export TF_ENABLE_XLA=0
+export TF_CUDA_CLANG=0
+export TF_ENABLE_XLA=1
 export TF_NEED_MKL=0
 export TF_NEED_VERBS=0
 export TF_NEED_GCP=1
 export TF_NEED_KAFKA=0
 export TF_NEED_HDFS=0
+export TF_NEED_OPENCL=0
 export TF_NEED_OPENCL_SYCL=0
 
 export USE_MSVC_WRAPPER=1
@@ -42,6 +44,14 @@ if [[ ${cudatoolkit} == 10.* ]]; then
     export TF_CUDA_COMPUTE_CAPABILITIES="3.0,3.5,5.2,6.0,6.1,7.0,7.5"
 fi
 
+export TF_NEED_CLANG=0
+export TF_NEED_ROCM=0
+export TF_NEED_TENSORRT=0
+export TF_ANDROID_WORKSPACE=0
+export TF_DOWNLOAD_CLANG=0
+export TF_NEED_MPI=0
+export TF_NEED_COMPUTECPP=0
+export TF_CONFIGURE_IOS=0
 unset OLD_PATH
 unset ORIGINAL_PATH
 unset __VSCMD_PREINIT_PATH
@@ -85,6 +95,8 @@ unset LIBRARY_INC
 unset LIBRARY_PREFIX
 
 
+mv .bazelrc bazelrc_old
+cp -f ${RECIPE_DIR}/def_bazelrc .bazelrc
 echo "" | ./configure
 
 cp $RECIPE_DIR/vile_hack.sh ./
@@ -92,15 +104,15 @@ bash vile_hack.sh &
 pid=$!
 
 BUILD_OPTS="--logging=6 --subcommands --define=override_eigen_strong_inline=true --experimental_shortened_obj_file_path=true --define=no_tensorflow_py_deps=true"
-${LIBRARY_BIN}/bazel --output_base $SRC_DIR/../bazel --batch build -c opt $BUILD_OPTS tensorflow/tools/pip_package:build_pip_package || exit $?
+${LIBRARY_BIN}/bazel --output_base $SRC_DIR/../bazel --batch build -c opt $BUILD_OPTS //tensorflow/tools/pip_package:build_pip_package || exit $?
 error_exit $pid
 
-PY_TEST_DIR="py_test_dir"
+PY_TEST_DIR="$SRC_DIR/py_test_dir"
 rm -fr ${PY_TEST_DIR}
 mkdir -p ${PY_TEST_DIR}
-cmd /c "mklink /J ${PY_TEST_DIR}\\tensorflow .\\tensorflow"
+cmd /c "mklink /J $(cygpath -w ${PY_TEST_DIR})\\tensorflow .\\tensorflow"
 
-./bazel-bin/tensorflow/tools/pip_package/build_pip_package "$PWD/${PY_TEST_DIR}"
+./bazel-bin/tensorflow/tools/pip_package/build_pip_package "$(cygpath -w ${PY_TEST_DIR})"
 
 PIP_NAME=$(ls ${PY_TEST_DIR}/tensorflow-*.whl)
 # python -m pip install ${PIP_NAME} --no-deps -vv --ignore-installed
