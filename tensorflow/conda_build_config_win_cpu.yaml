@@ -1,25 +1,33 @@
 full_base_version:
-  - "2.1.0 eigen_py36h49b2757_0"
-  - "2.1.0 eigen_py37h49b2757_0"
-  - "2.1.0 mkl_py36h230818c_0"
-  - "2.1.0 mkl_py37h230818c_0"
+  - "2.3.0 eigen_py37h17acbac_0"
+  - "2.3.0 mkl_py37h7075554_0"
+  - "2.3.0 gpu_py37h18d21e4_0"
+  - "2.3.0 eigen_py38h75a453f_0"
+  - "2.3.0 mkl_py38ha8c2253_0"
+  - "2.3.0 gpu_py38h7339f5a_0"
 select_version:
-  - "2.2.0 eigen"
-  - "2.2.0 eigen"
+  - "2.3.0 eigen"
   - "2.3.0 mkl"
+  - "2.3.0 gpu"
+  - "2.3.0 eigen"
   - "2.3.0 mkl"
+  - "2.3.0 gpu"
 tflow_variant:
   - "eigen"
+  - "mkl"
+  - "gpu"
   - "eigen"
   - "mkl"
-  - "mkl"
+  - "gpu"
 py_version:
-  - 3.6
   - 3.7
-  - 3.6
   - 3.7
+  - 3.7
+  - 3.8
+  - 3.8
+  - 3.8
 zip_keys:
   - full_base_version
   - select_version
-  - tflow_variant
+  - tflow_variant 
   - py_version
