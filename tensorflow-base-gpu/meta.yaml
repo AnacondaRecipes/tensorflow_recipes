@@ -103,7 +103,6 @@ test:
   files:
     - gpu_test.py
   commands:
-    - freeze_graph --help
     - saved_model_cli --help
     - tflite_convert --help     # [not win]
     - toco_from_protos --help   # [not win]
