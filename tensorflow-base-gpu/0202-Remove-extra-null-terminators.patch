@@ -1,0 +1,39 @@
+From 776c56c04de4a00ef491248e2e9196f14e1e0392 Mon Sep 17 00:00:00 2001
+From: "William D. Irons" <wdirons@us.ibm.com>
+Date: Thu, 10 Oct 2019 16:25:04 +0000
+Subject: [PATCH] Remove extra null terminators
+
+TF_CUDA_TOOLKIT_PATH will be stored as an
+absolute path during the bazel build. Conda uses build paths that are
+256 characters long. During conda install, it will replace the build path
+with the shorter install path and append null terminators to keep the
+binary file the same size. We need to use c_str() to remove the extra
+null terminators.
+---
+ .../core/platform/default/cuda_libdevice_path.cc      | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/tensorflow/core/platform/default/cuda_libdevice_path.cc b/tensorflow/core/platform/default/cuda_libdevice_path.cc
+index 25eb6ab463..44522e5528 100644
+--- a/tensorflow/core/platform/default/cuda_libdevice_path.cc
++++ b/tensorflow/core/platform/default/cuda_libdevice_path.cc
+@@ -27,7 +27,16 @@ namespace tensorflow {
+
+ std::vector<string> CandidateCudaRoots() {
+   VLOG(3) << "CUDA root = " << TF_CUDA_TOOLKIT_PATH;
+-  return {TF_CUDA_TOOLKIT_PATH};
++
++/* WML-CE Issue #11827 - TF_CUDA_TOOLKIT_PATH will be stored as an
++absolute path during the bazel build. Conda uses build paths that are
++256 characters long. During conda install, it will replace the build path
++with the shorter install path and append null terminators to keep the
++binary file the same size. We need to use c_str() to remove the extra
++null terminators.
++*/
++  string cuda_toolkit_path = TF_CUDA_TOOLKIT_PATH;
++  return {cuda_toolkit_path.c_str()};
+ }
+
+ }  // namespace tensorflow
+--
+2.20.1

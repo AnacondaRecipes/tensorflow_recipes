@@ -10,6 +10,9 @@ error_exit()
     fi
 }
 
+# expand PREFIX in tensor's build_config/BUILD file
+sed -i -e "s:\${PREFIX}:${PREFIX}:" tensorflow/core/platform/default/build_config/BUILD
+
 export PYTHON_BIN_PATH="$PYTHON"
 export PYTHON_LIB_PATH="$SP_DIR"
 
@@ -20,8 +23,8 @@ export TF_NEED_MKL=0
 export TF_NEED_VERBS=0
 export TF_NEED_GCP=1
 export TF_NEED_KAFKA=0
-export TF_NEED_HDFS=0
 export TF_NEED_OPENCL=0
+export TF_NEED_HDFS=0
 export TF_NEED_OPENCL_SYCL=0
 
 export USE_MSVC_WRAPPER=1
@@ -52,6 +55,7 @@ export TF_DOWNLOAD_CLANG=0
 export TF_NEED_MPI=0
 export TF_NEED_COMPUTECPP=0
 export TF_CONFIGURE_IOS=0
+
 unset OLD_PATH
 unset ORIGINAL_PATH
 unset __VSCMD_PREINIT_PATH
@@ -94,6 +98,8 @@ unset LIBRARY_LIB
 unset LIBRARY_INC
 unset LIBRARY_PREFIX
 
+bazel clean --expunge
+bazel shutdown
 
 mv .bazelrc bazelrc_old
 cp -f ${RECIPE_DIR}/def_bazelrc .bazelrc
@@ -104,7 +110,13 @@ bash vile_hack.sh &
 pid=$!
 
 BUILD_OPTS="--logging=6 --subcommands --define=override_eigen_strong_inline=true --experimental_shortened_obj_file_path=true --define=no_tensorflow_py_deps=true"
-${LIBRARY_BIN}/bazel --output_base $SRC_DIR/../bazel --batch build -c opt $BUILD_OPTS //tensorflow/tools/pip_package:build_pip_package || exit $?
+${LIBRARY_BIN}/bazel --output_base $SRC_DIR/../bazel --batch build -c opt $BUILD_OPTS \
+  --action_env="PYTHON_BIN_PATH=${PYTHON}" \
+  --action_env="PYTHON_LIB_PATH=${SP_DIR}" \
+  --python_path="${PYTHON}" \
+  --copt=-DNO_CONSTEXPR_FOR_YOU=1 \
+  --host_copt=-DNO_CONSTEXPR_FOR_YOU=1 \
+  //tensorflow/tools/pip_package:build_pip_package || exit $?
 error_exit $pid
 
 PY_TEST_DIR="$SRC_DIR/py_test_dir"

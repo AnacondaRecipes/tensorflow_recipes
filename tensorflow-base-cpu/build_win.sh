@@ -2,6 +2,9 @@
 
 set -ex
 
+# expand PREFIX in tensor's build_config/BUILD file
+sed -i -e "s:\${PREFIX}:${PREFIX}:" tensorflow/core/platform/default/build_config/BUILD
+
 # variant specific settings
 if [ ${tflow_variant} == "mkl" ]; then
     export TF_NEED_MKL=1
@@ -20,7 +23,8 @@ export PYTHON_LIB_PATH="$SP_DIR"
 export TF_NEED_CUDA=0
 export TF_CUDA_CLANG=0
 export TF_DOWNLOAD_CLANG=0
-export TF_ENABLE_XLA=0
+# export TF_ENABLE_XLA=0
+export TF_ENABLE_XLA=1
 export TF_NEED_VERBS=0
 export TF_NEED_GCP=1
 export TF_NEED_KAFKA=0
@@ -91,12 +95,10 @@ PY_TEST_DIR="$SRC_DIR/py_test_dir"
 rm -fr ${PY_TEST_DIR}
 mkdir -p ${PY_TEST_DIR}
 cmd /c "mklink /J $(cygpath -w ${PY_TEST_DIR})\\tensorflow) .\\tensorflow"
-
 ./bazel-bin/tensorflow/tools/pip_package/build_pip_package "$(cygpath -w ${PY_TEST_DIR})"
 
 PIP_NAME=$(ls ${PY_TEST_DIR}/tensorflow-*.whl)
-# install the whl using pip
-# pip install --no-deps ${PIP_NAME}
+# python -m pip install ${PIP_NAME} --no-deps -vv --ignore-installed
 unzip ${PIP_NAME} -d $SP_DIR
 
 # The tensorboard package has the proper entrypoint

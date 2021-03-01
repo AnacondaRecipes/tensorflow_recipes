@@ -1,4 +1,4 @@
-{% set version = "2.3.0" %}
+{% set version = "2.4.1" %}
 
 # This is the recipe for the "gpu" variant of tensorflow-base
 package:
@@ -8,10 +8,19 @@ package:
 source:
   fn: tensorflow-{{ version }}.tar.gz
   url: https://github.com/tensorflow/tensorflow/archive/v{{ version }}.tar.gz
-  sha256: 2595a5c401521f20a2734c4e5d54120996f8391f00bb62a57267d930bce95350
+  sha256: f681331f8fc0800883761c7709d13cda11942d4ad5ff9f44ad855e9dc78387e0
   patches:
     - 0001-do-not-include-B-usr-bin-flag.patch             # [linux]
     - tensorflow_win_zip64.patch                           # [win]
+    # general patches
+    - 0101-include-c-and-cc-headers.patch                  # [linus]
+    - 0103-BUILD-changes-for-external-sqlite-package.patch # [linux]
+    - 0104-Fixed-linking-error-in-conda-builds.patch        # [linux]
+    - 0106-Upstream-patch-for-absl-error.patch             # [linux]
+    - 0107-do-not-hardcode-ca-cert-location.patch          # [linux]
+    # gpu specific patches
+    - 0201-add-additional-cuda-rpaths.patch                # [linux]
+    - 0202-Remove-extra-null-terminators.patch             # [linux]
 
 build:
   number: 0
@@ -23,17 +32,19 @@ build:
     - tflite_convert = tensorflow.lite.python.tflite_convert:main
     - toco = tensorflow.lite.python.tflite_convert:main
     - saved_model_cli = tensorflow.python.tools.saved_model_cli:main
-    - freeze_graph = tensorflow.python.tools.freeze_graph:main
     # The tensorboard package adds this entry point.
     # - tensorboard = tensorboard.main:run_main
     - tf_upgrade_v2 = tensorflow.tools.compatibility.tf_upgrade_v2_main:main
     - estimator_ckpt_converter = tensorflow_estimator.python.estimator.tools.checkpoint_converter:main
+
 requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     # required here for all OS's, and ALSO below for windows
     - bazel
+    - aws-sdk-cpp
+    - nasm
   host:
     # conda build requirements for .sh scripts on win
     - posix     # [win]
@@ -42,11 +53,11 @@ requirements:
     # requirements specified by the package itself
     - absl-py
     - astunparse
+    - python-flatbuffers
     - gast
     - google-pasta
-    - grpcio  # [py<38]
+    - grpcio
     - h5py
-    - keras-applications
     - keras-preprocessing
     # has run_exports, doesn't need a run dep below
     - mklml            # [win and tflow_variant == 'mkl']
@@ -60,6 +71,8 @@ requirements:
     - setuptools
     - scipy
     - six
+    - typing_extensions  # [py<38]
+    - sqlite
     # build only requirement, doesn't need a run dep below
     - swig
     - termcolor
@@ -83,7 +96,6 @@ requirements:
     - {{ pin_compatible('google-pasta', max_pin=None) }}
     - {{ pin_compatible('grpcio', max_pin=None) }}
     - {{ pin_compatible('h5py', max_pin='x.x') }}
-    - {{ pin_compatible('keras-applications', max_pin=None) }}
     - {{ pin_compatible('keras-preprocessing', max_pin=None) }}
     - {{ pin_compatible('numpy') }}
     - {{ pin_compatible('opt_einsum', max_pin=None)}}
@@ -95,6 +107,8 @@ requirements:
     - {{ pin_compatible('cudatoolkit', max_pin='x.x') }}
     - {{ pin_compatible('cudnn') }}
     - cupti  # [not win]
+    - typing_extensions  # [py<38]
+    - python-flatbuffers
 
 test:
   # the tensorflow import is tested by the run_test.sh script
@@ -103,6 +117,7 @@ test:
   files:
     - gpu_test.py
   commands:
+    - freeze_graph --help
     - saved_model_cli --help
     - tflite_convert --help     # [not win]
     - toco_from_protos --help   # [not win]

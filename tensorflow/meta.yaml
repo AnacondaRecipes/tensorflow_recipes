@@ -1,4 +1,5 @@
-{% set version = "2.3.0" %}
+{% set version = "2.4.1" %}
+{% set tb_version = "2.4.0" %}
 
 package:
   name: tensorflow
@@ -13,7 +14,7 @@ requirements:
   run:
     - tensorflow-base {{ full_base_version }}
     - _tflow_select   {{ select_version }}
-    - tensorboard            >={{version}}
+    - tensorboard            >={{tb_version}}
     - tensorflow-estimator   >={{version}}
     - python  {{ py_version }}
 

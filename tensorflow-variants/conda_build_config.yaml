@@ -1,17 +1,11 @@
 variant:
+  - "gpu"         # [not osx]
   - "eigen"
   - "mkl"
-  - "gpu"         # [win]
-  - "eigen"
-  - "mkl"
-  - "gpu"        # [win]
 select_version:
-  - "2.3.0 eigen"
+  - "2.1.0 gpu"   # [not osx]
+  - "2.2.0 eigen"
   - "2.3.0 mkl"
-  - "2.3.0 gpu"   # [win]
-  - "2.3.0 eigen"
-  - "2.3.0 mkl"
-  - "2.3.0 gpu"  # [win]
 zip_keys:
   - variant
   - select_version

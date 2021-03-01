@@ -1,5 +1,5 @@
-{% set version = "2.3.0" %}
-{% set tarball_version = "2.3.0" %}
+{% set version = "2.4.1" %}
+{% set tarball_version = "2.4.0" %}
 
 package:
   name: tensorflow-estimator
@@ -8,7 +8,7 @@ package:
 source:
   fn: tensorflow-estimator-{{ version }}.tar.gz
   url: https://github.com/tensorflow/estimator/archive/v{{ tarball_version }}.tar.gz
-  sha256: 75403e7de7e8ec30ec0781ede56ed84cbe5e90daad64a9c242cd489c8fe63a17
+  sha256: e6ea12014c3d8c89a81ace95f8f8b7c39ffcd3e4e4626709e4aee0010eefd962
 
 build:
   number: 0

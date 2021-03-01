@@ -2,6 +2,9 @@
 
 set -ex
 
+# expand PREFIX in tensor's build_config/BUILD file
+sed -i -e "s:\${PREFIX}:${PREFIX}:" tensorflow/core/platform/default/build_config/BUILD
+
 # variant specific settings
 if [ ${tflow_variant} == "mkl" ]; then
     export TF_NEED_MKL=1
@@ -38,7 +41,6 @@ if [[ ${HOST} =~ .*darwin.* ]]; then
 
     # set build arguments
     export  BAZEL_USE_CPP_ONLY_TOOLCHAIN=1
-    export TF_CONFIGURE_IOS=0
     BUILD_OPTS="
         --crosstool_top=//custom_clang_toolchain:toolchain
         --verbose_failures
@@ -70,6 +72,8 @@ else
     --config=opt"
     export TF_ENABLE_XLA=1
 fi
+
+export TF_CONFIGURE_IOS=0
 
 if [[ ${HOST} =~ "2*" ]]; then
     BUILD_OPTS="$BUILD_OPTS --config=v2"
