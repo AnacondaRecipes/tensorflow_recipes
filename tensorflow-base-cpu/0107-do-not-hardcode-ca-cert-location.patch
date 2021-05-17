@@ -1,0 +1,24 @@
+From 03281477264fd000a05adf2709a42b673a9e950b Mon Sep 17 00:00:00 2001
+From: Jason Furmanek <furmanek@us.ibm.com>
+Date: Fri, 11 Dec 2020 21:51:06 +0000
+Subject: [PATCH] do not hardcode ca cert location
+
+---
+ third_party/curl.BUILD | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/third_party/curl.BUILD b/third_party/curl.BUILD
+index 62fc946..5aa5036 100644
+--- a/third_party/curl.BUILD
++++ b/third_party/curl.BUILD
+@@ -484,7 +484,6 @@ genrule(
+         "#  define OS \"x86_64-apple-darwin15.5.0\"",
+         "#  define USE_SECTRANSP 1",
+         "#else",
+-        "#  define CURL_CA_BUNDLE \"/etc/ssl/certs/ca-certificates.crt\"",
+         "#  define GETSERVBYPORT_R_ARGS 6",
+         "#  define GETSERVBYPORT_R_BUFSIZE 4096",
+         "#  define HAVE_BORINGSSL 1",
+-- 
+1.8.3.1
+
