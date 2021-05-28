@@ -4,17 +4,10 @@
 # https://docs.bazel.build/versions/master/skylark/lib/cc_common.html#create_cc_toolchain_config_info
 
 load("@bazel_tools//tools/cpp:cc_toolchain_config_lib.bzl",
-     "action_config",
-     "artifact_name_pattern",
-     "env_entry",
      "feature",
-     "feature_set",
      "flag_group",
      "flag_set",
-     "make_variable",
-     "tool",
      "tool_path",
-     "variable_with_value",
      "with_feature_set",
      )
 
@@ -25,7 +18,7 @@ def _impl(ctx):
     tool_paths = [
         tool_path(
             name = "gcc",
-            path = "cc_wrapper.sh",
+            path = "${GCC}",
         ),
         tool_path(
             name = "ld",
@@ -33,19 +26,15 @@ def _impl(ctx):
         ),
         tool_path(
             name = "ar",
-            path = "${LIBTOOL}",
+            path = "${AR}",
         ),
         tool_path(
             name = "cpp",
-            path = "${PREFIX}/bin/clang-cpp",
-        ),
-        tool_path(
-            name = "dwp",
-            path = "${PREFIX}/bin/llvm-dwp",
+            path = "/usr/bin/cpp",
         ),
         tool_path(
             name = "gcov",
-            path = "${PREFIX}/bin/llvm-profdata",
+            path = "/usr/bin/gcov",
         ),
         tool_path(
             name = "nm",
@@ -53,11 +42,7 @@ def _impl(ctx):
         ),
         tool_path(
             name = "objdump",
-            path = "${PREFIX}/bin/llvm-objdump",
-        ),
-        tool_path(
-            name = "objcopy",
-            path = "${PREFIX}/bin/llvm-objcopy",
+            path = "/usr/bin/objdump",
         ),
         tool_path(
             name = "strip",
@@ -113,38 +98,13 @@ def _impl(ctx):
         ACTION_NAMES.cpp_link_nodeps_dynamic_library,
     ]
 
-    action_configs = []
-    artifact_name_patterns = []
-
-    make_variables = [
-        make_variable(
-            name = "STACK_FRAME_UNLIMITED",
-            value = "-Wframe-larger-than=100000000 -Wno-vla",
-        ),
-    ]
-
     compiler_flags = feature(
         name = "compiler_flags",
         enabled = True,
         flag_sets = [
             flag_set(
                 actions = all_compile_actions,
-                flag_groups = [
-                    flag_group(
-                        flags = [
-                            "-march=core2",
-                            "-mtune=haswell",
-                            "-mssse3",
-                            "-ftree-vectorize",
-                            "-fPIC",
-                            "-fPIE",
-                            "-fstack-protector-strong",
-                            "-O2",
-                            "-pipe",
-                            "-fno-lto"
-                            ],
-                    ),
-                ],
+                flag_groups = [flag_group(flags = "${CFLAGS} ${CPPFLAGS}".split(" "))],
             ),
         ],
     )
@@ -157,20 +117,7 @@ def _impl(ctx):
                 actions = [
                     ACTION_NAMES.objcpp_compile,
                 ],
-                flag_groups = [
-                    flag_group(
-                        flags = [
-                            "-march",
-                            "core2",
-                            "-mtune=haswell",
-                            "-mssse3",
-                            "-stdlib=libc++",
-                            "-std=gnu++11",
-                            "-DOS_MACOSX",
-                            "-fno-autolink",
-                            ],
-                    ),
-                ],
+                flag_groups = [flag_group(flags = "${CXXFLAGS} ${CPPFLAGS}".split(" "))],
             ),
         ],
     )
@@ -191,19 +138,29 @@ def _impl(ctx):
                     ACTION_NAMES.lto_backend,
                     ACTION_NAMES.clif_match,
                 ],
-                flag_groups = [
-                    flag_group(
-                        flags = [
-                            "-stdlib=libc++",
-                            "-fvisibility-inlines-hidden",
-                            "-std=gnu++11",
-                            "-fmessage-length=0"
-                            ],
-                    ),
-                ],
+                flag_groups = [flag_group(flags = "${CXXFLAGS} ${CPPFLAGS}".split(" "))],
             ),
         ],
     )
+    
+    if "TARGET_PLATFORM".startswith("osx"):
+        toolchain_include_directories_flags = [
+            "-isystem",
+            "${BUILD_PREFIX}/include/c++/v1",
+            "-isystem",
+            "${BUILD_PREFIX}/lib/clang/${COMPILER_VERSION}/include",
+            "-isystem",
+            "${CONDA_BUILD_SYSROOT}/usr/include",
+            "-isystem",
+            "${CONDA_BUILD_SYSROOT}/System/Library/Frameworks",
+            "-isystem",
+            "${PREFIX}/include",
+        ]
+    else:
+        toolchain_include_directories_flags = [
+            "-isystem",
+            "${PREFIX}/include",
+        ]
 
     toolchain_include_directories_feature = feature(
         name = "toolchain_include_directories",
@@ -224,16 +181,7 @@ def _impl(ctx):
                 ],
                 flag_groups = [
                     flag_group(
-                        flags = [
-                            "-isystem",
-                            "${BUILD_PREFIX}/include/c++/v1",
-                            "-isystem",
-                            "${BUILD_PREFIX}/lib/clang/10.0.0/include",
-                            "-isystem",
-                            "${CONDA_BUILD_SYSROOT}/usr/include",
-                            "-isystem",
-                            "${CONDA_BUILD_SYSROOT}/System/Library/Frameworks",
-                        ],
+                        flags = toolchain_include_directories_flags,
                     ),
                 ],
             ),
@@ -257,25 +205,7 @@ def _impl(ctx):
                     ACTION_NAMES.lto_backend,
                     ACTION_NAMES.clif_match,
                 ],
-                flag_groups = [
-                    flag_group(
-                        flags = [
-                            "-Wl,-pie",
-                            "-headerpad_max_install_names",
-                            "-Wl,-dead_strip_dylibs",
-                            "-undefined",
-                            "dynamic_lookup",
-                            "-force_load",
-                            "${BUILD_PREFIX}/lib/libc++.a",
-                            "-force_load",
-                            "${BUILD_PREFIX}/lib/libc++abi.a",
-                            "-nostdlib",
-                            "-lc",
-                            "-isysroot ${CONDA_BUILD_SYSROOT}",
-                            "-L${PREFIX}/lib",
-                            ]
-                    ),
-                ],
+                flag_groups = [flag_group(flags = "-l${LIBCXX} ${LDFLAGS}".split(" "))],
             ),
         ],
     )
@@ -287,7 +217,7 @@ def _impl(ctx):
             flag_set(
                 actions = all_link_actions +
                           ["objc-executable", "objc++-executable"],
-                flag_groups = [flag_group(flags = ["-lc++"])],
+                flag_groups = [flag_group(flags = "-l${LIBCXX} ${LDFLAGS}".split(" "))],
             ),
         ],
     )
@@ -363,35 +293,36 @@ def _impl(ctx):
         ],
     )
 
-    cxx_builtin_include_directories = [
-        "${BUILD_PREFIX}/lib/clang/10.0.0/include",
-        "${BUILD_PREFIX}/lib64/clang/10.0.0/include",
-        "${BUILD_PREFIX}/include/c++/v1",
-        "${CONDA_BUILD_SYSROOT}/System/Library/Frameworks",
-        "${CONDA_BUILD_SYSROOT}/usr/include",
-        "/Library/Frameworks",
-    ]
-
-    cc_target_os = None
-    builtin_sysroot = "${CONDA_BUILD_SYSROOT}"
+    if "TARGET_PLATFORM".startswith("osx"):
+        cxx_builtin_include_directories = [
+            "${CONDA_BUILD_SYSROOT}/System/Library/Frameworks",
+            "${CONDA_BUILD_SYSROOT}/usr/include",
+            "${BUILD_PREFIX}/lib/clang/${COMPILER_VERSION}/include",
+            "${BUILD_PREFIX}/include/c++/v1",
+            "${PREFIX}/include",
+        ]
+    else:
+        cxx_builtin_include_directories = [
+            "${CONDA_BUILD_SYSROOT}/usr/include",
+	    "${BUILD_PREFIX}/lib/gcc/${HOST}/${COMPILER_VERSION}",
+	    "${BUILD_PREFIX}/${HOST}/include/c++/${COMPILER_VERSION}",
+            "${PREFIX}/include",
+        ]
 
     return cc_common.create_cc_toolchain_config_info(
         ctx = ctx,
-        action_configs = action_configs,
-        artifact_name_patterns = artifact_name_patterns,
-        cxx_builtin_include_directories = cxx_builtin_include_directories,
         toolchain_identifier = "local",
-        host_system_name = "local",
-        target_system_name = "local",
-        target_cpu = "darwin",
-        target_libc = "macosx",
+	host_system_name = "local",
+        #host_system_name = "TARGET_CPU",
+        target_system_name = "TARGET_SYSTEM",
+        target_cpu = "TARGET_CPU",
+        target_libc = "TARGET_LIBC",
         compiler = "compiler",
         abi_version = "local",
         abi_libc_version = "local",
         tool_paths = tool_paths,
-        make_variables = make_variables,
-        builtin_sysroot = builtin_sysroot,
-        cc_target_os = "local"
+        cxx_builtin_include_directories = cxx_builtin_include_directories,
+        features = [toolchain_include_directories_feature, compiler_flags, cxx_flags, supports_pic_feature, linker_flags, supports_dynamic_linker, link_libcpp_feature, objcpp_flags],
     )
 
 cc_toolchain_config = rule(

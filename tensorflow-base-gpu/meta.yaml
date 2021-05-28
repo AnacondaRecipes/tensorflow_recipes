@@ -1,4 +1,4 @@
-{% set version = "2.4.1" %}
+{% set version = "2.5.0" %}
 
 # This is the recipe for the "gpu" variant of tensorflow-base
 package:
@@ -8,15 +8,15 @@ package:
 source:
   fn: tensorflow-{{ version }}.tar.gz
   url: https://github.com/tensorflow/tensorflow/archive/v{{ version }}.tar.gz
-  sha256: f681331f8fc0800883761c7709d13cda11942d4ad5ff9f44ad855e9dc78387e0
+  sha256: 233875ea27fc357f6b714b2a0de5f6ff124b50c1ee9b3b41f9e726e9e677b86c
   patches:
     - 0001-do-not-include-B-usr-bin-flag.patch             # [linux]
     - tensorflow_win_zip64.patch                           # [win]
     # general patches
     - 0101-include-c-and-cc-headers.patch                  # [linus]
     - 0103-BUILD-changes-for-external-sqlite-package.patch # [linux]
-    - 0104-Fixed-linking-error-in-conda-builds.patch        # [linux]
-    - 0106-Upstream-patch-for-absl-error.patch             # [linux]
+    # - 0104-Fixed-linking-error-in-conda-builds.patch        # [linux]
+    # - 0106-Upstream-patch-for-absl-error.patch             # [linux]
     - 0107-do-not-hardcode-ca-cert-location.patch          # [linux]
     # gpu specific patches
     - 0201-add-additional-cuda-rpaths.patch                # [linux]

@@ -25,7 +25,8 @@ Available Recipe:
 
 * tensorboard : Tensorboard.
 * tensorflow : Metapackage which installs tensorflow-base and tensorboard.
-* tensorflow-base-cpu : Eigen and MKL variants of the Tensorflow library.
+* tensorflow-base-cpu-mac : Eigen and MKL variants of the Tensorflow library for OSX.
+* tensorflow-base-cpu-linwin : Eigen and MKL variants of the Tensorflow library for Linux/Windows.
 * tensorflow-base-gpu : GPU variant of the Tensorflow library.
 * tensorflow-variants : Recipe used to create tensorflow variant packages, e.g. tensorflow-mkl.
 * _tflow_select : Metapackage to establish priority in tensorflow-base packages.

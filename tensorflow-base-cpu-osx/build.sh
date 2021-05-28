@@ -5,6 +5,16 @@ set -ex
 bazel clean --expunge
 bazel shutdown
 
+if [[ "${target_platform}" == osx-* ]]; then
+export PATH="$PWD:$PATH"
+export CC=$(basename $CC)
+export CXX=$(basename $CXX)
+fi
+export LIBDIR=$PREFIX/lib
+export INCLUDEDIR=$PREFIX/include
+
+export CC_FOR_BUILD=$CC
+
 # expand PREFIX in tensor's build_config/BUILD file
 sed -i -e "s:\${PREFIX}:${PREFIX}:" tensorflow/core/platform/default/build_config/BUILD
 
@@ -23,55 +33,56 @@ echo "BAZEL_MKL_OPT: ${BAZEL_MKL_OPT}"
 mkdir -p ./bazel_output_base
 export BAZEL_OPTS=""
 
+export TF_SV_SYSTEM_LIBS="
+  absl_py
+  astor_archive
+  astunparse_archive
+  boringssl
+  com_github_googlecloudplatform_google_cloud_cpp
+  com_github_grpc_grpc
+  com_google_protobuf
+  curl
+  cython
+  dill_archive
+  flatbuffers
+  gast_archive
+  gif
+  icu
+  libjpeg_turbo
+  org_sqlite
+  png
+  pybind11
+  snappy
+  zlib
+  "
+
+sed -i -e "s/GRPCIO_VERSION/${grpc_cpp}/" tensorflow/tools/pip_package/setup.py
+
+export CC_OPT_FLAGS="${CFLAGS}"
+
+
+if [[ "${target_platform}" == osx-* ]]; then
+  export CONDA_BUILD_SYSROOT=/opt/MacOSX10.14.sdk
+  export MACOSX_DEPLOYMENT_TARGET=10.14
+  export LDFLAGS="${LDFLAGS} -lz -framework CoreFoundation -isysroot ${CONDA_BUILD_SYSROOT} -Xlinker -undefined -Xlinker dynamic_lookup"
+else
+  export LDFLAGS="${LDFLAGS} -lrt"
+fi
+
+if [[ "${target_platform}" == osx-* ]]; then
+chmod +x ${RECIPE_DIR}/gen-bazel-toolchain.sh
+source ${RECIPE_DIR}/gen-bazel-toolchain.sh
+fi
+
 if [[ ${HOST} =~ .*darwin.* ]]; then
-#  export CC=clang
-#  export CXX=clang++
-# export PATH="$PWD:$PATH"
-# export CC=$(basename $CC)
-# export CXX=$(basename $CXX)
-# export LIBDIR=$PREFIX/lib
-# export INCLUDEDIR=$PREFIX/include
-#    export PATH="$PREFIX/lib:$PATH"
-    export GCC_HOST_COMPILER_PATH="${CC}"
-    export CONDA_BUILD_SYSROOT=/opt/MacOSX10.14.sdk
-    # set up bazel config file for conda provided clang toolchain
-    cp -r ${RECIPE_DIR}/custom_clang_toolchain .
-    cd custom_clang_toolchain
-    sed -e "s:\${CLANG}:${CLANG}:" \
-        -e "s:\${INSTALL_NAME_TOOL}:${INSTALL_NAME_TOOL}:" \
-        -e "s:\${CONDA_BUILD_SYSROOT}:${CONDA_BUILD_SYSROOT}:" \
-        -e "s:\${MACOSX_DEPLOYMENT_TARGET}:${MACOSX_DEPLOYMENT_TARGET}:" \
-        -e "s:\${LDFLAGS}:${LDFLAGS}:" \
-        -e "s:\${CXXFLAGS}:${CFLAGS}:" \
-        -e "s:\${PREFIX}:${PREFIX}:" \
-        -e "s:\${LIBTOOL}:${LIBTOOL}:" \
-        -e "s:\${PY_VER}:${PY_VER}:" \
-        cc_wrapper.sh.template > cc_wrapper.sh
-    chmod +x cc_wrapper.sh
-     sed -e "s:\${PREFIX}:${BUILD_PREFIX}:" \
-        -e "s:\${LD}:${LD}:" \
-        -e "s:\${NM}:${NM}:" \
-        -e "s:\${STRIP}:${STRIP}:" \
-        -e "s:\${LIBTOOL}:${LIBTOOL}:" \
-        -e "s:\${CONDA_BUILD_SYSROOT}:${CONDA_BUILD_SYSROOT}:" \
-        CROSSTOOL.template > CROSSTOOL
-    sed -i "" "s:\${PREFIX}:${PREFIX}:" cc_toolchain_config.bzl
-    sed -i "" "s:\${BUILD_PREFIX}:${BUILD_PREFIX}:" cc_toolchain_config.bzl
-    sed -i "" "s:\${CONDA_BUILD_SYSROOT}:${CONDA_BUILD_SYSROOT}:" cc_toolchain_config.bzl
-    sed -i "" "s:\${LD}:${LD}:" cc_toolchain_config.bzl
-    sed -i "" "s:\${NM}:${NM}:" cc_toolchain_config.bzl
-    sed -i "" "s:\${STRIP}:${STRIP}:" cc_toolchain_config.bzl
-    sed -i "" "s:\${LIBTOOL}:${LIBTOOL}:" cc_toolchain_config.bzl
-    cd ..
-    set
     # set build arguments
     export  BAZEL_USE_CPP_ONLY_TOOLCHAIN=1
     BUILD_OPTS="
-        --crosstool_top=//custom_clang_toolchain:toolchain
+        --crosstool_top=//custom_toolchain:toolchain
         --verbose_failures
         ${BAZEL_MKL_OPT}
         --config=opt"
-    export TF_ENABLE_XLA=1
+    export TF_ENABLE_XLA=0
 else
     # Linux
     # the following arguments are useful for debugging
@@ -95,14 +106,20 @@ else
     --verbose_failures
     ${BAZEL_MKL_OPT}
     --config=opt"
-    export TF_ENABLE_XLA=1
+    export TF_ENABLE_XLA=0
+    export GCC_HOST_COMPILER_PATH="${CC}"
+fi
+
+if [[ "${target_platform}" == "osx-64" ]]; then
+  # Tensorflow doesn't cope yet with an explicit architecture (darwin_x86_64) on osx-64 yet.
+  TARGET_CPU=darwin
 fi
 
 export TF_CONFIGURE_IOS=0
 
-if [[ ${HOST} =~ "2*" ]]; then
-    BUILD_OPTS="$BUILD_OPTS --config=v2"
-fi
+#if [[ ${HOST} =~ "2*" ]]; then
+#    BUILD_OPTS="$BUILD_OPTS --config=v2"
+#fi
 
 # Python settings
 export PYTHON_BIN_PATH=${PYTHON}
@@ -110,8 +127,10 @@ export PYTHON_LIB_PATH=${SP_DIR}
 export USE_DEFAULT_PYTHON_LIB_PATH=1
 
 # additional settings
-export CC_OPT_FLAGS="-march=nocona -mtune=haswell"
+export CC_OPT_FLAGS="${CFLAGS}"
 export TF_NEED_OPENCL=0
+export TF_NEED_TENSORRT=0
+export TF_NCCL_VERSION=
 export TF_NEED_OPENCL_SYCL=0
 export TF_NEED_COMPUTECPP=0
 export TF_NEED_CUDA=0
@@ -121,19 +140,33 @@ export TF_NEED_ROCM=0
 export TF_NEED_MPI=0
 export TF_DOWNLOAD_CLANG=0
 export TF_SET_ANDROID_WORKSPACE=0
+export TF_CONFIGURE_IOS=0
+
+# Get rid of unwanted defaults
+sed -i -e "/PROTOBUF_INCLUDE_PATH/c\ " .bazelrc
+sed -i -e "/PREFIX/c\ " .bazelrc
+
+bazel clean --expunge
+bazel shutdown
+
 ./configure
+echo "build --config=noaws" >> .bazelrc
 
 # build using bazel
 bazel ${BAZEL_OPTS} build ${BUILD_OPTS} \
+    --cpu=${TARGET_CPU} \
     --action_env="PYTHON_BIN_PATH=${PYTHON}" \
     --action_env="PYTHON_LIB_PATH=${SP_DIR}" \
     --python_path="${PYTHON}" \
     --define=PREFIX="$PREFIX" \
+    --define=PROTOBUF_INCLUDE_PATH=${PREFIX}/include \
     --copt=-DNO_CONSTEXPR_FOR_YOU=1 \
     --host_copt=-DNO_CONSTEXPR_FOR_YOU=1 \
     --define=LIBDIR="$PREFIX/lib" \
     --define=INCLUDEDIR="$PREFIX/include" \
     //tensorflow/tools/pip_package:build_pip_package
+
+# //tensorflow/tools/lib_package:libtensorflow //tensorflow:libtensorflow_cc.so
 
 # build a whl file
 mkdir -p $SRC_DIR/tensorflow_pkg

@@ -31,11 +31,17 @@ toolchain {
   linker_flag: "-Wl,-pie"
   linker_flag: "-headerpad_max_install_names"
   linker_flag: "-Wl,-dead_strip_dylibs"
-  linker_flag: "-lc++"
   linker_flag: "-undefined"
   linker_flag: "dynamic_lookup"
+  linker_flag: "-force_load"
+  linker_flag: "${BUILD_PREFIX}/lib/libc++.a"
+  linker_flag: "-force_load"
+  linker_flag: "${BUILD_PREFIX}/lib/libc++abi.a"
+  linker_flag: "-nostdlib"
+  linker_flag: "-lc"
+  linker_flag: "-isysroot${CONDA_BUILD_SYSROOT}"
   cxx_builtin_include_directory: "${PREFIX}/include/c++/v1"
-  cxx_builtin_include_directory: "${PREFIX}/lib/clang/4.0.1/include"
+  cxx_builtin_include_directory: "${PREFIX}/lib/clang/10.0.0/include"
   cxx_builtin_include_directory: "${CONDA_BUILD_SYSROOT}/usr/include"
   cxx_builtin_include_directory: "${CONDA_BUILD_SYSROOT}/System/Library/Frameworks"
   objcopy_embed_flag: "-I"
@@ -52,7 +58,7 @@ toolchain {
   compiler_flag: "-fPIC"
   compiler_flag: "-fPIE"
   compiler_flag: "-fstack-protector-strong"
-  compiler_flag: "-O1"
+  compiler_flag: "-O2"
   compiler_flag: "-pipe"
   tool_path {name: "ld" path: "${LD}" }
   tool_path {name: "cpp" path: "/usr/bin/cpp" }
@@ -72,7 +78,7 @@ toolchain {
   compilation_mode_flags {
     mode: OPT
     compiler_flag: "-g0"
-    compiler_flag: "-O1"
+    compiler_flag: "-O2"
     compiler_flag: "-D_FORTIFY_SOURCE=1"
     compiler_flag: "-DNDEBUG"
     compiler_flag: "-ffunction-sections"

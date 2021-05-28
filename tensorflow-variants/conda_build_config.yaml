@@ -1,9 +1,9 @@
 variant:
-  - "gpu"         # [not osx]
+  - "gpu"         # [win]
   - "eigen"
   - "mkl"
 select_version:
-  - "2.1.0 gpu"   # [not osx]
+  - "2.1.0 gpu"   # [win]
   - "2.2.0 eigen"
   - "2.3.0 mkl"
 zip_keys:

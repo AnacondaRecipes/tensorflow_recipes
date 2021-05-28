@@ -1,10 +1,12 @@
+# configuration for win-64 eigen and mkl variants
 full_base_version:
-  - "2.1.0 eigen_py37h49b2757_0"
-  - "2.1.0 eigen_py38h49b2757_0"
-  - "2.1.0 eigen_py39haaaaaaa_0"
-  - "2.1.0 mkl_py37h230818c_0"
-  - "2.1.0 mkl_py38h230818c_0"
-  - "2.1.0 mkl_py39hccccccc_0"
+  - "2.5.0 eigen_py37h2b86b3d_0"
+  - "2.5.0 eigen_py38h2b86b3d_0"
+  - "2.5.0 eigen_py39h2b86b3d_0"
+  - "2.5.0 mkl_py37h35b2a3d_0"
+  - "2.5.0 mkl_py38h35b2a3d_0"
+  - "2.5.0 mkl_py39h35b2a3d_0"
+
 select_version:
   - "2.2.0 eigen"
   - "2.2.0 eigen"
@@ -12,6 +14,7 @@ select_version:
   - "2.3.0 mkl"
   - "2.3.0 mkl"
   - "2.3.0 mkl"
+
 tflow_variant:
   - "eigen"
   - "eigen"

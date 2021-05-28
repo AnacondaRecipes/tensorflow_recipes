@@ -1,42 +1,8 @@
 # these are lower bounds specified in TF's requirements.  Some are higher than
 #    TF's lower bound.  These are higher because they are the lowest version that we have.
-#absl_py:
-#    - 0.7    # [py!=38]
-#    - 0.8.1  # [py==38]
-# astunparse:
-#    - 1.6.3
 bazel:
-    - 3.1.0
-gast:
-    - 0.3.3
-#google_pasta:
-#    - 0.1.8
-#grpcio:
-#    - 1.16
-# h5py:
-#    - 2.10.0
-# keras_preprocessing:
-#    - 1.1.0
-# tensorboard has this as a requirement
-#markdown:
-#    - 2.6.8
-numpy:
-    - 1.16
-#opt_einsum:
-#    - 2.3.2
-# protobuf:
-#    - 3.8.0  # [py<38]
-#    - 3.14.0  # [py>=38]
-# tensorboard has this as a requirement
-# setuptools:
-#    - 41.4
-# pinned to an exact version in the wheel, loosen for the conda package
-# scipy:
-#    - 1.4.1
-#six:
-#    - 1.12
-#termcolor:
-#    - 1.1.0
-#wrapt:
-#    - 1.11.2  # [py<38]
-#    - 1.12.1  # [py>=38]
+    - 3.7.2
+#numpy:
+#    - 1.20
+mkl:
+  - 2021
