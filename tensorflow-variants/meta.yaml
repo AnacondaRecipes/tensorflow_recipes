@@ -6,7 +6,7 @@ package:
 
 build:
   number: 0
-  skip: True  # [not x86_64]
+  skip: True  # [not x86_64 and not (linux and aarch64)]
 
 requirements:
   run:
