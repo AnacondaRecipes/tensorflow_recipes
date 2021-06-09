@@ -11,10 +11,10 @@ source:
   sha256: 233875ea27fc357f6b714b2a0de5f6ff124b50c1ee9b3b41f9e726e9e677b86c
   patches:
     - 0004-loosen-requirements.patch
-    - tensorflow_win_zip64.patch  # [win]
-    - 0101-include-c-and-cc-headers.patch  # [unix]
+    - tensorflow_win_zip64.patch                            # [win]
+    - 0101-include-c-and-cc-headers.patch                   # [unix]
     - 0103-BUILD-changes-for-external-sqlite-package.patch  # [linux]
-    - 0107-do-not-hardcode-ca-cert-location.patch  # [unix]
+    - 0107-do-not-hardcode-ca-cert-location.patch           # [unix]
 
 build:
   number: 0

@@ -8,11 +8,12 @@ sed -i -e "s:\${PREFIX}:${PREFIX}:" tensorflow/core/platform/default/build_confi
 mkdir -p ./bazel_output_base
 export BAZEL_OPTS=""
 
-# cp ${RECIPE_DIR}/lin_bazelrc .bazelrc
 # Compile tensorflow from source
 export PYTHON_BIN_PATH=${PYTHON}
 export PYTHON_LIB_PATH=${SP_DIR}
 export USE_DEFAULT_PYTHON_LIB_PATH=1
+
+# make sure this matches configuration of build-machine!
 export CUDA_TOOLKIT_PATH=/usr/local/cuda-10.1
 
 # export PATH="$CUDA_TOOLKIT_PATH/bin:$PATH"
@@ -25,11 +26,11 @@ export TF_ENABLE_XLA=1
 export TF_NEED_OPENCL=0
 export TF_NEED_OPENCL_SYCL=0
 export TF_NEED_COMPUTECPP=0
-export TF_NEED_COMPUTECPP=0
 export TF_NEED_ROCM=0
 export TF_NEED_MPI=0
 export TF_SET_ANDROID_WORKSPACE=0
 export TF_CONFIGURE_IOS=0
+
 # CUDA details
 export TF_NEED_CUDA=1
 export TF_CUDA_VERSION="${cudatoolkit}"
@@ -37,6 +38,7 @@ export TF_CUDNN_VERSION="${cudnn}"
 export TF_CUDA_CLANG=0
 export TF_DOWNLOAD_CLANG=0
 export TF_NEED_TENSORRT=0
+
 # Additional compute capabilities can be added if desired but these increase
 # the build time and size of the package.
 if [ ${cudatoolkit} == "9.0" ]; then
@@ -50,6 +52,7 @@ if [[ ${cudatoolkit} == 10.* ]]; then
 fi
 export TF_NCCL_VERSION=""
 export GCC_HOST_COMPILER_PATH="${CC}"
+
 # Use system paths here rather than $PREFIX to allow Bazel to find the correct
 # libraries.  RPATH is adjusted post build to link to the DSOs in $PREFIX
 export TF_CUDA_PATHS="${PREFIX},/usr/local/cuda-10.1,/usr"
@@ -98,7 +101,7 @@ mkdir -p $SRC_DIR/tensorflow_pkg
 bazel-bin/tensorflow/tools/pip_package/build_pip_package $SRC_DIR/tensorflow_pkg
 
 # install using pip from the whl file
-pip install --no-deps $SRC_DIR/tensorflow_pkg/*.whl
+${PYTHON} -m pip install --no-deps $SRC_DIR/tensorflow_pkg/*.whl
 
 # The tensorboard package has the proper entrypoint
 rm -f ${PREFIX}/bin/tensorboard
