@@ -1,14 +1,14 @@
 tflow_variant_version:
 # 1.x series for tensorflow 1.8.0
 # eigen variant is the default
+  - 2.2.0
   - 2.3.0
-  - 2.3.0
-  - 2.3.0  # [win]
+  - 2.1.0  # [win]
 # 2.x series are for tensorflow 1.9 and above
 # mkl variant is the default
+  - 2.2.0
   - 2.3.0
-  - 2.3.0
-  - 2.3.0  # [win]
+  - 2.1.0  # [win]
 tflow_variant_str:
   - eigen
   - mkl
