@@ -18,7 +18,7 @@ source:
 
 build:
   number: 0
-  skip: True  # [not x86_64]
+  skip: True  # [not x86_64 and not (linux and aarch64)]
   skip: True  # [win and vc<14]
   string: {{ tflow_variant }}_py{{ CONDA_PY }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}
   entry_points:
@@ -39,7 +39,8 @@ requirements:
     - bazel >=3.7.2
     - aws-sdk-cpp
     # - abseil-cpp
-    - cython 0.29.21
+    - cython 0.29.21  # [not aarch64]
+    - cython 0.29.*   # [aarch64]
     - sqlite
     - grpc-cpp
     - wheel >=0.35,<0.36
@@ -61,7 +62,8 @@ requirements:
     - nsync
     # requirements specified by the package itself
     - astor >=0.7.1
-    - cython 0.29.21
+    - cython 0.29.21  # [not aarch64]
+    - cython 0.29.*   # [aarch64]
     - dill >=0.3.1.1
     - giflib
     - grpc-cpp
@@ -87,14 +89,15 @@ requirements:
     - keras-preprocessing >=1.1.2
     # has run_exports, doesn't need a run dep below
     - mklml            # [win and tflow_variant == 'mkl']
-    - numpy >=1.20
+    - numpy >=1.20  # [not aarch64]
+    - numpy >=1.19  # [aarch64]
     - opt_einsum 3.3.0.*
     # build only requirement, doesn't need a run dep below
     - protobuf >=3.9.2
     # build only requirement, doesn't need a run dep below
     - scipy
     - six >=1.15.0
-    - typing_extensions >=3.7.4  # py<38
+    - typing_extensions >=3.7.4
     # build only requirement, doesn't need a run dep below
     - swig
     - termcolor >=1.1.0
@@ -113,7 +116,8 @@ requirements:
     - google-pasta >=0.2
     - h5py >=3.1.0
     - keras-preprocessing >=1.1.2
-    - numpy >=1.20
+    - numpy >=1.20  # [not aarch64]
+    - numpy >=1.19  # [aarch64]
     - opt_einsum 3.3.0.*
     - protobuf >=3.9.2
     - six >=1.15.0

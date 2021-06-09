@@ -20,13 +20,29 @@ export USE_DEFAULT_PYTHON_LIB_PATH=1
 # variant specific settings
 if [ ${tflow_variant} == "mkl" ]; then
     export TF_NEED_MKL=1
-    export BAZEL_MKL_OPT="--config=mkl"
+    if [[ "${target_platform}" == "linux-aarch64" ]]; then
+      export BAZEL_MKL_OPT="--config=mkl_aarch64"
+    else
+      export BAZEL_MKL_OPT="--config=mkl"
+    fi
 else
     # eigen variant, do not build with MKL support
     export TF_NEED_MKL=0
     export BAZEL_MKL_OPT=""
 fi
-export CC_OPT_FLAGS="-march=nocona -mtune=haswell"
+
+if [[ "${target_platform}" != "linux-aarch64" ]]; then
+    export CC_OPT_FLAGS="-march=nocona -mtune=haswell"
+    export OPT_BAZEL_FLAGS="    --copt=-march=nocona \
+    --copt=-mtune=haswell"
+
+else
+    # we need to define it for configure.py's sake. we use
+    # default compiler's optimization
+    export CC_OPT_FLAGS="-Wno-sign-compare"
+    export OPT_BAZEL_FLAG=""
+fi
+
 export TF_ENABLE_XLA=0
 export TF_NEED_OPENCL=0
 export TF_NEED_OPENCL_SYCL=0
@@ -58,9 +74,7 @@ bazel shutdown
 #   --subcommands \
 # jobs can be used to limit parallel builds and reduce resource needs
 #    --jobs=20             \
-bazel ${BAZEL_OPTS} build ${BAZEL_MKL_OPT} \
-    --copt=-march=nocona \
-    --copt=-mtune=haswell \
+bazel ${BAZEL_OPTS} build ${BAZEL_MKL_OPT} ${OPT_BAZEL_FLAG} \
     --copt=-ftree-vectorize \
     --copt=-fPIC \
     --copt=-fstack-protector-strong \
@@ -90,7 +104,7 @@ mkdir -p $SRC_DIR/tensorflow_pkg
 bash -x bazel-bin/tensorflow/tools/pip_package/build_pip_package $SRC_DIR/tensorflow_pkg
 
 # install using pip from the whl file
-${PYTHON} -m pip install --no-deps --log ~/pip.log $SRC_DIR/tensorflow_pkg/*.whl
+${PYTHON} -m pip install --no-deps $SRC_DIR/tensorflow_pkg/*.whl
 
 # The tensorboard package has the proper entrypoint
 rm -f ${PREFIX}/bin/tensorboard
