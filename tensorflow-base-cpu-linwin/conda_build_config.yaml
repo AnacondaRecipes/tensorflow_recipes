@@ -9,5 +9,19 @@ cxx_compiler:  # [win]
 c_compiler:    # [win]
   - vs2019     # [win]
 tflow_variant:
-  - mkl
-  - eigen
+#  - mkl
+#  - eigen
+  - onednn
+
+# ACL versions can be found here:
+# https://review.mlplatform.org/admin/repos/ml/ComputeLibrary,branches
+acl_version:                       # [aarch64]
+  - branches/arm_compute_21_05     # [aarch64]
+
+# OneDNN versions can be found here:
+# https://github.com/oneapi-src/oneDNN/tags
+onednn_version:                    # [aarch64]
+  - v2.2.4                         # [aarch64]
+onednn_build:                      # [aarch64]
+  - acl                            # [aarch64]
+

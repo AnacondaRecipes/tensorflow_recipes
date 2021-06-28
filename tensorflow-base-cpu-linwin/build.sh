@@ -25,6 +25,28 @@ if [ ${tflow_variant} == "mkl" ]; then
     else
       export BAZEL_MKL_OPT="--config=mkl"
     fi
+elif [ ${tflow_variant} == "onednn" ]; then
+    # Source for BASE_CFLAGS: 
+    # https://github.com/ARM-software/Tool-Solutions/blob/97090bf1bcfa3d928b72e8c5b0a8e5aade5097cd/docker/tensorflow-aarch64/Dockerfile#L134
+    # NOTE: Hard-coding -mcpu to be "native".
+    export BASE_CFLAGS="-mcpu=native  -moutline-atomics"
+
+    # Copy additional build scripts.
+    mkdir -p $PREFIX/bin
+    cp $RECIPE_DIR/build-acl.sh $PREFIX/bin/
+    cp $RECIPE_DIR/build-onednn.sh $PREFIX/bin/
+    cp $RECIPE_DIR/patches/oneDNN.patch $PREFIX/
+
+    # Build Arm Compute Library (ACL) from source.
+    bash $PREFIX/bin/build-acl.sh
+    echo "Finished building Arm Compute Library (ACL) from source."
+
+    # Build OneDNN from source.
+    bash $PREFIX/bin/build-onednn.sh
+    echo "Finished building OneDNN from source."
+
+    echo "EXITING"
+    exit 0
 else
     # eigen variant, do not build with MKL support
     export TF_NEED_MKL=0
