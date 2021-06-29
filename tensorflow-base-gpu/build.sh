@@ -34,7 +34,7 @@ export TF_CONFIGURE_IOS=0
 # CUDA details
 export TF_NEED_CUDA=1
 export TF_CUDA_VERSION="${cudatoolkit}"
-export TF_CUDNN_VERSION="${cudnn}"
+export TF_CUDNN_VERSION="${cudnn:0:1}"
 export TF_CUDA_CLANG=0
 export TF_DOWNLOAD_CLANG=0
 export TF_NEED_TENSORRT=0
@@ -49,6 +49,9 @@ if [ ${cudatoolkit} == "9.2" ]; then
 fi
 if [[ ${cudatoolkit} == 10.* ]]; then
     export TF_CUDA_COMPUTE_CAPABILITIES="3.5,5.2,6.0,6.1,7.0,7.5"
+fi
+if [[ ${cudatoolkit} == 11.* ]]; then
+      export TF_CUDA_COMPUTE_CAPABILITIES="3.5,5.2,6.0,6.1,7.0,7.5,8.0"
 fi
 export TF_NCCL_VERSION=""
 export GCC_HOST_COMPILER_PATH="${CC}"

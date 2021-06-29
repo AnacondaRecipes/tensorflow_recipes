@@ -63,6 +63,7 @@ requirements:
     - zip          # [not win]
     - m2-unzip     # [win]
     - m2-zip       # [win]
+    - m2-perl      # [win]
     - nsync
     - bazel >=3.7.2    # [win]
     # requirements specified by the package itself
