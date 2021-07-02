@@ -15,6 +15,7 @@ sed -i -e "s:\${PREFIX}:${PREFIX}:" tensorflow/core/platform/default/build_confi
 
 export PYTHON_BIN_PATH="$PYTHON"
 export PYTHON_LIB_PATH="$SP_DIR"
+export USE_DEFAULT_PYTHON_LIB_PATH=1
 
 export TF_NEED_CUDA=1
 export TF_CUDA_CLANG=0
@@ -31,8 +32,8 @@ export USE_MSVC_WRAPPER=1
 export TF_CUDA_VERSION=${cudatoolkit}
 export CUDA_TOOLKIT_PATH="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v${cudatoolkit}"
 export CUDNN_INSTALL_PATH=$(cygpath -m "$LIBRARY_PREFIX")
-export TF_CUDNN_VERSION=${cudnn}
-
+export TF_CUDNN_VERSION=${cudnn:0:1}
+export TF_CUDA_PATHS="${CUDA_TOOLKIT_PATH}"
 export PATH="/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v${cudatoolkit}/bin:$PATH"
 export PATH="/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v${cudatoolkit}/extras/CUPTI/libx64:$PATH"
 
@@ -45,6 +46,9 @@ if [ ${cudatoolkit} == "9.0" ]; then
 fi
 if [[ ${cudatoolkit} == 10.* ]]; then
     export TF_CUDA_COMPUTE_CAPABILITIES="3.0,3.5,5.2,6.0,6.1,7.0,7.5"
+fi
+if [[ ${cudatoolkit} == 11.* ]]; then
+    export TF_CUDA_COMPUTE_CAPABILITIES="3.5,5.2,6.0,6.1,7.0,7.5,8.0"
 fi
 
 export TF_NEED_CLANG=0
@@ -113,21 +117,30 @@ BUILD_OPTS="--logging=6 --subcommands --define=override_eigen_strong_inline=true
 ${LIBRARY_BIN}/bazel --output_base $SRC_DIR/../bazel --batch build -c opt $BUILD_OPTS \
   --action_env="PYTHON_BIN_PATH=${PYTHON}" \
   --action_env="PYTHON_LIB_PATH=${SP_DIR}" \
+  --linkopt="-L$LIBRARY_PREFIX" \
   --python_path="${PYTHON}" \
+  --config=cuda --strip=always \
+  --define=PREFIX="${PREFIX}" \
   --copt=-DNO_CONSTEXPR_FOR_YOU=1 \
-  --host_copt=-DNO_CONSTEXPR_FOR_YOU=1 \
+    --host_copt=-DNO_CONSTEXPR_FOR_YOU=1 \
+    --copt=-D_copysign="copysign" \
+    --host_copt=-D_copysign="copysign" --cxxopt=-D_copysign="copysign" \
+    --host_cxxopt=-D_copysign="copysign" --define=LIBDIR="LIBRARY_PREFIX" \
+    --define=INCLUDEDIR="$LIBRARY_INC" \
   //tensorflow/tools/pip_package:build_pip_package || exit $?
-error_exit $pid
+  error_exit $pid
 
 PY_TEST_DIR="$SRC_DIR/py_test_dir"
 rm -fr ${PY_TEST_DIR}
 mkdir -p ${PY_TEST_DIR}
 cmd /c "mklink /J $(cygpath -w ${PY_TEST_DIR})\\tensorflow .\\tensorflow"
 
-./bazel-bin/tensorflow/tools/pip_package/build_pip_package "$(cygpath -w ${PY_TEST_DIR})"
+rm -rf /c/t/tmp.XXXXXXXXXX
+mkdir -p /c/t/tmp.XXXXXXXXXX
+./bazel-bin/tensorflow/tools/pip_package/build_pip_package.exe $(cygpath -w ${PY_TEST_DIR})
 
 PIP_NAME=$(ls ${PY_TEST_DIR}/tensorflow-*.whl)
-# python -m pip install ${PIP_NAME} --no-deps -vv --ignore-installed
+# $PYTHON -m pip install ${PIP_NAME} --no-deps -vv --ignore-installed
 unzip ${PIP_NAME} -d $SP_DIR
 
 # The tensorboard package has the proper entrypoint

@@ -52,6 +52,7 @@ requirements:
     # conda build requirements for .sh scripts on win
     - posix     # [win]
     - m2-patch  # [win]
+    - m2-perl   # [win]
     - bazel >=3.7.2    # [win]
     - python
     - pip
@@ -63,7 +64,6 @@ requirements:
     - zip          # [not win]
     - m2-unzip     # [win]
     - m2-zip       # [win]
-    - m2-perl      # [win]
     - nsync
     - bazel >=3.7.2    # [win]
     # requirements specified by the package itself
@@ -153,7 +153,7 @@ test:
   files:
     - gpu_test.py
   commands:
-    - freeze_graph --help
+    # - freeze_graph --help
     - saved_model_cli --help
     - tflite_convert --help     # [not win]
     - toco_from_protos --help   # [not win]
