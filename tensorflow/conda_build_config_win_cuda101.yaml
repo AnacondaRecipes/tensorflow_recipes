@@ -1,8 +1,8 @@
 # configuration for win-64 gpu, cuda 10.1
 full_base_version:
-  - "2.5.0 gpu_py37h29c2da4_0"
-  - "2.5.0 gpu_py38h29c2da4_0"
-  - "2.5.0 gpu_py39h29c2da4_0"
+  - "2.5.0 gpu_py37hb3da07e_0"
+  - "2.5.0 gpu_py38hb3da07e_0"
+  - "2.5.0 gpu_py39hb3da07e_0"
 select_version:
   - "2.1.0 gpu"
   - "2.1.0 gpu"

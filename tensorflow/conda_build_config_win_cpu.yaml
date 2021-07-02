@@ -1,11 +1,11 @@
 # configuration for win-64 eigen and mkl variants
 full_base_version:
-  - "2.5.0 eigen_py37h2b86b3d_0"
-  - "2.5.0 eigen_py38h2b86b3d_0"
-  - "2.5.0 eigen_py39h2b86b3d_0"
-  - "2.5.0 mkl_py37h35b2a3d_0"
-  - "2.5.0 mkl_py38h35b2a3d_0"
-  - "2.5.0 mkl_py39h35b2a3d_0"
+  - "2.5.0 eigen_py37h03e61e6_0"
+  - "2.5.0 eigen_py38h03e61e6_0"
+  - "2.5.0 eigen_py39h03e61e6_0"
+  - "2.5.0 mkl_py37h9201259_0"
+  - "2.5.0 mkl_py38h9201259_0"
+  - "2.5.0 mkl_py39h9201259_0"
 
 select_version:
   - "2.2.0 eigen"
