@@ -1,4 +1,4 @@
-{% set version = "2.5.0" %}
+{% set version = "2.6.0" %}
 
 # This is the recipe for the "mkl" and "eigen" variants of tensorflow-base
 package:
@@ -8,7 +8,7 @@ package:
 source:
   fn: tensorflow-{{ version }}.tar.gz
   url: https://github.com/tensorflow/tensorflow/archive/v{{ version }}.tar.gz
-  sha256: 233875ea27fc357f6b714b2a0de5f6ff124b50c1ee9b3b41f9e726e9e677b86c
+  sha256: 41b32eeaddcbc02b0583660bcf508469550e4cd0f86b22d2abe72dfebeacde0f
   patches:
     - 0004-loosen-requirements.patch
     - tensorflow_win_zip64.patch                            # [win]
@@ -35,6 +35,9 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - git
+    - patch       # [unix]
+    - m2-patch    # [win]
     # required here for all OS's, and ALSO below for windows
     - bazel >=3.7.2
     - aws-sdk-cpp
@@ -106,8 +109,8 @@ requirements:
     - sqlite
     - snappy
     - typing_extensions >=3.7.4
-    - tensorboard >=2.5.0,<2.6
-    - tensorflow-estimator >=2.5.0,<2.6
+    - tensorboard >=2.6.0,<2.7
+    - tensorflow-estimator >=2.6.0,<2.7
   run:
     - python
     - absl-py >=0.10.0
@@ -130,8 +133,8 @@ requirements:
     - gast ==0.4.0
     - {{ pin_compatible('scipy', max_pin=None) }}
     - flatbuffers
-    - tensorboard >=2.5.0,<2.6
-    - tensorflow-estimator >=2.5.0,<2.6
+    - tensorboard >=2.6.0,<2.7
+    - tensorflow-estimator >=2.6.0,<2.7
 test:
   imports:
     - tensorflow
