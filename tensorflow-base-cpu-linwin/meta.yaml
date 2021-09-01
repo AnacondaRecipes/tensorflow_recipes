@@ -62,6 +62,7 @@ requirements:
     - zip          # [not win]
     - m2-unzip     # [win]
     - m2-zip       # [win]
+    - m2-perl      # [win]
     - nsync
     # requirements specified by the package itself
     - astor >=0.7.1
@@ -91,7 +92,7 @@ requirements:
     - h5py >=3.1.0
     - keras-preprocessing >=1.1.2
     # has run_exports, doesn't need a run dep below
-    - mklml            # [win and tflow_variant == 'mkl']
+    # - mklml            # [win and tflow_variant == 'mkl']
     - numpy >=1.20  # [not aarch64]
     - numpy >=1.19  # [aarch64]
     - opt_einsum 3.3.0.*

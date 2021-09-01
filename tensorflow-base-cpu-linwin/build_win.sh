@@ -2,6 +2,9 @@
 
 set -ex
 
+export MSYS_NO_PATHCONV=1
+export MSYS2_ARG_CONV="*"
+
 # expand PREFIX in tensor's build_config/BUILD file
 sed -i -e "s:\${PREFIX}:${PREFIX}:" tensorflow/core/platform/default/build_config/BUILD
 
@@ -19,12 +22,12 @@ echo "BAZEL_MKL_OPT: ${BAZEL_MKL_OPT}"
 
 export PYTHON_BIN_PATH="$PYTHON"
 export PYTHON_LIB_PATH="$SP_DIR"
+export USE_DEFAULT_PYTHON_LIB_PATH=1
 
 export TF_NEED_CUDA=0
 export TF_CUDA_CLANG=0
 export TF_DOWNLOAD_CLANG=0
-# export TF_ENABLE_XLA=0
-export TF_ENABLE_XLA=1
+export TF_ENABLE_XLA=0
 export TF_NEED_VERBS=0
 export TF_NEED_GCP=1
 export TF_NEED_KAFKA=0
@@ -71,6 +74,9 @@ unset CONDA_DEFAULT_ENV
 unset STDLIB_DIR
 unset SCRIPTS
 
+bazel clean --expunge
+bazel shutdown
+
 # rm -rf .bazelrc
 mv .bazelrc bazelrc_old
 cp -f ${RECIPE_DIR}/def_bazelrc .bazelrc
@@ -80,8 +86,26 @@ echo "" | ./configure
 # arguments. This causes the final command line argument length to explode on
 # Windows. This can be mitigated by keeping the global build matrix contents to
 # the absolute minimum.
-BUILD_OPTS="--define=override_eigen_strong_inline=true ${BAZEL_MKL_OPT}"
-${LIBRARY_BIN}/bazel --output_base $SRC_DIR/../bazel --batch build -c opt $BUILD_OPTS //tensorflow/tools/pip_package:build_pip_package || exit $?
+BUILD_OPTS="
+--verbose_failures
+--logging=6
+--subcommands
+--config=opt
+--define=override_eigen_strong_inline=true
+--define=no_tensorflow_py_deps=true
+${BAZEL_MKL_OPT}"
+
+${LIBRARY_BIN}/bazel --output_base $SRC_DIR/../bazel --batch build -c opt ${BUILD_OPTS} \
+    --action_env="PYTHON_BIN_PATH=${PYTHON}" \
+    --action_env="PYTHON_LIB_PATH=${SP_DIR}" \
+    --python_path="${PYTHON}" \
+    --define=PREFIX="$PREFIX" \
+    --define=LIBDIR="$PREFIX/lib" \
+    --define=INCLUDEDIR="$PREFIX/include" \
+    --copt=-D_copysign="copysign" \
+    --host_copt=-D_copysign="copysign" --cxxopt=-D_copysign="copysign" \
+    --host_cxxopt=-D_copysign="copysign" \
+    //tensorflow/tools/pip_package:build_pip_package || exit $?
 
 # xref: https://github.com/tensorflow/tensorflow/issues/21886
 # xref: https://github.com/tensorflow/tensorflow/issues/6396
@@ -103,3 +127,7 @@ unzip ${PIP_NAME} -d $SP_DIR
 
 # The tensorboard package has the proper entrypoint
 rm -f ${PREFIX}/Scripts/tensorboard.exe
+
+# make sure we shutdown things again and are releasing locks ...
+bazel clean --expunge
+bazel shutdown
