@@ -87,23 +87,15 @@ echo "" | ./configure
 # Windows. This can be mitigated by keeping the global build matrix contents to
 # the absolute minimum.
 BUILD_OPTS="
---verbose_failures
---logging=6
---subcommands
 --config=opt
 --define=override_eigen_strong_inline=true
 --define=no_tensorflow_py_deps=true
 ${BAZEL_MKL_OPT}"
 
 ${LIBRARY_BIN}/bazel --output_base $SRC_DIR/../bazel --batch build -c opt ${BUILD_OPTS} \
-    --action_env="PYTHON_BIN_PATH=${PYTHON}" \
-    --action_env="PYTHON_LIB_PATH=${SP_DIR}" \
-    --python_path="${PYTHON}" \
-    --define=PREFIX="$PREFIX" \
-    --define=LIBDIR="$PREFIX/lib" \
-    --define=INCLUDEDIR="$PREFIX/include" \
     --copt=-D_copysign="copysign" \
-    --host_copt=-D_copysign="copysign" --cxxopt=-D_copysign="copysign" \
+    --host_copt=-D_copysign="copysign" \
+    --cxxopt=-D_copysign="copysign" \
     --host_cxxopt=-D_copysign="copysign" \
     //tensorflow/tools/pip_package:build_pip_package || exit $?
 
@@ -115,11 +107,11 @@ ${LIBRARY_BIN}/bazel --output_base $SRC_DIR/../bazel --batch build -c opt ${BUIL
 # export _param_file="/c/users/$USER/_bazel_$USER/xxxxxxxx/execroot/org_tensorflow/bazel-out/x64_windows-opt/bin/tensorflow/lite/toco/python/_tensorflow_wrap_toco.so-2.params"
 # while true; do if [ -f $_param_file ]; then sed -i 's,^/WHOLEARCHIVE:\(.*external.*\),\1,' $_param_file; echo done; break; else sleep 1; fi; done
 
-PY_TEST_DIR="$SRC_DIR/py_test_dir"
+PY_TEST_DIR="${SRC_DIR}/py_test_dir"
 rm -fr ${PY_TEST_DIR}
 mkdir -p ${PY_TEST_DIR}
-cmd /c "mklink /J $(cygpath -w ${PY_TEST_DIR})\\tensorflow) .\\tensorflow"
-./bazel-bin/tensorflow/tools/pip_package/build_pip_package "$(cygpath -w ${PY_TEST_DIR})"
+cmd //c "mklink /J $(cygpath -w ${PY_TEST_DIR})\\tensorflow) .\\tensorflow"
+./bazel-bin/tensorflow/tools/pip_package/build_pip_package.exe "$(cygpath -w ${PY_TEST_DIR})"
 
 PIP_NAME=$(ls ${PY_TEST_DIR}/tensorflow-*.whl)
 # python -m pip install ${PIP_NAME} --no-deps -vv --ignore-installed
