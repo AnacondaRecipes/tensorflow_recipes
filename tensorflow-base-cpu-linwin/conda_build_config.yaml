@@ -1,9 +1,7 @@
-# Builds fail on linux with gcc 7.x, see
-# https://github.com/tensorflow/tensorflow/issues/25323
 c_compiler_version:    # [linux and not aarch64]
-  - 5.4                # [linux and not aarch64]
+  - 7.5                # [linux and not aarch64]
 cxx_compiler_version:  # [linux and not aarch64]
-  - 5.4                # [linux and not aarch64]
+  - 7.5                # [linux and not aarch64]
 cxx_compiler:  # [win]
   - vs2019     # [win]
 c_compiler:    # [win]

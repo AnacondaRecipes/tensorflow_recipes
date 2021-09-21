@@ -133,7 +133,7 @@ ${LIBRARY_BIN}/bazel --output_base $SRC_DIR/../bazel --batch build -c opt $BUILD
 PY_TEST_DIR="$SRC_DIR/py_test_dir"
 rm -fr ${PY_TEST_DIR}
 mkdir -p ${PY_TEST_DIR}
-cmd /c "mklink /J $(cygpath -w ${PY_TEST_DIR})\\tensorflow .\\tensorflow"
+cmd //c "mklink /J $(cygpath -w ${PY_TEST_DIR})\\tensorflow .\\tensorflow"
 
 rm -rf /c/t/tmp.XXXXXXXXXX
 mkdir -p /c/t/tmp.XXXXXXXXXX
