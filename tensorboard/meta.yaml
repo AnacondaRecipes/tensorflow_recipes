@@ -1,17 +1,16 @@
 # NOTE: bazel refuses to use our python in this build, despite many hacky attempts you can see in build.sh
 #    To make this recipe build, /usr/bin/python must exist.  I symlinked /usr/bin/python3 to /usr/bin/python
 #    and that was sufficient.
-{% set version = "2.4.0" %}
-{% set tf_version = "2.4.1" %}
+{% set version = "2.6.0" %}
+{% set tf_version = "2.6.0" %}
 
 package:
   name: tensorboard
   version: {{ version }}
 
 source:
-  fn: tensorboard-{{ version }}.tar.gz
-  url: https://github.com/tensorflow/tensorboard/archive/{{ version }}.tar.gz
-  sha256: 28a30794c1c797357b2086477394b59afa0b18ca48592ca3c0627f7f10536373
+  url: https://pypi.io/packages/py3/t/tensorboard/tensorboard-{{ version }}-py3-none-any.whl
+  sha256: f7dac4cdfb52d14c9e3f74585ce2aaf8e6203620a864e51faf84988b09f7bbdb
 
 # tensorboard is built as a noarch packages on a Linux system
 # During the build, an executable is downloaded that requires a newer
@@ -21,36 +20,31 @@ build:
   noarch: python
   # Make sure there is no tensorboard entry point in the tensorflow-{gpu-,}base
   # packages as it conflicts with a file in this package.
+  script:
+    - python -m pip install --no-deps --ignore-installed ./tensorboard-{{ version }}-py3-none-any.whl
   entry_points:
     - tensorboard = tensorboard.main:run_main
   # Although compilers are needed for the build, the output is pure python,
   # javascript and html. Therefore the run_exports can be ignored.
-  ignore_run_exports:
-    - libgcc-ng
-    - libstdcxx-ng
-    - libcxx
 
 requirements:
-  build:
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
   host:
-    - bazel >=0.29.1
     - python >=3.7
     - pip
   run:
     - python >=3.7
-    - absl-py >={{absl_py}}
+    - absl-py >=0.4
     - grpcio >=1.24.3
     - google-auth >=1.6.3,<2
     - google-auth-oauthlib >=0.4.1,<0.5
-    - markdown >={{markdown}}
-    - numpy >={{numpy}}
-    - protobuf >={{protobuf}}
+    - markdown >=2.6.8
+    - numpy >=1.12.0
+    - protobuf >=3.6.0
     - requests >=2.21.0,<3
-    - setuptools >={{setuptools}}
-    - six >={{six}}
+    - setuptools >=41.0.0
+    - six >=1.10.0
     - tensorboard-plugin-wit >=1.6.0
+    - tensorboard-data-server >=0.6.0,<0.7.0
     - werkzeug >=0.11.15
     - markdown >=2.6.8
     - wheel >=0.26
