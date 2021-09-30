@@ -13,8 +13,6 @@ source:
   sha256: f7dac4cdfb52d14c9e3f74585ce2aaf8e6203620a864e51faf84988b09f7bbdb
 
 # tensorboard is built as a noarch packages on a Linux system
-# During the build, an executable is downloaded that requires a newer
-# version of libstdc++ than that provided by CentOS 6,  Ubuntu 16.04 works.
 build:
   number: 0
   noarch: python
@@ -24,8 +22,6 @@ build:
     - python -m pip install --no-deps --ignore-installed ./tensorboard-{{ version }}-py3-none-any.whl
   entry_points:
     - tensorboard = tensorboard.main:run_main
-  # Although compilers are needed for the build, the output is pure python,
-  # javascript and html. Therefore the run_exports can be ignored.
 
 requirements:
   host:
