@@ -10,7 +10,7 @@ source:
   sha256: f7dac4cdfb52d14c9e3f74585ce2aaf8e6203620a864e51faf84988b09f7bbdb
 
 build:
-  number: 0
+  number: 1
   noarch: python
   script:
     - python -m pip install --no-deps --ignore-installed ./tensorboard-{{ version }}-py3-none-any.whl
@@ -33,6 +33,7 @@ requirements:
     - grpcio >=1.24.3
     - google-auth-oauthlib ==0.4.1
     - tensorboard-plugin-wit >=1.6.0
+    - tensorboard-data-server >=0.6.0,<0.7.0
 
 test:
   imports:
