@@ -1,41 +1,28 @@
-{% set version = "1.6.0" %}
+{% set name = "tensorboard-plugin-wit" %}
+{% set version = "1.8.1" %}
 
 package:
-  name: tensorboard-plugin-wit
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  #fn: tensorboard-plugin-wit-{{ version }}.tar.gz
-  #url: https://github.com/PAIR-code/what-if-tool/archive/v{{ version }}.tar.gz
-  #sha256: 1098777db63d2ce8b365bc7f21722066d0b0aff63bfc2cd8b1a6abfac5b9f760
-  # The 1.6.0.post3 wheels looks to be build after
-  # https://github.com/PAIR-code/what-if-tool/pull/64 was merged
-  git_url: https://github.com/PAIR-code/what-if-tool.git
-  git_hash: 01fcc6aa68cc26e5b234270550944262047aa263
+  url: https://pypi.io/packages/py3/t/tensorboard/tensorboard-{{ version }}-py3-none-any.whl
+  url: https://pypi.io/packages/py3/t/tensorboard-plugin-wit/tensorboard_plugin_wit-{{ version }}-py3-none-any.whl
+  sha256: ff26bdd583d155aa951ee3b152b3d0cffae8005dc697f72b44a8e8c2a77a8cbe
 
-# tensorboard-plugin-wit is built as a noarch packages on a Linux system
-# During the build, an executable is downloaded that requires a newer
-# version of libstdc++ than that provided by CentOS 6,  Ubuntu 16.04 works.
 build:
   number: 0
-  noarch: python
-  string: py_{{ PKG_BUILDNUM }}
-  # Although compilers are needed for the build, the output is pure python,
-  # javascript and html. Therefore the run_exports can be ignored.
-  ignore_run_exports:
-    - libgcc-ng
-    - libstdcxx-ng
+  skip: True  # [py<37]
+  script:
+    - python -m pip install --no-deps --ignore-installed ./tensorboard_plugin_wit-{{ version }}-py3-none-any.whl
 
 requirements:
-  build:
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - bazel
   host:
-    - pip
     - python
+    - pip
   run:
-    - python >=3
+    - python
+    - wheel >=0.26
     # setuptools is required for pkg_resources
     - setuptools
 
@@ -44,7 +31,10 @@ test:
     - tensorboard_plugin_wit
 
 about:
-  home: https://github.com/PAIR-code/what-if-tool 
-  license: Apache 2.0
+  home: https://pair-code.github.io/what-if-tool/
+  license: Apache-2.0
   license_family: Apache
+  license_file: LICENSE
   summary: What-If Tool TensorBoard plugin
+  dev_url: https://github.com/PAIR-code/what-if-tool
+  doc_url: https://pair-code.github.io/what-if-tool/learn/
