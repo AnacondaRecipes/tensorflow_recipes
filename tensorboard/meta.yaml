@@ -1,5 +1,5 @@
 {% set name = "tensorboard" %}
-{% set version = "2.6.0" %}
+{% set version = "2.9.1" %}
 
 package:
   name: {{ name|lower }}
@@ -7,11 +7,11 @@ package:
 
 source:
   url: https://pypi.io/packages/py3/t/tensorboard/tensorboard-{{ version }}-py3-none-any.whl
-  sha256: f7dac4cdfb52d14c9e3f74585ce2aaf8e6203620a864e51faf84988b09f7bbdb
+  sha256: baa727f791776f9e5841d347127720ceed4bbd59c36b40604b95fb2ae6029276
 
 build:
-  number: 1
-  noarch: python
+  number: 0
+  skip: True  # [py<37]
   script:
     - python -m pip install --no-deps --ignore-installed ./tensorboard-{{ version }}-py3-none-any.whl
   entry_points:
@@ -19,13 +19,12 @@ build:
 
 requirements:
   host:
-    - python >=3.2
+    - python
     - pip
   run:
-    - python >=3.2
+    - python
     - wheel >=0.26
     - numpy >=1.12.0
-    - six >=1.10.0
     - protobuf >=3.6.0
     - werkzeug >=0.11.15
     - markdown >=2.6.8
@@ -42,10 +41,13 @@ test:
     - tensorboard -h
 
 about:
-  home: https://github.com/tensorflow/tensorboard
+  home: https://www.tensorflow.org/tensorboard
   license: Apache-2.0
-  license_file: {{ environ["RECIPE_DIR"] }}/LICENSE
+  license_family: Apache
+  license_file: LICENSE
   summary: TensorFlow's Visualization Toolkit
+  dev_url: https://github.com/tensorflow/tensorboard
+  doc_url: https://www.tensorflow.org/tensorboard/get_started
 
 extra:
   recipe-maintainers:
