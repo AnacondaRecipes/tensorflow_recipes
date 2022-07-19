@@ -66,7 +66,12 @@ export GCC_HOST_COMPILER_PATH="${CC}"
 bazel clean --expunge
 bazel shutdown
 
+sed -i 's@cpu_value = get_cpu_value(repository_ctx)@cpu_value = "Linux"@g' \
+    third_party/gpus/cuda_configure.bzl
+
 ./configure
+
+export LD_LIBRARY_PATH="${BUILD_PREFIX}/lib"
 
 # build using bazel
 # for debugging the following lines may be helpful
@@ -79,8 +84,10 @@ bazel ${BAZEL_OPTS} build ${BAZEL_MKL_OPT} ${OPT_BAZEL_FLAG} \
     --copt=-fPIC \
     --copt=-fstack-protector-strong \
     --copt=-O2 \
+    --copt=-DNO_CONSTEXPR_FOR_YOU=1 \
     --cxxopt=-fvisibility-inlines-hidden \
     --cxxopt=-fmessage-length=0 \
+    --host_copt=-DNO_CONSTEXPR_FOR_YOU=1 \
     --linkopt=-zrelro \
     --linkopt=-znow \
     --linkopt="-L${PREFIX}/lib" \
@@ -93,8 +100,6 @@ bazel ${BAZEL_OPTS} build ${BAZEL_MKL_OPT} ${OPT_BAZEL_FLAG} \
     --action_env="PYTHON_LIB_PATH=${SP_DIR}" \
     --python_path="${PYTHON}" \
     --define=PREFIX="$PREFIX" \
-    --copt=-DNO_CONSTEXPR_FOR_YOU=1 \
-    --host_copt=-DNO_CONSTEXPR_FOR_YOU=1 \
     --define=LIBDIR="$PREFIX/lib" \
     --define=INCLUDEDIR="$PREFIX/include" \
     //tensorflow/tools/pip_package:build_pip_package
