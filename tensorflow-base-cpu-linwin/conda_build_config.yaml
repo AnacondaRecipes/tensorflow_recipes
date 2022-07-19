@@ -7,5 +7,5 @@ cxx_compiler:  # [win]
 c_compiler:    # [win]
   - vs2019     # [win]
 tflow_variant:
-  - mkl
+  #  - mkl
   - eigen
