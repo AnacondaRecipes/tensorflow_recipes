@@ -71,8 +71,6 @@ sed -i 's@cpu_value = get_cpu_value(repository_ctx)@cpu_value = "Linux"@g' \
 
 ./configure
 
-export LD_LIBRARY_PATH="${BUILD_PREFIX}/lib"
-
 # build using bazel
 # for debugging the following lines may be helpful
 #   --logging=6 \
