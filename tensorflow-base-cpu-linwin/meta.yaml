@@ -107,8 +107,8 @@ requirements:
     - sqlite
     - snappy
     - typing_extensions >=3.7.4
-    - tensorboard >=2.6.0,<2.7
-    - tensorflow-estimator >=2.6.0,<2.7
+    - tensorboard >=2.8,<2.9
+    - tensorflow-estimator >=2.8,<2.9
   run:
     - python
     - absl-py >=0.10.0
@@ -130,8 +130,8 @@ requirements:
     - gast ==0.4.0
     - {{ pin_compatible('scipy', max_pin=None) }}
     - flatbuffers
-    - tensorboard >=2.6.0,<2.7
-    - tensorflow-estimator >=2.6.0,<2.7
+    - tensorboard >=2.8,<2.9
+    - tensorflow-estimator >=2.8,<2.9
 test:
   imports:
     - tensorflow

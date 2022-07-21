@@ -1,5 +1,5 @@
-{% set version = "2.6.0" %}
-{% set tb_version = "2.6.0" %}
+{% set version = "2.8.2" %}
+{% set major_minor = version.rsplit('.', 1)[0] %}
 
 package:
   name: tensorflow
@@ -14,8 +14,8 @@ requirements:
   run:
     - tensorflow-base {{ full_base_version }}
     - _tflow_select   {{ select_version }}
-    - tensorboard            >={{tb_version}}
-    - tensorflow-estimator   >={{version}}
+    - tensorboard            >={{major_minor}}
+    - tensorflow-estimator   >={{major_minor}}
     - python  {{ py_version }}
 
 test:
