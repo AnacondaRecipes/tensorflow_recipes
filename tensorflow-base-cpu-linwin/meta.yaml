@@ -41,7 +41,7 @@ requirements:
     # required here for all OS's, and ALSO below for windows
     - bazel >=4.2.2,<5
     - aws-sdk-cpp
-    - cython 0.29.*
+    - cython
     - sqlite
     - grpc-cpp
     - wheel
@@ -64,8 +64,7 @@ requirements:
     - nsync
     # requirements specified by the package itself
     - astor >=0.7.1
-    - cython 0.29.21  # [not aarch64]
-    - cython 0.29.*   # [aarch64]
+    - cython
     - dill >=0.3.1.1
     - giflib
     - grpc-cpp
