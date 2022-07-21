@@ -66,9 +66,6 @@ export GCC_HOST_COMPILER_PATH="${CC}"
 bazel clean --expunge
 bazel shutdown
 
-sed -i 's@cpu_value = get_cpu_value(repository_ctx)@cpu_value = "Linux"@g' \
-    third_party/gpus/cuda_configure.bzl
-
 ./configure
 
 # build using bazel
