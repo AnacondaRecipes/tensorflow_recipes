@@ -40,10 +40,10 @@ requirements:
     # required here for all OS's, and ALSO below for windows
     - bazel >=4.2.2,<5
     - aws-sdk-cpp
+    # for cython compiler
     - cython
     - sqlite
     - grpc-cpp
-    - wheel
   host:
     # conda build requirements for .sh scripts on win
     - posix     # [win]
@@ -63,7 +63,6 @@ requirements:
     - nsync
     # requirements specified by the package itself
     - astor >=0.7.1
-    - cython
     - dill >=0.3.1.1
     - giflib
     - grpc-cpp
@@ -89,8 +88,7 @@ requirements:
     - keras-preprocessing >=1.1.2
     # has run_exports, doesn't need a run dep below
     # - mklml            # [win and tflow_variant == 'mkl']
-    - numpy >=1.20  # [not aarch64]
-    - numpy >=1.19  # [aarch64]
+    - numpy >=1.20
     - opt_einsum 3.3.0.*
     # build only requirement, doesn't need a run dep below
     - protobuf
@@ -116,8 +114,7 @@ requirements:
     - google-pasta >=0.2
     - h5py >=3.1.0
     - keras-preprocessing >=1.1.2
-    - numpy >=1.20  # [not aarch64]
-    - numpy >=1.19  # [aarch64]
+    - {{ pin_compatible('numpy') }}
     - opt_einsum 3.3.0.*
     - six >=1.15.0
     - termcolor >=1.1.0
@@ -146,8 +143,8 @@ test:
     {%- endif %}
 
 about:
-  home: http://tensorflow.org/
-  license: Apache 2.0
+  home: https://tensorflow.org/
+  license: Apache-2.0
   license_family: Apache
   summary: TensorFlow is a machine learning library, base package contains only tensorflow.
   description: |
