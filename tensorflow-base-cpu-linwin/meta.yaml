@@ -84,9 +84,8 @@ requirements:
     - python-flatbuffers
     - gast >=0.2.1
     - google-pasta >=0.1.1
-    - grpcio >=1.24.3,< 2.0
+    - grpcio >=1.24.3,<2.0
     - h5py >=2.9.0
-    - keras {{ major_minor }}.*
     # has run_exports, doesn't need a run dep below
     # - mklml            # [win and tflow_variant == 'mkl']
     - numpy >=1.20
@@ -102,8 +101,6 @@ requirements:
     - termcolor >=1.1.0
     - wrapt >=1.11.2
     # has run_exports, doesn't need a run dep below
-    - sqlite
-    - snappy
     - typing_extensions >=3.7.4
     - tensorboard >=2.8,<2.9
     - tensorflow-estimator >=2.8,<2.9
