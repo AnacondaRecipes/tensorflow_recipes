@@ -1,4 +1,5 @@
 {% set version = "2.8.2" %}
+{% set major_minor = version.rsplit('.', 1)[0] %}
 
 # This is the recipe for the "mkl" and "eigen" variants of tensorflow-base
 package:
@@ -66,7 +67,7 @@ requirements:
     - dill >=0.3.1.1
     - giflib
     - grpc-cpp
-    - flatbuffers 1.12.0
+    - flatbuffers >=1.12
     - icu
     - jpeg
     - libpng
@@ -80,16 +81,16 @@ requirements:
     - absl-py 0.10  # [py<39]
     - absl-py 0.11  # [py>=39]
     - astunparse 1.6.3
-    - python-flatbuffers 1.12.*
-    - gast 0.4.0
-    - google-pasta 0.2
-    - grpcio
-    - h5py >=3.1.0
-    - keras-preprocessing >=1.1.2
+    - python-flatbuffers
+    - gast >=0.2.1
+    - google-pasta >=0.1.1
+    - grpcio >=1.24.3,< 2.0
+    - h5py >=2.9.0
+    - keras {{ major_minor }}.*
     # has run_exports, doesn't need a run dep below
     # - mklml            # [win and tflow_variant == 'mkl']
     - numpy >=1.20
-    - opt_einsum 3.3.0.*
+    - opt_einsum >=2.3.2
     # build only requirement, doesn't need a run dep below
     - protobuf
     # build only requirement, doesn't need a run dep below
@@ -107,27 +108,26 @@ requirements:
     - tensorboard >=2.8,<2.9
     - tensorflow-estimator >=2.8,<2.9
   run:
-    - python
+    - {{ pin_compatible('numpy') }}
+    - {{ pin_compatible('scipy', max_pin=None) }}
     - absl-py >=0.10.0
     - astunparse >=1.6.3
-    - python-flatbuffers 1.12.*
-    - google-pasta >=0.2
-    - h5py >=3.1.0
-    - keras-preprocessing >=1.1.2
-    - {{ pin_compatible('numpy') }}
-    - opt_einsum 3.3.0.*
-    - six >=1.15.0
-    - termcolor >=1.1.0
-    - typing_extensions >=3.7.4
-    - wheel >=0.35,<0.36
-    - wrapt >=1.11.2
-    - grpcio
-    # upstream wants exact pin for gast
-    - gast ==0.4.0
-    - {{ pin_compatible('scipy', max_pin=None) }}
-    - flatbuffers
+    - flatbuffers >=1.12
+    - gast >=0.2.1
+    - google-pasta >=0.1.1
+    - grpcio >=1.24.3,<2.0
+    - h5py >=2.9.0
+    - keras {{ major_minor }}.*
+    - opt_einsum >=2.3.2
+    - python
+    - python-flatbuffers
+    - setuptools
+    - six >=1.12.0
     - tensorboard >=2.8,<2.9
     - tensorflow-estimator >=2.8,<2.9
+    - termcolor >=1.1.0
+    - typing_extensions >=3.6.6
+    - wrapt >=1.11.2
 test:
   imports:
     - tensorflow

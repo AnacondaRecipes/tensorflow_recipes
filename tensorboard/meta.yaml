@@ -11,7 +11,7 @@ source:
 
 build:
   number: 0
-  skip: True  # [py<37]
+  skip: True  # [py<36]
   script:
     - python -m pip install --no-deps --ignore-installed ./tensorboard-{{ version }}-py3-none-any.whl
   entry_points:
@@ -22,17 +22,19 @@ requirements:
     - python
     - pip
   run:
-    - python
-    - wheel >=0.26
+    - absl-py >=0.4
+    - google-auth-oauthlib >=0.4.1,<0.5
+    - grpcio >=1.24.3
+    - markdown >=2.6.8
     - numpy >=1.12.0
     - protobuf >=3.6.0
-    - werkzeug >=0.11.15
-    - markdown >=2.6.8
-    - absl-py >=0.4
-    - grpcio >=1.24.3
-    - google-auth-oauthlib ==0.4.1
-    - tensorboard-plugin-wit >=1.6.0
+    - python
+    - requests >=2.21.0,<3
+    - setuptools >=41.0.0
     - tensorboard-data-server >=0.6.0,<0.7.0
+    - tensorboard-plugin-wit >=1.6.0
+    - werkzeug >=0.11.15
+    - wheel >=0.26
 
 test:
   imports:

@@ -21,15 +21,7 @@ requirements:
     - pip
   run:
     - python
-    - absl-py >=0.7.0
-    - astor >=0.6.0
-    - gast >=0.2.0
-    - numpy >=1.16.1
-    - six >=1.10.0
-    - protobuf >=3.6.1
-    - termcolor >=1.1.0
-    - wrapt >=1.11.1
-    - grpcio >=1.8.6
+    - tensorflow-base  {{ major_minor }}.*
 
 test:
   imports:

@@ -12,11 +12,11 @@ build:
 
 requirements:
   run:
-    - tensorflow-base {{ full_base_version }}
-    - _tflow_select   {{ select_version }}
-    - tensorboard            >={{major_minor}}
-    - tensorflow-estimator   >={{major_minor}}
-    - python  {{ py_version }}
+    - tensorflow-base       {{ full_base_version }}
+    - _tflow_select         {{ select_version }}
+    - tensorboard           {{ major_minor }}.*
+    - tensorflow-estimator  {{ major_minor }}.*
+    - python                {{ py_version }}
 
 test:
   imports:
@@ -26,8 +26,8 @@ test:
     - tensorboard --help
 
 about:
-  home: http://tensorflow.org/
-  license: Apache 2.0
+  home: https://tensorflow.org/
+  license: Apache-2.0
   license_family: Apache
   summary: TensorFlow is a machine learning library.
   description: |
