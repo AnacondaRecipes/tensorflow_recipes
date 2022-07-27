@@ -102,8 +102,6 @@ requirements:
     - wrapt >=1.11.2
     # has run_exports, doesn't need a run dep below
     - typing_extensions >=3.7.4
-    - tensorboard >=2.8,<2.9
-    - tensorflow-estimator >=2.8,<2.9
   run:
     - {{ pin_compatible('numpy') }}
     - {{ pin_compatible('scipy', max_pin=None) }}
@@ -120,8 +118,8 @@ requirements:
     - python-flatbuffers
     - setuptools
     - six >=1.12.0
-    - tensorboard >=2.8,<2.9
-    - tensorflow-estimator >=2.8,<2.9
+    - tensorboard {{ major_minor }}.*
+    - tensorflow-estimator {{ major_minor }}.*
     - termcolor >=1.1.0
     - typing_extensions >=3.6.6
     - wrapt >=1.11.2
