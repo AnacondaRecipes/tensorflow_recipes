@@ -26,6 +26,7 @@ requirements:
   run:
     - python
     - pyyaml
+    - keras-preprocessing  >=1.1.2
     # Other dependencies (such as h5py, numpy, ...) in their correct versions
     # will be pulled in by tensorflow-base.
     - tensorflow-base  {{ major_minor }}.*
