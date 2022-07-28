@@ -1,19 +1,7 @@
-From 1167775962a9a19570e21f9e2e4f2327451c6ad5 Mon Sep 17 00:00:00 2001
-From: Nishidha Panpaliya <npanpa23@in.ibm.com>
-Date: Wed, 4 Nov 2020 03:13:12 -0600
-Subject: [PATCH] Include c and cc header files
-
----
- tensorflow/cc/BUILD      | 51 ++++++++++++++++++++++++++++++++++++++++++++++++
- tensorflow/cc/cc_ops.bzl | 15 ++++++++++++++
- 2 files changed, 66 insertions(+)
- create mode 100644 tensorflow/cc/cc_ops.bzl
-
-diff --git a/tensorflow/cc/BUILD b/tensorflow/cc/BUILD
-index 8f7e447..1f5a7c4 100644
---- a/tensorflow/cc/BUILD
-+++ b/tensorflow/cc/BUILD
-@@ -18,6 +18,8 @@ load("//tensorflow:tensorflow.bzl", "filegroup")
+diff -urN a/tensorflow/cc/BUILD b/tensorflow/cc/BUILD
+--- a/tensorflow/cc/BUILD	2022-07-26 12:31:05.114112947 +0300
++++ b/tensorflow/cc/BUILD	2022-07-26 12:31:29.950315468 +0300
+@@ -17,6 +17,8 @@
  # buildifier: disable=same-origin-load
  load("//tensorflow:tensorflow.bzl", "tf_gen_op_wrappers_cc")
  
@@ -21,8 +9,8 @@ index 8f7e447..1f5a7c4 100644
 +
  package(
      default_visibility = ["//visibility:public"],
-     licenses = ["notice"],  # Apache 2.0
-@@ -865,3 +867,52 @@ transitive_hdrs(
+     licenses = ["notice"],
+@@ -915,3 +917,52 @@
          "//tensorflow/cc/tools:freeze_saved_model",
      ],
  )
@@ -75,11 +63,9 @@ index 8f7e447..1f5a7c4 100644
 +    srcs = glob(["framework/*.h"], exclude=["testutil.h"]),
 +    visibility = ["//tensorflow:__subpackages__"],
 +)
-diff --git a/tensorflow/cc/cc_ops.bzl b/tensorflow/cc/cc_ops.bzl
-new file mode 100644
-index 0000000..17fdd92
---- /dev/null
-+++ b/tensorflow/cc/cc_ops.bzl
+diff -urN a/tensorflow/cc/cc_ops.bzl b/tensorflow/cc/cc_ops.bzl
+--- a/tensorflow/cc/cc_ops.bzl	1970-01-01 02:00:00.000000000 +0200
++++ b/tensorflow/cc/cc_ops.bzl	2022-07-26 12:31:29.950315468 +0300
 @@ -0,0 +1,15 @@
 +def tf_cc_ops_hdrs(
 +        name,
@@ -96,6 +82,3 @@ index 0000000..17fdd92
 +        srcs = subhdrs + internalhdrs,
 +        visibility = visibility,
 +    )
--- 
-1.8.3.1
-

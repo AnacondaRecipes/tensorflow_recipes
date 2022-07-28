@@ -1,8 +1,0 @@
-# these are lower bounds specified in TF's requirements.  Some are higher than
-#    TF's lower bound.  These are higher because they are the lowest version that we have.
-bazel:
-    - 3.7.2
-#numpy:
-#    - 1.20
-mkl:
-  - 2021

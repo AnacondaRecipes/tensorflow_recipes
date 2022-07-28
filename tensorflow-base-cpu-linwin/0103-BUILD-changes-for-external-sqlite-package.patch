@@ -1,16 +1,6 @@
-From 0a1faf0711ad275111dcb0a031904c0acd68a2f7 Mon Sep 17 00:00:00 2001
-From: PowerAI CI Functional ID <pwraiciw@us.ibm.com>
-Date: Thu, 7 May 2020 09:46:54 +0000
-Subject: [PATCH] SQlite BUILD changes for external sqlite package
-
----
- third_party/systemlibs/sqlite.BUILD | 29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
-
-diff --git a/third_party/systemlibs/sqlite.BUILD b/third_party/systemlibs/sqlite.BUILD
-index 20ee1eb..4ac172e 100644
---- a/third_party/systemlibs/sqlite.BUILD
-+++ b/third_party/systemlibs/sqlite.BUILD
+diff -urN a/third_party/systemlibs/sqlite.BUILD b/third_party/systemlibs/sqlite.BUILD
+--- a/third_party/systemlibs/sqlite.BUILD	2022-05-23 01:24:29.000000000 +0300
++++ b/third_party/systemlibs/sqlite.BUILD	2022-07-26 12:33:08.483350796 +0300
 @@ -1,12 +1,39 @@
  licenses(["unencumbered"])  # Public Domain
  
@@ -52,6 +42,3 @@ index 20ee1eb..4ac172e 100644
  # This is a Copybara sync helper for Google.
  py_library(
      name = "python",
--- 
-1.8.3.1
-

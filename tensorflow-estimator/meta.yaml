@@ -1,16 +1,18 @@
-{% set version = "2.6.0" %}
+{% set name = "tensorflow-estimator" %}
+{% set version = "2.8.0" %}
+{% set major_minor = version.rsplit('.', 1)[0] %}
 
 package:
-  name: tensorflow-estimator
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
   url: https://pypi.io/packages/py2.py3/t/tensorflow-estimator/tensorflow_estimator-{{ version }}-py2.py3-none-any.whl
-  sha256: cf78528998efdb637ac0abaf525c929bf192767544eb24ae20d9266effcf5afd
+  sha256: bee8e0520c60ae7eaf6ca8cb46c5a9f4b45725531380db8fbe38fcb48478b6bb
 
 build:
   number: 0
-  noarch: python
+  skip: True  # [py<37]
   script:
     - python -m pip install --no-deps --ignore-installed tensorflow_estimator-{{ version }}-py2.py3-none-any.whl
 
@@ -20,26 +22,22 @@ requirements:
     - pip
   run:
     - python
-    - absl-py >=0.7.0
-    - astor >=0.6.0
-    - gast >=0.2.0
-    - numpy >=1.16.1
-    - six >=1.10.0
-    - protobuf >=3.6.1
-    - termcolor >=1.1.0
-    - wrapt >=1.11.1
-    - grpcio >=1.8.6
+    - tensorflow-base  {{ major_minor }}.*
 
 test:
   imports:
     # ImportError: /lib64/libc.so.6: version `GLIBC_2.17' not found
     - numpy
+    # TODO (tkoch): import something meaningful or test manually.
 
 about:
-  home: https://github.com/tensorflow/estimator
+  home: https://www.tensorflow.org/guide/estimator
   license: Apache-2.0
-  license_file: {{ environ["RECIPE_DIR"] }}/LICENSE
+  license_family: Apache
+  license_file: LICENSE
   summary: TensorFlow Estimator is a high-level TensorFlow API that greatly simplifies machine learning programming.
+  dev_url: https://github.com/tensorflow/estimator
+  doc_url: https://www.tensorflow.org/api_docs/python/tf/estimator/Estimator
 
 extra:
   recipe-maintainers:

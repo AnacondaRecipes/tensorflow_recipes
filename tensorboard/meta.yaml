@@ -1,5 +1,5 @@
 {% set name = "tensorboard" %}
-{% set version = "2.6.0" %}
+{% set version = "2.8.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,11 +7,11 @@ package:
 
 source:
   url: https://pypi.io/packages/py3/t/tensorboard/tensorboard-{{ version }}-py3-none-any.whl
-  sha256: f7dac4cdfb52d14c9e3f74585ce2aaf8e6203620a864e51faf84988b09f7bbdb
+  sha256: 65a338e4424e9079f2604923bdbe301792adce2ace1be68da6b3ddf005170def
 
 build:
-  number: 1
-  noarch: python
+  number: 0
+  skip: True  # [py<36]
   script:
     - python -m pip install --no-deps --ignore-installed ./tensorboard-{{ version }}-py3-none-any.whl
   entry_points:
@@ -19,21 +19,22 @@ build:
 
 requirements:
   host:
-    - python >=3.2
+    - python
     - pip
   run:
-    - python >=3.2
-    - wheel >=0.26
-    - numpy >=1.12.0
-    - six >=1.10.0
-    - protobuf >=3.6.0
-    - werkzeug >=0.11.15
-    - markdown >=2.6.8
     - absl-py >=0.4
+    - google-auth-oauthlib >=0.4.1,<0.5
     - grpcio >=1.24.3
-    - google-auth-oauthlib ==0.4.1
-    - tensorboard-plugin-wit >=1.6.0
+    - markdown >=2.6.8
+    - numpy >=1.12.0
+    - protobuf >=3.6.0
+    - python
+    - requests >=2.21.0,<3
+    - setuptools >=41.0.0
     - tensorboard-data-server >=0.6.0,<0.7.0
+    - tensorboard-plugin-wit >=1.6.0
+    - werkzeug >=0.11.15
+    - wheel >=0.26
 
 test:
   imports:
@@ -42,10 +43,13 @@ test:
     - tensorboard -h
 
 about:
-  home: https://github.com/tensorflow/tensorboard
+  home: https://www.tensorflow.org/tensorboard
   license: Apache-2.0
-  license_file: {{ environ["RECIPE_DIR"] }}/LICENSE
+  license_family: Apache
+  license_file: LICENSE
   summary: TensorFlow's Visualization Toolkit
+  dev_url: https://github.com/tensorflow/tensorboard
+  doc_url: https://www.tensorflow.org/tensorboard/get_started
 
 extra:
   recipe-maintainers:

@@ -79,8 +79,10 @@ bazel ${BAZEL_OPTS} build ${BAZEL_MKL_OPT} ${OPT_BAZEL_FLAG} \
     --copt=-fPIC \
     --copt=-fstack-protector-strong \
     --copt=-O2 \
+    --copt=-DNO_CONSTEXPR_FOR_YOU=1 \
     --cxxopt=-fvisibility-inlines-hidden \
     --cxxopt=-fmessage-length=0 \
+    --host_copt=-DNO_CONSTEXPR_FOR_YOU=1 \
     --linkopt=-zrelro \
     --linkopt=-znow \
     --linkopt="-L${PREFIX}/lib" \
@@ -93,8 +95,6 @@ bazel ${BAZEL_OPTS} build ${BAZEL_MKL_OPT} ${OPT_BAZEL_FLAG} \
     --action_env="PYTHON_LIB_PATH=${SP_DIR}" \
     --python_path="${PYTHON}" \
     --define=PREFIX="$PREFIX" \
-    --copt=-DNO_CONSTEXPR_FOR_YOU=1 \
-    --host_copt=-DNO_CONSTEXPR_FOR_YOU=1 \
     --define=LIBDIR="$PREFIX/lib" \
     --define=INCLUDEDIR="$PREFIX/include" \
     //tensorflow/tools/pip_package:build_pip_package
