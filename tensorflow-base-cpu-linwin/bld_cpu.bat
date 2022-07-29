@@ -27,5 +27,5 @@ set MSYS2_PATH_TYPE=inherit
 set CHERE_INVOKING=1
 set "BAZEL_VC=%VSINSTALLDIR%VC"
 set "BAZEL_VS=%VSINSTALLDIR%"
-bash -lc "%RECIPE_DIR%"/build_win.sh
+bash -lc "%RECIPE_DIR%"/win_helper_cpu.sh
 if errorlevel 1 exit 1
