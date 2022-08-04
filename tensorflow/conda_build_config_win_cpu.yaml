@@ -1,31 +1,43 @@
 full_base_version:
-  - "2.1.0 eigen_py37h49b2757_0"
-  - "2.1.0 eigen_py38h49b2757_0"
-  - "2.1.0 eigen_py39haaaaaaa_0"
-  - "2.1.0 mkl_py37h230818c_0"
-  - "2.1.0 mkl_py38h230818c_0"
-  - "2.1.0 mkl_py39hccccccc_0"
+  - "2.8.2 eigen_py37h0aa2657_0"
+  - "2.8.2 eigen_py38h0aa2657_0"
+  - "2.8.2 eigen_py39h0aa2657_0"
+  - "2.8.2 eigen_py310h0aa2657_0"
+  - "2.8.2 mkl_py37hbba5607_0"
+  - "2.8.2 mkl_py38hbba5607_0"
+  - "2.8.2 mkl_py39hbba5607_0"
+  - "2.8.2 mkl_py310hbba5607_0"
+
 select_version:
   - "2.2.0 eigen"
   - "2.2.0 eigen"
   - "2.2.0 eigen"
+  - "2.2.0 eigen"
   - "2.3.0 mkl"
   - "2.3.0 mkl"
   - "2.3.0 mkl"
+  - "2.3.0 mkl"
+
 tflow_variant:
   - "eigen"
   - "eigen"
   - "eigen"
+  - "eigen"
   - "mkl"
   - "mkl"
   - "mkl"
+  - "mkl"
+
 py_version:
   - 3.7
   - 3.8
   - 3.9
+  - 3.10
   - 3.7
   - 3.8
   - 3.9
+  - 3.10
+
 zip_keys:
   - full_base_version
   - select_version
