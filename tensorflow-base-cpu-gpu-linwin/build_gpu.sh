@@ -14,7 +14,7 @@ export PYTHON_LIB_PATH=${SP_DIR}
 export USE_DEFAULT_PYTHON_LIB_PATH=1
 
 # make sure this matches configuration of build-machine!
-export CUDA_TOOLKIT_PATH=/usr/local/cuda-10.1
+export CUDA_TOOLKIT_PATH=/usr/local/cuda-11.3
 
 # export PATH="$CUDA_TOOLKIT_PATH/bin:$PATH"
 # export LD_LIBRARY_PATH="$CUDA_TOOLKIT_PATH/lib64 $LD_LIBRARY_PATH"
@@ -54,11 +54,20 @@ if [[ ${cudatoolkit} == 11.* ]]; then
       export TF_CUDA_COMPUTE_CAPABILITIES="3.5,5.2,6.0,6.1,7.0,7.5,8.0"
 fi
 export TF_NCCL_VERSION=""
-export GCC_HOST_COMPILER_PATH="${CC}"
+
+export CC="${HOST}-gcc"
+export GCC_HOST_COMPILER_PREFIX="${BUILD_PREFIX}/bin"
+export GCC_HOST_COMPILER_PATH="$(which ${CC})"
+
+for TOOL in ar gcc g++ ld strip; do
+    if [ ! -e "${BUILD_PREFIX}/bin/${TOOL}" ]; then
+        ln -s "${HOST}-${TOOL}" "${BUILD_PREFIX}/bin/${TOOL}"
+    fi
+done
 
 # Use system paths here rather than $PREFIX to allow Bazel to find the correct
 # libraries.  RPATH is adjusted post build to link to the DSOs in $PREFIX
-export TF_CUDA_PATHS="${PREFIX},/usr/local/cuda-10.1,/usr"
+export TF_CUDA_PATHS="${PREFIX},/usr/local/cuda-11.3,/usr"
 
 bazel clean --expunge
 bazel shutdown
@@ -72,12 +81,12 @@ bazel shutdown
 # jobs can be used to limit parallel builds and reduce resource needs
 #    --jobs=20             \
 bazel ${BAZEL_OPTS} build \
-    --copt=-march=nocona \
-    --copt=-mtune=haswell \
     --copt=-ftree-vectorize \
     --copt=-fPIC \
     --copt=-fstack-protector-strong \
     --copt=-O2 \
+    --copt=-DNO_CONSTEXPR_FOR_YOU=1 \
+    --copt=-gz=none \
     --cxxopt=-fvisibility-inlines-hidden \
     --cxxopt=-fmessage-length=0 \
     --linkopt=-zrelro \
@@ -93,8 +102,6 @@ bazel ${BAZEL_OPTS} build \
     --action_env="PYTHON_LIB_PATH=${SP_DIR}" \
     --python_path="${PYTHON}" \
     --define=PREFIX="$PREFIX" \
-    --copt=-DNO_CONSTEXPR_FOR_YOU=1 \
-    --host_copt=-DNO_CONSTEXPR_FOR_YOU=1 \
     --define=LIBDIR="$PREFIX/lib" \
     --define=INCLUDEDIR="$PREFIX/include" \
     //tensorflow/tools/pip_package:build_pip_package
