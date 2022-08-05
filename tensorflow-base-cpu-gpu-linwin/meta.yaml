@@ -23,9 +23,6 @@ build:
   number: 0
   skip: True  # [not x86_64 and not (linux and aarch64)]
   skip: True  # [win and vc<14]
-  script: {{ RECIPE_DIR }}/build_cpu_gpu.sh  # [unix]
-  script: {{ RECIPE_DIR }}/bld_cpu.bat   # [win and tflow_variant != 'gpu']
-  script: {{ RECIPE_DIR }}/bld_gpu.bat   # [win and tflow_variant == 'gpu']
   string: {{ tflow_variant }}_py{{ CONDA_PY }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}
   entry_points:
     - toco_from_protos = tensorflow.lite.toco.python.toco_from_protos:main
