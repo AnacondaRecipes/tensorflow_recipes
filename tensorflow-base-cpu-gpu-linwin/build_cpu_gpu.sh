@@ -2,15 +2,9 @@
 
 set -vex
 
-###############################################################################
-# CONFIGURE
-###############################################################################
-
-# expand PREFIX in BUILD file
+# expand PREFIX in tensor's build_config/BUILD file
 sed -i -e "s:\${PREFIX}:${PREFIX}:" \
     tensorflow/core/platform/default/build_config/BUILD
-
-mkdir -p ./bazel_output_base
 
 ###############################################################################
 # Set defaults
@@ -27,22 +21,23 @@ export PYTHON_LIB_PATH=${SP_DIR}
 export USE_DEFAULT_PYTHON_LIB_PATH=1
 
 # Tensorflow settings
-export TF_NEED_MKL=0
-export TF_ENABLE_XLA=0
-export TF_NEED_OPENCL=0
-export TF_NEED_OPENCL_SYCL=0
-export TF_NEED_COMPUTECPP=0
-export TF_NEED_ROCM=0
-export TF_NEED_MPI=0
-export TF_SET_ANDROID_WORKSPACE=0
 export TF_CONFIGURE_IOS=0
-export TF_NEED_CUDA=0
+export TF_CUDA_CLANG=0
 export TF_CUDA_VERSION="${cudatoolkit}"
 export TF_CUDNN_VERSION="${cudnn:0:1}"
-export TF_CUDA_CLANG=0
 export TF_DOWNLOAD_CLANG=0
-export TF_NEED_TENSORRT=0
+export TF_ENABLE_XLA=0
 export TF_NCCL_VERSION=""
+export TF_NEED_COMPUTECPP=0
+export TF_NEED_CUDA=0
+export TF_NEED_MKL=0
+export TF_NEED_MPI=0
+export TF_NEED_OPENCL=0
+export TF_NEED_OPENCL_SYCL=0
+export TF_NEED_ROCM=0
+export TF_NEED_TENSORRT=0
+
+export TF_SET_ANDROID_WORKSPACE=0
 
 # Make build use our compilers
 export CC="${HOST}-gcc"
@@ -124,6 +119,10 @@ bazel shutdown
 
 ./configure
 
+###############################################################################
+# BUILD
+###############################################################################
+
 # build using bazel
 # for debugging the following lines may be helpful
 #   --logging=6 \
@@ -155,10 +154,6 @@ bazel build ${BAZEL_MKL_OPT} ${BAZEL_CUDA_OPT} ${BAZEL_OPT_FLAG} \
     --define=INCLUDEDIR="$PREFIX/include" \
     //tensorflow/tools/pip_package:build_pip_package
 
-###############################################################################
-# CONFIGURE
-###############################################################################
-
 # Build a whl file
 mkdir -p $SRC_DIR/tensorflow_pkg
 bash -x bazel-bin/tensorflow/tools/pip_package/build_pip_package $SRC_DIR/tensorflow_pkg
@@ -168,3 +163,7 @@ ${PYTHON} -m pip install --no-deps $SRC_DIR/tensorflow_pkg/*.whl
 
 # The tensorboard package has the proper entrypoint
 rm -f ${PREFIX}/bin/tensorboard
+
+# make sure we shutdown things again and are releasing locks ...
+bazel clean --expunge
+bazel shutdown
