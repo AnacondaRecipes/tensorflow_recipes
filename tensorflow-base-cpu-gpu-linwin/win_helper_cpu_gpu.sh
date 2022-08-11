@@ -99,6 +99,17 @@ echo "" | ./configure
 # BUILD
 ###############################################################################
 
+# IMPORTANT
+#
+# Right here, you need to cleanse the environment. Bazel will pass the complete
+# environment through via the command line and exceed the maximum command line
+# length on Windows.
+#
+# * Use `unset` to remove all unnecessary entries from the environment.
+#
+# * Shorten the PATH. You need to do that in the shell from which you are
+#   calling your build, before invoking `conda build`.
+
 cp $RECIPE_DIR/vile_hack.sh ./
 bash vile_hack.sh &
 VILE_HACK_PID=$!
@@ -111,7 +122,7 @@ trap "kill $VILE_HACK_PID" EXIT
 #   --subcommands \
 # jobs can be used to limit parallel builds and reduce resource needs
 #    --jobs=20             \
-${LIBRARY_BIN}/bazel ${BAZEL_MKL_OPT} ${BAZEL_CUDA_OPT} \
+${LIBRARY_BIN}/bazel build ${BAZEL_MKL_OPT} ${BAZEL_CUDA_OPT} \
     --output_base "$SRC_DIR/../bazel" \
     --batch build \
     --verbose_failures \

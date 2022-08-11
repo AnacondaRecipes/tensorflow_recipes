@@ -41,6 +41,7 @@ requirements:
     - git
     - patch  # [unix]
     - m2-patch  # [win]
+    - m2-coreutils  # [win]
     # required here for all OS's, and ALSO below for windows
     - bazel >=4.2.2,<5
     - aws-sdk-cpp
@@ -65,6 +66,7 @@ requirements:
     - zip  # [not win]
     - m2-unzip  # [win]
     - m2-zip  # [win]
+    - m2-perl  # [win]
     - nsync
     # requirements specified by the package itself
     - astor >=0.7.1
@@ -90,7 +92,6 @@ requirements:
     - google-pasta >=0.1.1
     - grpcio >=1.24.3,<2.0
     - h5py >=2.9.0
-    - mklml  # [win and tflow_variant == 'mkl']
     - numpy >=1.20
     - opt_einsum >=2.3.2
     # build only requirement, doesn't need a run dep below
