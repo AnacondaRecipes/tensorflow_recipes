@@ -1,20 +1,28 @@
-# configuration for linux-64 gpu, cuda 10.1
+# configuration for win-64 gpu, cuda 11.3
 full_base_version:
-  - "2.5.0 gpu_py37h29c2da4_0"
-  - "2.5.0 gpu_py38h29c2da4_0"
-  - "2.5.0 gpu_py39h29c2da4_0"
+  - "2.8.2 gpu_py37h9761872_0"
+  - "2.8.2 gpu_py38h9761872_0"
+  - "2.8.2 gpu_py39h9761872_0"
+  - "2.8.2 gpu_py310h9761872_0"
+
 select_version:
   - "2.1.0 gpu"
   - "2.1.0 gpu"
   - "2.1.0 gpu"
+  - "2.1.0 gpu"
+
 tflow_variant:
   - "gpu"
   - "gpu"
   - "gpu"
+  - "gpu"
+
 py_version:
   - 3.7
   - 3.8
   - 3.9
+  - 3.10
+
 zip_keys:
   - full_base_version
   - select_version

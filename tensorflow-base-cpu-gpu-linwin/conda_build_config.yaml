@@ -5,9 +5,8 @@ c_compiler:    # [win]
 tflow_variant:
   - mkl
   - eigen
-bazel:
-  - 4.2.2
-protobuf:
-  - 3.20
-libprotobuf:
-  - 3.20
+  - gpu
+cudatoolkit:
+  - 11.3
+cudnn:
+  - 8.2
