@@ -10,7 +10,7 @@ diff -urN a/tensorflow/cc/BUILD b/tensorflow/cc/BUILD
  package(
      default_visibility = ["//visibility:public"],
      licenses = ["notice"],
-@@ -915,3 +917,52 @@
+@@ -965,3 +965,52 @@
          "//tensorflow/cc/tools:freeze_saved_model",
      ],
  )
