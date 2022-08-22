@@ -36,7 +36,7 @@ test:
   requires:
     - pip
   commands:
-    - pip check
+   # - pip check
 
 about:
   home: https://github.com/keras-team/keras
