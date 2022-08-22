@@ -1,5 +1,5 @@
 {% set name = "tensorboard" %}
-{% set version = "2.8.0" %}
+{% set version = "2.9.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.io/packages/py3/t/tensorboard/tensorboard-{{ version }}-py3-none-any.whl
-  sha256: 65a338e4424e9079f2604923bdbe301792adce2ace1be68da6b3ddf005170def
+  sha256: bd78211076dca5efa27260afacfaa96cd05c7db12a6c09cc76a1d6b2987ca621
 
 build:
   number: 0
@@ -33,7 +33,7 @@ requirements:
     - setuptools >=41.0.0
     - tensorboard-data-server >=0.6.0,<0.7.0
     - tensorboard-plugin-wit >=1.6.0
-    - werkzeug >=0.11.15
+    - werkzeug >=1.0.1
     - wheel >=0.26
 
 test:
