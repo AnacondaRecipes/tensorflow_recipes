@@ -6,7 +6,7 @@ tflow_variant:
   - mkl
   - eigen
 bazel:
-  - 4.2.2
+  - 5.2.0
 protobuf:
   - 3.20
 libprotobuf:
