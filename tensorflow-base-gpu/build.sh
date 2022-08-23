@@ -56,7 +56,7 @@ export GCC_HOST_COMPILER_PATH="${CC}"
 
 # Use system paths here rather than $PREFIX to allow Bazel to find the correct
 # libraries.  RPATH is adjusted post build to link to the DSOs in $PREFIX
-export TF_CUDA_PATHS="${PREFIX},/usr/local/cuda-10.1,/usr"
+export TF_CUDA_PATHS="${PREFIX},/usr/local/cuda-11.3,/usr"
 
 bazel clean --expunge
 bazel shutdown
