@@ -12,10 +12,7 @@ export BAZEL_OPTS=""
 export PYTHON_BIN_PATH=${PYTHON}
 export PYTHON_LIB_PATH=${SP_DIR}
 export USE_DEFAULT_PYTHON_LIB_PATH=1
-# export CUDA_TOOLKIT_PATH=/usr/local/cuda-10.1
 
-# export PATH="$CUDA_TOOLKIT_PATH/bin:$PATH"
-# export LD_LIBRARY_PATH="$CUDA_TOOLKIT_PATH/lib64 $LD_LIBRARY_PATH"
 # additional settings
 # variant specific settings
 if [ ${tflow_variant} == "mkl" ]; then
