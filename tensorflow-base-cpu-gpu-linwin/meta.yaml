@@ -43,7 +43,7 @@ requirements:
     - m2-patch  # [win]
     - m2-coreutils  # [win]
     # required here for all OS's, and ALSO below for windows
-    - bazel >=4.2.2,<5
+    - bazel >=5.2.0
     - aws-sdk-cpp
     # for cython compiler
     - cython
@@ -55,7 +55,8 @@ requirements:
     # conda build requirements for .sh scripts on win
     - posix  # [win]
     - m2-patch  # [win]
-    - bazel >=4.2.2,<5  # [win]
+    - bazel >=5.2.0    # [win]
+    - packaging
     - python
     - pip
     - setuptools
@@ -116,6 +117,7 @@ requirements:
   run:
     - {{ pin_compatible('numpy') }}
     - {{ pin_compatible('scipy', max_pin=None) }}
+    - packaging
     - absl-py >=0.10.0
     - astunparse >=1.6.3
     - flatbuffers >=1.12
