@@ -26,7 +26,7 @@ requirements:
   run:
     - python
     - pyyaml
-    - scipy 1.7.3
+    - scipy
     - keras-preprocessing  >=1.1.2
   run_constrained:
     # Other dependencies (such as h5py, numpy, ...) in their correct versions
