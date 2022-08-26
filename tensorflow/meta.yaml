@@ -1,4 +1,4 @@
-{% set version = "2.8.2" %}
+{% set version = "2.9.1" %}
 {% set major_minor = version.rsplit('.', 1)[0] %}
 
 package:
