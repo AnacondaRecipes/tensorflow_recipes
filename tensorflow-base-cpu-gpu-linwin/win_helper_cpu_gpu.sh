@@ -123,7 +123,7 @@ trap "kill $VILE_HACK_PID" EXIT
 # jobs can be used to limit parallel builds and reduce resource needs
 #    --jobs=20             \
 ${LIBRARY_BIN}/bazel build ${BAZEL_MKL_OPT} ${BAZEL_CUDA_OPT} \
-    --define=no_tensorflow_py_deps=true
+    --define=no_tensorflow_py_deps=true \
     --output_base "$SRC_DIR/../bazel" \
     --batch build \
     --verbose_failures \
