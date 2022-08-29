@@ -11,7 +11,6 @@ source:
   url: https://github.com/tensorflow/tensorflow/archive/v{{ version }}.tar.gz
   sha256: 6eaf86ead73e23988fe192da1db68f4d3828bcdd0f3a9dc195935e339c95dbdc
   patches:
-    - patches/tensorflow_win_zip64.patch                            # [win]
     - patches/0101-include-c-and-cc-headers.patch                   # [unix]
     - patches/0103-BUILD-changes-for-external-sqlite-package.patch  # [linux]
     - patches/0107-do-not-hardcode-ca-cert-location.patch           # [unix]
