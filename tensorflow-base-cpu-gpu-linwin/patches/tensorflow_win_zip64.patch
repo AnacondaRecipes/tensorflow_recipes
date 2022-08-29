@@ -1,12 +1,12 @@
 diff -urN a/configure.py b/configure.py
 --- a/configure.py	2022-05-23 01:24:29.000000000 +0300
 +++ b/configure.py	2022-07-26 12:29:37.409613850 +0300
-@@ -1194,7 +1194,7 @@
+@@ -1196,7 +1196,7 @@
      # conv_grad_ops_3d.cc and conv_ops_3d.cc by 20 minutes,
      # but this also hurts the performance. Let users decide what they want.
      write_to_bazelrc('build --define=override_eigen_strong_inline=true')
 -
 +  write_to_bazelrc('build --define=no_tensorflow_py_deps=true')
- 
+
  def config_info_line(name, help_text):
    """Helper function to print formatted help text for Bazel config options."""
