@@ -19,11 +19,8 @@ requirements:
     - python                {{ py_version }}
 
 test:
-  imports:
-    - tensorflow
-    - tensorboard
   commands:
-    - tensorboard --help
+    - python run_test.py
 
 about:
   home: https://tensorflow.org/

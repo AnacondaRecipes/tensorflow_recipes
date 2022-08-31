@@ -124,8 +124,6 @@ trap "kill $VILE_HACK_PID" EXIT
 #    --jobs=20             \
 ${LIBRARY_BIN}/bazel build ${BAZEL_MKL_OPT} ${BAZEL_CUDA_OPT} \
     --define=no_tensorflow_py_deps=true \
-    --output_base "$SRC_DIR/../bazel" \
-    --batch build \
     --verbose_failures \
     --config=opt \
     --copt=-D_copysign="copysign" \
@@ -138,7 +136,6 @@ ${LIBRARY_BIN}/bazel build ${BAZEL_MKL_OPT} ${BAZEL_CUDA_OPT} \
     --action_env="PYTHON_BIN_PATH=${PYTHON}" \
     --action_env="PYTHON_LIB_PATH=${SP_DIR}" \
     --linkopt="-L$LIBRARY_PREFIX" \
-    --python_path="${PYTHON}" \
     --strip=always \
     //tensorflow/tools/pip_package:build_pip_package
 

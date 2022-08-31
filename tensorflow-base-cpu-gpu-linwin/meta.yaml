@@ -97,7 +97,7 @@ requirements:
     # build only requirement, doesn't need a run dep below
     - protobuf >=3.9.2
     # build only requirement, doesn't need a run dep below
-    - scipy
+    - scipy 1.7.3
     - six >=1.15.0
     - typing_extensions >=3.7.4
     # build only requirement, doesn't need a run dep below
