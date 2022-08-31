@@ -1,7 +1,7 @@
 {% set version = "2.9.1" %}
 {% set major_minor = version.rsplit('.', 1)[0] %}
 
-# This is the recipe for the "mkl" and "eigen" variants of tensorflow-base
+# This is the recipe for the "mkl", "eigen" and "gpu" variants of tensorflow-base
 package:
   name: tensorflow-base
   version: {{ version }}
