@@ -43,7 +43,7 @@ pushd custom_toolchain
     chmod +x cc_wrapper.sh
     export BAZEL_TOOLCHAIN_GCC="cc_wrapper.sh"
     export BAZEL_TOOLCHAIN_LIBCXX="c++"
-    export BAZEL_TOOLCHAIN_AR=${LIBTOOL}
+    export BAZEL_TOOLCHAIN_AR=${BUILD_PREFIX}/bin/${LIBTOOL}
   else
     export BAZEL_TOOLCHAIN_COMPILER_VERSION=$(${CC} -v 2>&1|tail -n1|cut -d' ' -f3)
     export BAZEL_TOOLCHAIN_AR=$(basename ${AR})
