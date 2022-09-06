@@ -1,3 +1,4 @@
+# The MKL variant is removed because Clang still has trouble building with OpenMP,
+# which is enabled when MKL is turned on.
 tflow_variant:
-  - mkl
   - eigen
