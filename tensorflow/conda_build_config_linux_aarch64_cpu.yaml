@@ -1,13 +1,13 @@
 # configuration for linux-64 eigen and mkl variants
 full_base_version:
-  - "2.8.2 eigen_py37h234957f_0"
-  - "2.8.2 eigen_py38h234957f_0"
-  - "2.8.2 eigen_py39h234957f_0"
-  - "2.8.2 eigen_py310h234957f_0"
-  - "2.8.2 mkl_py37h8f111d2_0"
-  - "2.8.2 mkl_py38h8f111d2_0"
-  - "2.8.2 mkl_py39h8f111d2_0"
-  - "2.8.2 mkl_py310h8f111d2_0"
+  - "2.8.2 eigen_py37ha372be2_0"
+  - "2.8.2 eigen_py38ha372be2_0"
+  - "2.8.2 eigen_py39ha372be2_0"
+  - "2.8.2 eigen_py310ha372be2_0"
+  - "2.8.2 mkl_py37hfdbf31d_0"
+  - "2.8.2 mkl_py38hfdbf31d_0"
+  - "2.8.2 mkl_py39hfdbf31d_0"
+  - "2.8.2 mkl_py310hfdbf31d_0"
 
 select_version:
   - "2.2.0 eigen"
