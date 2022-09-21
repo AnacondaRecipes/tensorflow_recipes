@@ -173,7 +173,7 @@ mkdir -p $SRC_DIR/tensorflow_pkg
 bazel-bin/tensorflow/tools/pip_package/build_pip_package $SRC_DIR/tensorflow_pkg
 
 # install the whl using pip
-pip install --no-deps $SRC_DIR/tensorflow_pkg/*.whl
+${PYTHON} -m pip install --no-deps $SRC_DIR/tensorflow_pkg/*.whl
 
 # tflow vendors libmklml.dylib and libiomp5.dylib
 if [ $target_platform == osx-64 ] && [ ${tflow_variant} == "mkl" ]; then
