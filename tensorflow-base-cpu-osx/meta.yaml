@@ -17,7 +17,7 @@ source:
     - 0108-fix-absl-stuff.patch
 
 build:
-  number: 0
+  number: 1
   skip: True  # [not x86_64 or not osx]
   string: {{ tflow_variant }}_py{{ CONDA_PY }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}
   entry_points:
