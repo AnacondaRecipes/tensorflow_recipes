@@ -92,7 +92,8 @@ requirements:
     - google-pasta >=0.1.1
     - grpcio >=1.24.3,<2.0
     - h5py >=2.9.0
-    - numpy >=1.20
+    - numpy 1.20  # [py<=39]
+    - numpy 1.21  # [py>39]
     - opt_einsum >=2.3.2
     # build only requirement, doesn't need a run dep below
     - protobuf >=3.9.2
@@ -114,8 +115,8 @@ requirements:
     - cupti  # [not win and tflow_variant == 'gpu']
 
   run:
-    - {{ pin_compatible('numpy') }}
-    - {{ pin_compatible('scipy', max_pin=None) }}
+    - numpy >=1.20,<2
+    - scipy >=1.7.3,<2
     - packaging
     - absl-py >=0.10.0
     - astunparse >=1.6.3
