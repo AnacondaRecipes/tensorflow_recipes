@@ -1,4 +1,4 @@
-{% set version = "2.9.1" %}
+{% set version = "2.10.0" %}
 {% set major_minor = version.rsplit('.', 1)[0] %}
 
 # This is the recipe for the "mkl" and "eigen" variants of tensorflow-base, but the MKL variant
@@ -10,7 +10,7 @@ package:
 source:
   fn: tensorflow-{{ version }}.tar.gz
   url: https://github.com/tensorflow/tensorflow/archive/v{{ version }}.tar.gz
-  sha256: 6eaf86ead73e23988fe192da1db68f4d3828bcdd0f3a9dc195935e339c95dbdc
+  sha256: b5a1bb04c84b6fe1538377e5a1f649bb5d5f0b2e3625a3c526ff3a8af88633e8
   patches:
     - 0101-include-c-and-cc-headers.patch
     - 0107-do-not-hardcode-ca-cert-location.patch
@@ -67,7 +67,7 @@ requirements:
     - dill >=0.3.1.1
     - giflib
     - grpc-cpp
-    - flatbuffers 1.12.*
+    - flatbuffers 2.0
     - icu
     - jpeg
     - libpng
@@ -80,7 +80,7 @@ requirements:
     - abseil-cpp
     - absl-py 0.11
     - astunparse 1.6.3
-    - python-flatbuffers 1.12.*
+    - python-flatbuffers 2.0
     - gast 0.4.0
     - google-pasta 0.2
     - grpcio
@@ -108,7 +108,7 @@ requirements:
     - python
     - absl-py >=0.10.0
     - astunparse >=1.6.3
-    - python-flatbuffers 1.12.*
+    - python-flatbuffers >=2.0
     - google-pasta >=0.2
     - h5py >=3.1.0
     - keras {{ major_minor }}.*
@@ -125,7 +125,7 @@ requirements:
     # upstream wants exact pin for gast
     - gast ==0.4.0
     - scipy >=1.7.3,<2
-    - flatbuffers
+    - flatbuffers >=2.0
     - llvm-openmp
     - tensorboard {{ major_minor }}.*
     - tensorflow-estimator {{ major_minor }}.*
@@ -142,8 +142,8 @@ test:
     - toco_from_protos --help
 
 about:
-  home: http://tensorflow.org/
-  license: Apache 2.0
+  home: https://tensorflow.org/
+  license: Apache-2.0
   license_family: Apache
   summary: TensorFlow is a machine learning library, base package contains only tensorflow.
   description: |
@@ -151,8 +151,8 @@ about:
     provides you with complete programming control.
     Base package contains only tensorflow, not tensorflow-tensorboard.
   dev_url: https://github.com/tensorflow/tensorflow
-  doc_url: https://www.tensorflow.org/get_started/get_started
-  doc_source_url: https://github.com/tensorflow/tensorflow/tree/master/tensorflow/docs_src
+  doc_url: https://www.tensorflow.org/api_docs
+  doc_source_url: https://github.com/tensorflow/docs/
 
 extra:
   tflow_variant: {{ tflow_variant }}
