@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.io/packages/py3/t/tensorboard/tensorboard-{{ version }}-py3-none-any.whl
-  sha256: fb9222c1750e2fa35ef170d998a1e229f626eeced3004494a8849c88c15d8c1c
+  sha256: 76c91a5e8959cd2208cc32cb17a0cb002badabb66a06ac2af02a7810f49a59e3
 
 build:
   number: 0
