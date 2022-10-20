@@ -84,6 +84,7 @@ requirements:
     - snappy
     - zlib
     - abseil-cpp
+    - requests
     - absl-py 0.10  # [py<39]
     - absl-py 0.11  # [py>=39]
     - astunparse 1.6.3
@@ -130,6 +131,7 @@ requirements:
     - python
     - python-flatbuffers >=2.0
     - setuptools
+    - requests
     - six >=1.12.0
     - tensorboard {{ major_minor }}.*
     - tensorflow-estimator {{ major_minor }}.*

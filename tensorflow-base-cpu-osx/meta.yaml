@@ -78,6 +78,7 @@ requirements:
     - snappy
     - zlib
     - abseil-cpp
+    - requests
     - absl-py 0.11
     - astunparse 1.6.3
     - python-flatbuffers 2.0
@@ -122,6 +123,7 @@ requirements:
     - wrapt >=1.11.2
     - grpcio
     - packaging
+    - requests
     # upstream wants exact pin for gast
     - gast ==0.4.0
     - scipy >=1.7.3,<2
