@@ -1,11 +1,15 @@
-cxx_compiler:  # [win]
-  - vs2019     # [win]
-c_compiler:    # [win]
-  - vs2019     # [win]
+cxx_compiler:           # [win]
+  - vs2019              # [win]
+c_compiler:             # [win]
+  - vs2019              # [win]
+cxx_compiler_version:   # [linux64]
+  - 9.3.0               # [linux64]
+c_compiler_version:     # [linux64]
+  - 9.3.0               # [linux64]
 tflow_variant:
   - mkl
   - eigen
-  - gpu
+  - gpu                 # [linux64]
 cudatoolkit:
   - 11.3
 cudnn:
