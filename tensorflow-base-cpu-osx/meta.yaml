@@ -40,7 +40,6 @@ requirements:
     # required here for all OS's
     - bazel >=5.2.0
     - aws-sdk-cpp
-    # - abseil-cpp
     - llvm-openmp 
     - llvm-tools
     - libtool
@@ -53,7 +52,6 @@ requirements:
     - llvm-openmp
     - wheel
   host:
-    # conda build requirements for .sh scripts on win
     - python
     - pip
     - setuptools
@@ -78,9 +76,8 @@ requirements:
     - sqlite
     - snappy
     - zlib
-    - abseil-cpp
     - requests
-    - absl-py 0.11
+    - absl-py 1.3.0
     - astunparse 1.6.3
     - python-flatbuffers 2.0
     - gast 0.4.0
@@ -108,7 +105,7 @@ requirements:
     - packaging
   run:
     - python
-    - absl-py >=0.10.0
+    - absl-py >=1.0.0
     - astunparse >=1.6.3
     - python-flatbuffers >=2.0
     - google-pasta >=0.2
