@@ -17,8 +17,9 @@ source:
     - 0108-fix-absl-stuff.patch
 
 build:
-  number: 1
+  number: 0
   skip: True  # [not x86_64 or not osx]
+  skip: True  # [py<37]
   string: {{ tflow_variant }}_py{{ CONDA_PY }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}
   entry_points:
     - toco_from_protos = tensorflow.lite.toco.python.toco_from_protos:main

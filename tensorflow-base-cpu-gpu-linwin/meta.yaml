@@ -19,9 +19,10 @@ source:
     - patches/0202-Remove-extra-null-terminators.patch              # [linux and (tflow_variant == 'gpu')]
 
 build:
-  number: 1
+  number: 0
   skip: True  # [not x86_64 and not (linux and aarch64)]
   skip: True  # [win and vc<14]
+  skip: True  # [py<37]
   string: {{ tflow_variant }}_py{{ CONDA_PY }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}
   entry_points:
     - toco_from_protos = tensorflow.lite.toco.python.toco_from_protos:main
@@ -87,7 +88,7 @@ requirements:
     - absl-py 1.3.0
     - astunparse 1.6.3
     - python-flatbuffers 2.0
-    - gast >=0.2.1
+    - gast 0.4.0
     - google-pasta >=0.1.1
     - grpcio >=1.24.3,<2.0
     - h5py >=2.9.0
@@ -120,7 +121,7 @@ requirements:
     - absl-py >=1.0.0
     - astunparse >=1.6.3
     - flatbuffers >=2.0
-    - gast >=0.2.1
+    - gast 0.4.0
     - google-pasta >=0.1.1
     - grpcio >=1.24.3,<2.0
     - h5py >=2.9.0
