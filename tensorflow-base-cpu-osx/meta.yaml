@@ -14,7 +14,6 @@ source:
   patches:
     - 0101-include-c-and-cc-headers.patch
     - 0107-do-not-hardcode-ca-cert-location.patch
-    - 0108-fix-absl-stuff.patch
 
 build:
   number: 0
