@@ -160,8 +160,6 @@ bazel ${BAZEL_OPTS} build ${BUILD_OPTS} \
     --python_path="${PYTHON}" \
     --define=PREFIX="$PREFIX" \
     --define=PROTOBUF_INCLUDE_PATH=${PREFIX}/include \
-    --copt=-DNO_CONSTEXPR_FOR_YOU=1 \
-    --host_copt=-DNO_CONSTEXPR_FOR_YOU=1 \
     --define=LIBDIR="$PREFIX/lib" \
     --define=INCLUDEDIR="$PREFIX/include" \
     //tensorflow/tools/pip_package:build_pip_package

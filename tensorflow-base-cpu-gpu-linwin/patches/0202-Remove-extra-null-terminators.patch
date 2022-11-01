@@ -17,23 +17,23 @@ diff --git a/tensorflow/core/platform/default/cuda_libdevice_path.cc b/tensorflo
 index 25eb6ab463..44522e5528 100644
 --- a/tensorflow/core/platform/default/cuda_libdevice_path.cc
 +++ b/tensorflow/core/platform/default/cuda_libdevice_path.cc
-@@ -27,7 +27,16 @@ namespace tensorflow {
+@@ -27,8 +27,15 @@
 
  std::vector<string> CandidateCudaRoots() {
-   VLOG(3) << "CUDA root = " << TF_CUDA_TOOLKIT_PATH;
+ #if !defined(PLATFORM_GOOGLE)
+-  VLOG(3) << "CUDA root = " << TF_CUDA_TOOLKIT_PATH;
 -  return {TF_CUDA_TOOLKIT_PATH, string("/usr/local/cuda")};
-+
-+/* WML-CE Issue #11827 - TF_CUDA_TOOLKIT_PATH will be stored as an
-+absolute path during the bazel build. Conda uses build paths that are
-+256 characters long. During conda install, it will replace the build path
-+with the shorter install path and append null terminators to keep the
-+binary file the same size. We need to use c_str() to remove the extra
-+null terminators.
-+*/
++  /* WML-CE Issue #11827 - TF_CUDA_TOOLKIT_PATH will be stored as an
++  absolute path during the bazel build. Conda uses build paths that are
++  256 characters long. During conda install, it will replace the build path
++  with the shorter install path and append null terminators to keep the
++  binary file the same size. We need to use c_str() to remove the extra
++  null terminators.
++  */
 +  string cuda_toolkit_path = TF_CUDA_TOOLKIT_PATH;
 +  return {cuda_toolkit_path.c_str(), string("/usr/local/cuda")};
- }
-
- }  // namespace tensorflow
+ #else
+   return {string("/usr/local/cuda")};
+ #endif
 --
 2.20.1

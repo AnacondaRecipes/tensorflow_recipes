@@ -1,5 +1,5 @@
 {% set name = "tensorflow-estimator" %}
-{% set version = "2.9.0" %}
+{% set version = "2.10.0" %}
 {% set major_minor = version.rsplit('.', 1)[0] %}
 
 package:
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://pypi.io/packages/py2.py3/t/tensorflow-estimator/tensorflow_estimator-{{ version }}-py2.py3-none-any.whl
-  sha256: e9762bb302f51bc1eb2f35d19f0190a6a2d809d754d5def788c4328fe3746744
+  sha256: f324ea17cd57f16e33bf188711d5077e6b2e5f5a12c328d6e01a07b23888edcd
 
 build:
   number: 0
@@ -20,6 +20,8 @@ requirements:
   host:
     - python
     - pip
+    - setuptools
+    - wheel
   run:
     - python
   run_constrained:
