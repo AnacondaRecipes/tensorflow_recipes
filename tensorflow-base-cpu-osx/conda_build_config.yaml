@@ -2,3 +2,11 @@
 # which is enabled when MKL is turned on.
 tflow_variant:
   - eigen
+c_compiler:
+  - clang
+c_compiler_version:
+  - 14
+cxx_compiler:
+  - clangxx
+cxx_compiler_version:
+  - 14
