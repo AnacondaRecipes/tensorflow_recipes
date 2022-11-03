@@ -1,9 +1,9 @@
 # configuration for osx-64 eigen variant
 full_base_version:
-  - "2.9.1 eigen_py37h36d2db2_0"
-  - "2.9.1 eigen_py38h36d2db2_0"
-  - "2.9.1 eigen_py39h36d2db2_0"
-  - "2.9.1 eigen_py310h36d2db2_0"
+  - "2.10.0 eigen_py37h4de525a_0"
+  - "2.10.0 eigen_py38h4de525a_0"
+  - "2.10.0 eigen_py39h4de525a_0"
+  - "2.10.0 eigen_py310h4de525a_0"
 
 select_version:
   - "2.2.0 eigen"
