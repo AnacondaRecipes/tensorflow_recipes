@@ -130,8 +130,6 @@ ${LIBRARY_BIN}/bazel build ${BAZEL_MKL_OPT} ${BAZEL_CUDA_OPT} \
     --host_copt=-D_copysign="copysign" \
     --cxxopt=-D_copysign="copysign" \
     --host_cxxopt=-D_copysign="copysign" \
-    --copt=-DNO_CONSTEXPR_FOR_YOU=1 \
-    --host_copt=-DNO_CONSTEXPR_FOR_YOU=1 \
     --python_path="${PYTHON}" \
     --action_env="PYTHON_BIN_PATH=${PYTHON}" \
     --action_env="PYTHON_LIB_PATH=${SP_DIR}" \
