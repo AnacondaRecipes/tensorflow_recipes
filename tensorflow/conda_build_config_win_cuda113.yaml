@@ -1,9 +1,9 @@
 # configuration for win-64 gpu, cuda 11.3
 full_base_version:
-  - "2.9.1 gpu_py37h9761872_0"
-  - "2.9.1 gpu_py38h9761872_0"
-  - "2.9.1 gpu_py39h9761872_0"
-  - "2.9.1 gpu_py310h9761872_0"
+  - "2.10.0 gpu_py37h9761872_0"
+  - "2.10.0 gpu_py38h9761872_0"
+  - "2.10.0 gpu_py39h9761872_0"
+  - "2.10.0 gpu_py310h9761872_0"
 
 select_version:
   - "2.1.0 gpu"

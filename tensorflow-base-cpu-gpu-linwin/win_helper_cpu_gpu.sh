@@ -135,6 +135,7 @@ ${LIBRARY_BIN}/bazel build ${BAZEL_MKL_OPT} ${BAZEL_CUDA_OPT} \
     --action_env="PYTHON_LIB_PATH=${SP_DIR}" \
     --linkopt="-L$LIBRARY_PREFIX" \
     --strip=always \
+    --experimental_cc_shared_library \
     //tensorflow/tools/pip_package:build_pip_package
 
 PY_TEST_DIR="${SRC_DIR}/py_test_dir"

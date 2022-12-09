@@ -159,6 +159,9 @@ build:windows --verbose_failures
 # On windows, we never cross compile
 build:windows --distinct_host_configuration=false
 
+# This is needed because otherwise abseil has trouble compiling
+build:windows --copt=/Zc:__cplusplus
+
 # Configure short or long logs
 build:short_logs --output_filter=DONT_MATCH_ANYTHING
 build:verbose_logs --output_filter=
