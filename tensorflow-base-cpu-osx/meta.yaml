@@ -17,7 +17,7 @@ source:
 
 build:
   number: 0
-  skip: True  # [not x86_64 or not osx]
+  skip: True  # [not osx]
   skip: True  # [py<37]
   string: {{ tflow_variant }}_py{{ CONDA_PY }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}
   entry_points:

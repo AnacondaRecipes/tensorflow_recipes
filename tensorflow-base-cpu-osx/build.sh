@@ -5,14 +5,11 @@ set -ex
 bazel clean --expunge
 bazel shutdown
 
-if [[ "${target_platform}" == osx-* ]]; then
 export PATH="$PWD:$PATH"
 export CC=$(basename $CC)
 export CXX=$(basename $CXX)
-fi
 export LIBDIR=$PREFIX/lib
 export INCLUDEDIR=$PREFIX/include
-
 export CC_FOR_BUILD=$CC
 
 # expand PREFIX in tensor's build_config/BUILD file
@@ -60,66 +57,35 @@ sed -i -e "s/GRPCIO_VERSION/${grpc_cpp}/" tensorflow/tools/pip_package/setup.py
 
 export CC_OPT_FLAGS="${CFLAGS}"
 
-
-if [[ "${target_platform}" == osx-* ]]; then
+if [[ "${target_platform}" == osx-64 ]]; then
   export CONDA_BUILD_SYSROOT=/opt/MacOSX10.14.sdk
   export MACOSX_DEPLOYMENT_TARGET=10.14
   export LDFLAGS="${LDFLAGS} -lz -framework CoreFoundation -isysroot ${CONDA_BUILD_SYSROOT} -Xlinker -undefined -Xlinker dynamic_lookup"
 else
-  export LDFLAGS="${LDFLAGS} -lrt"
+  export CONDA_BUILD_SYSROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/
+  export LDFLAGS="${LDFLAGS} -lz -framework CoreFoundation -isysroot ${CONDA_BUILD_SYSROOT} -Xlinker -undefined -Xlinker dynamic_lookup"
 fi
 
-if [[ "${target_platform}" == osx-* ]]; then
 chmod +x ${RECIPE_DIR}/gen-bazel-toolchain.sh
 source ${RECIPE_DIR}/gen-bazel-toolchain.sh
-fi
 
-if [[ ${HOST} =~ .*darwin.* ]]; then
-    # set build arguments
-    export  BAZEL_USE_CPP_ONLY_TOOLCHAIN=1
-    BUILD_OPTS="
-        --crosstool_top=//custom_toolchain:toolchain
-        --verbose_failures
-        ${BAZEL_MKL_OPT}
-        --config=opt"
-    export TF_ENABLE_XLA=0
-else
-    # Linux
-    # the following arguments are useful for debugging
-    #    --logging=6
-    #    --subcommands
-    # jobs can be used to limit parallel builds and reduce resource needs
-    #    --jobs=20
-    # Set compiler and linker flags as bazel does not account for CFLAGS,
-    # CXXFLAGS and LDFLAGS.
-    BUILD_OPTS="
-    --copt=-march=nocona
-    --copt=-mtune=haswell
-    --copt=-ftree-vectorize
-    --copt=-fPIC
-    --copt=-fstack-protector-strong
-    --copt=-O2
-    --cxxopt=-fvisibility-inlines-hidden
-    --cxxopt=-fmessage-length=0
-    --linkopt=-zrelro
-    --linkopt=-znow
+# set build arguments
+export  BAZEL_USE_CPP_ONLY_TOOLCHAIN=1
+BUILD_OPTS="
+    --crosstool_top=//custom_toolchain:toolchain
     --verbose_failures
     ${BAZEL_MKL_OPT}
     --config=opt"
-    export TF_ENABLE_XLA=0
-    export GCC_HOST_COMPILER_PATH="${CC}"
-fi
+export TF_ENABLE_XLA=0
 
 if [[ "${target_platform}" == "osx-64" ]]; then
   # Tensorflow doesn't cope yet with an explicit architecture (darwin_x86_64) on osx-64 yet.
   TARGET_CPU=darwin
+else
+  TARGET_CPU=darwin_arm64
 fi
 
 export TF_CONFIGURE_IOS=0
-
-#if [[ ${HOST} =~ "2*" ]]; then
-#    BUILD_OPTS="$BUILD_OPTS --config=v2"
-#fi
 
 # Python settings
 export PYTHON_BIN_PATH=${PYTHON}
