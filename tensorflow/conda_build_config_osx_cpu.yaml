@@ -1,9 +1,13 @@
-# configuration for osx-64 eigen variant
+# Configuration for osx-64 and osx-arm64 eigen variant.
+# Note that for osx-arm64 we do not build for Python 3.7.
 full_base_version:
-  - "2.10.0 eigen_py37h61e1807_0"
-  - "2.10.0 eigen_py38h61e1807_0"
-  - "2.10.0 eigen_py39h61e1807_0"
-  - "2.10.0 eigen_py310h61e1807_0"
+  - "2.10.0 eigen_py37h61e1807_0"         # [osx and x86_64]
+  - "2.10.0 eigen_py38h61e1807_0"         # [osx and x86_64]
+  - "2.10.0 eigen_py39h61e1807_0"         # [osx and x86_64]
+  - "2.10.0 eigen_py310h61e1807_0"        # [osx and x86_64]
+  - "2.10.0 eigen_py38h4111cb8_0"         # [osx and arm64]
+  - "2.10.0 eigen_py39h4111cb8_0"         # [osx and arm64]
+  - "2.10.0 eigen_py310h4111cb8_0"        # [osx and arm64]
 
 select_version:
   - "2.2.0 eigen"
@@ -18,7 +22,7 @@ tflow_variant:
   - "eigen"
 
 py_version:
-  - 3.7
+  - 3.7                                   # [osx and x86_64]
   - 3.8
   - 3.9
   - 3.10
