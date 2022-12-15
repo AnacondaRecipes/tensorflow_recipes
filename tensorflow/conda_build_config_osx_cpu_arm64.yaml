@@ -1,12 +1,11 @@
-# Configuration for osx-64 eigen variant.
+# Configuration for osx-arm64 eigen variant.
+# Note that we don't build for Python 3.7 due to numpy limitations.
 full_base_version:
-  - "2.10.0 eigen_py37h61e1807_0"
-  - "2.10.0 eigen_py38h61e1807_0"
-  - "2.10.0 eigen_py39h61e1807_0"
-  - "2.10.0 eigen_py310h61e1807_0"
+  - "2.10.0 eigen_py38h4111cb8_0"
+  - "2.10.0 eigen_py39h4111cb8_0"
+  - "2.10.0 eigen_py310h4111cb8_0"
 
 select_version:
-  - "2.2.0 eigen"
   - "2.2.0 eigen"
   - "2.2.0 eigen"
   - "2.2.0 eigen"
@@ -15,10 +14,8 @@ tflow_variant:
   - "eigen"
   - "eigen"
   - "eigen"
-  - "eigen"
 
 py_version:
-  - 3.7
   - 3.8
   - 3.9
   - 3.10
