@@ -2,6 +2,10 @@
 
 set -vex
 
+# expand PREFIX in tensor's build_config/BUILD file
+sed -i -e "s:\${PREFIX}:${PREFIX}:" \
+    tensorflow/core/platform/default/build_config/BUILD
+
 ###############################################################################
 # Set defaults
 ###############################################################################
