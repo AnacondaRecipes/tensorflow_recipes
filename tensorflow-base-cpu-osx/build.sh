@@ -13,7 +13,8 @@ export INCLUDEDIR=$PREFIX/include
 export CC_FOR_BUILD=$CC
 
 # expand PREFIX in tensor's build_config/BUILD file
-sed -i -e "s:\${PREFIX}:${PREFIX}:" tensorflow/core/platform/default/build_config/BUILD
+# tensorflow/core/platform/default does not exist in v2.11.0, but does exist in master.
+#sed -i -e "s:\${PREFIX}:${PREFIX}:" tensorflow/core/platform/default/build_config/BUILD
 
 # variant specific settings
 if [ ${tflow_variant} == "mkl" ]; then
