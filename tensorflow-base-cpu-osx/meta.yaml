@@ -1,4 +1,4 @@
-{% set version = "2.10.0" %}
+{% set version = "2.11.0" %}
 {% set major_minor = version.rsplit('.', 1)[0] %}
 
 # This is the recipe for the "mkl" and "eigen" variants of tensorflow-base, but the MKL variant
@@ -10,7 +10,7 @@ package:
 source:
   fn: tensorflow-{{ version }}.tar.gz
   url: https://github.com/tensorflow/tensorflow/archive/v{{ version }}.tar.gz
-  sha256: b5a1bb04c84b6fe1538377e5a1f649bb5d5f0b2e3625a3c526ff3a8af88633e8
+  sha256: 99c732b92b1b37fc243a559e02f9aef5671771e272758aa4aec7f34dc92dac48
   patches:
     - 0101-include-c-and-cc-headers.patch
     - 0107-do-not-hardcode-ca-cert-location.patch
