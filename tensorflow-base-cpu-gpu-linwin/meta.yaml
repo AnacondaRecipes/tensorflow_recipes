@@ -14,6 +14,8 @@ source:
     - patches/0101-include-c-and-cc-headers.patch                   # [unix]
     - patches/0103-BUILD-changes-for-external-sqlite-package.patch  # [linux]
     - patches/0107-do-not-hardcode-ca-cert-location.patch           # [unix]
+    # gpu specific patches
+    - patches/0201-add-additional-cuda-rpaths.patch                 # [linux and (tflow_variant == 'gpu')]
 
 build:
   number: 0
