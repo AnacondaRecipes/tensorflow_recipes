@@ -9,7 +9,7 @@ c_compiler_version:     # [linux64]
 tflow_variant:
   - mkl
   - eigen
-  - gpu                 # [linux64 or win]
+  - gpu                 # [linux64]
 cudatoolkit:
   - 11.3
 cudnn:
