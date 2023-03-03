@@ -44,13 +44,11 @@ requirements:
     # required here for all OS's, and ALSO below for windows
     - bazel >=5.2.0
     - aws-sdk-cpp
-    # for cython compiler
-    - cython
-    - sqlite
-    - grpc-cpp
-    - nasm  # [x86]
 
   host:
+    # for cython compiler
+    - cython
+    - nasm  # [x86]
     # conda build requirements for .sh scripts on win
     - posix  # [win]
     - m2-patch  # [win]
