@@ -1,17 +1,21 @@
 ## To test the tensorflow conda packages
 
 * Prepare a conda environment with tensorflow and related packages:
-    conda create -n tf_test -c defaults -c jjhelmus python=3.7 tensorflow=1.14 portpicker scipy scikit-learn
-  Here jjhelmus is the channel where the testing packages where uploaded
+  ```
+    conda create -n tf_test -c defaults -c <path to env>/conda-bld python=<python version> tensorflow=<tensorflow version> portpicker scipy scikit-learn
+  ```
+  Here \<path to conda-env\> is the local path to the environment tensorflow was built into
 
 * Install a "good" version of bazel.  This can be done in the above enviornment
   or using the files from https://github.com/bazelbuild/bazel/releases
   The tests seem be be picky about the bazel version, 0.25.2 works for 1.14.0.
 
+* Additionally, `gxx` and `gcc` may need to be installed because not all builders support C++17
+
 * Clone the tensorflow repository and checkout the tag to test:
     git clone https://github.com/tensorflow/tensorflow.git
     cd tensorflow
-    git checkout v1.14.0
+    git checkout <branch for tensorflow version>
 
 * Use the `run_tests.sh` script in this directory to run the tests in in the
   activated environment:
