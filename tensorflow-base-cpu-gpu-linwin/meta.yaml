@@ -21,7 +21,7 @@ build:
   number: 0
   skip: True  # [not x86_64 and not (linux and aarch64)]
   skip: True  # [win and vc<14]
-  skip: True  # [py<37]
+  skip: True  # [py<38]
   string: {{ tflow_variant }}_py{{ CONDA_PY }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}
   entry_points:
     - toco_from_protos = tensorflow.lite.toco.python.toco_from_protos:main
