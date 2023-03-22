@@ -26,5 +26,5 @@ BAZEL_FLAGS="--define=no_tensorflow_py_deps=true --test_lang_filters=py \
       --build_tests_only -k --test_tag_filters=${PIP_TEST_FILTER_TAG} \
       --test_timeout 9999999"
 BAZEL_TEST_TARGETS="${PIP_TEST_PREFIX}/tensorflow/python/..."
-BAZEL_PARALLEL_TEST_FLAGS="--local_test_jobs=$(hw.logicalcpu)"
+BAZEL_PARALLEL_TEST_FLAGS="--local_test_jobs=$(sysctl -n hw.ncpu)"
 bazel test ${BAZEL_FLAGS} ${BAZEL_PARALLEL_TEST_FLAGS} -- ${BAZEL_TEST_TARGETS}
