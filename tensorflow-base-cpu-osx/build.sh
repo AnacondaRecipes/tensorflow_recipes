@@ -63,7 +63,7 @@ if [[ "${target_platform}" == osx-64 ]]; then
   export MACOSX_DEPLOYMENT_TARGET=10.14
   export LDFLAGS="${LDFLAGS} -lz -framework CoreFoundation -isysroot ${CONDA_BUILD_SYSROOT} -Xlinker -undefined -Xlinker dynamic_lookup"
 else
-  export CONDA_BUILD_SYSROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/
+  export CONDA_BUILD_SYSROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/
   export LDFLAGS="${LDFLAGS} -lz -framework CoreFoundation -isysroot ${CONDA_BUILD_SYSROOT} -Xlinker -undefined -Xlinker dynamic_lookup"
 fi
 

@@ -1,9 +1,9 @@
 # Configuration for osx-arm64 eigen variant.
 # Note that we don't build for Python 3.7 due to numpy limitations.
 full_base_version:
-  - "2.10.0 eigen_py38h4111cb8_0"
-  - "2.10.0 eigen_py39h4111cb8_0"
-  - "2.10.0 eigen_py310h4111cb8_0"
+  - "2.11.0 eigen_py38h8747ca9_0"
+  - "2.11.0 eigen_py39h8747ca9_0"
+  - "2.11.0 eigen_py310h8747ca9_0"
 
 select_version:
   - "2.2.0 eigen"

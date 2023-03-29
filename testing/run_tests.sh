@@ -21,7 +21,7 @@ rm -rf $PIP_TEST_ROOT
 mkdir -p $PIP_TEST_ROOT
 ln -s $(pwd)/tensorflow ${PIP_TEST_ROOT}/tensorflow
 
-PIP_TEST_FILTER_TAG="-no_pip,-no_oss,-oss_serial,-benchmark-test"
+PIP_TEST_FILTER_TAG="-no-gpu,-no_pip_gpu,-no_pip,-no_oss,-oss_serial,-benchmark-test"
 BAZEL_FLAGS="--define=no_tensorflow_py_deps=true --test_lang_filters=py \
       --build_tests_only -k --test_tag_filters=${PIP_TEST_FILTER_TAG} \
       --test_timeout 9999999"

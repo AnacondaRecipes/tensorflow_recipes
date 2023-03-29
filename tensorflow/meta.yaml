@@ -1,5 +1,7 @@
 {% set version = "2.11.0" %}
 {% set major_minor = version.rsplit('.', 1)[0] %}
+{% set PKG_HASH = "8747ca9" %}
+{% set PKG_BUILDNUM = "0" %}
 
 package:
   name: tensorflow
@@ -7,8 +9,8 @@ package:
 
 build:
   number: 0
-  skip: True  # [not x86_64 and not (linux and aarch64)]
-  string: {{ tflow_variant }}_py{{ py_version | replace(".", "") }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}
+  # skip: True  # [not x86_64 and not (linux and aarch64)]
+  string: {{ tflow_variant }}_py{{ py_version | replace(".", "") }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
 
 requirements:
   run:
