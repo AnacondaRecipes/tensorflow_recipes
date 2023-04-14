@@ -1,5 +1,5 @@
 {% set name = "tensorboard" %}
-{% set version = "2.11.0" %}
+{% set version = "2.12.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.io/packages/py3/t/tensorboard/tensorboard-{{ version }}-py3-none-any.whl
-  sha256: a0e592ee87962e17af3f0dce7faae3fbbd239030159e9e625cce810b7e35c53d
+  sha256: 3cbdc32448d7a28dc1bf0b1754760c08b8e0e2e37c451027ebd5ff4896613012
 
 build:
   number: 0
@@ -23,15 +23,16 @@ requirements:
     - pip
   run:
     - absl-py >=0.4
-    - google-auth-oauthlib >=0.4.1,<0.5
-    - grpcio >=1.24.3
+    - google-auth >=1.6.3,<3
+    - google-auth-oauthlib >=0.4.1,<1.15
+    - grpcio >=1.48.2
     - markdown >=2.6.8
     - numpy >=1.12.0
-    - protobuf >=3.6.0
+    - protobuf >=3.19.6
     - python
     - requests >=2.21.0,<3
     - setuptools >=41.0.0
-    - tensorboard-data-server >=0.6.0,<0.7.0
+    - tensorboard-data-server >=0.7.0,<0.8.0
     - tensorboard-plugin-wit >=1.6.0
     - werkzeug >=1.0.1
     - wheel >=0.26
