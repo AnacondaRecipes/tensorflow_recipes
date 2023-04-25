@@ -1,0 +1,18 @@
+diff --git a/tensorflow/tsl/cuda/cudart_stub.cc b/tensorflow/tsl/cuda/cudart_stub.cc
+index 5f9f6c0..e6cc2f8 100644
+--- a/tensorflow/tsl/cuda/cudart_stub.cc
++++ b/tensorflow/tsl/cuda/cudart_stub.cc
+@@ -58,10 +58,10 @@ cudaError_t GetSymbolNotFoundError() {
+ #include "tensorflow/tsl/cuda/cuda_runtime_10_1.inc"
+ #elif CUDART_VERSION < 11000
+ #include "tensorflow/tsl/cuda/cuda_runtime_10_2.inc"
+-#elif CUDART_VERSION < 11020
+-#include "tensorflow/tsl/cuda/cuda_runtime_11_0.inc"
+-#elif CUDART_VERSION < 11080
++#elif CUDART_VERSION == 11020
+ #include "tensorflow/tsl/cuda/cuda_runtime_11_2.inc"
++#elif CUDART_VERSION < 11080
++#include "tensorflow/tsl/cuda/cuda_runtime_11_0.inc"
+ #elif CUDART_VERSION < 12000
+ #include "tensorflow/tsl/cuda/cuda_runtime_11_8.inc"
+ #else

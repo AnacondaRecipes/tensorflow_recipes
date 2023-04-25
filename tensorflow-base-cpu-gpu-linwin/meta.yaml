@@ -16,6 +16,7 @@ source:
     - patches/0107-do-not-hardcode-ca-cert-location.patch           # [unix]
     # gpu specific patches
     - patches/0201-add-additional-cuda-rpaths.patch                 # [linux and (tflow_variant == 'gpu')]
+    - patches/0203-choose-cuda-runtime-110-inc.patch                # [linux and (tflow_variant == 'gpu')]
 
 build:
   number: 0

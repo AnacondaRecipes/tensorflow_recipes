@@ -1,5 +1,5 @@
 {% set name = "tensorboard" %}
-{% set version = "2.12.0" %}
+{% set version = "2.12.1" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.io/packages/py3/t/tensorboard/tensorboard-{{ version }}-py3-none-any.whl
-  sha256: 3cbdc32448d7a28dc1bf0b1754760c08b8e0e2e37c451027ebd5ff4896613012
+  sha256: 58f1c2a25b4829b9c48d2b1ec951dedc9325dcd1ea4b0f601d241d2887d0ed65
 
 build:
   number: 0
@@ -24,7 +24,7 @@ requirements:
   run:
     - absl-py >=0.4
     - google-auth >=1.6.3,<3
-    - google-auth-oauthlib >=0.4.1,<1.15
+    - google-auth-oauthlib >=0.4.1,<1.1
     - grpcio >=1.48.2
     - markdown >=2.6.8
     - numpy >=1.12.0
