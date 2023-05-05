@@ -1,9 +1,11 @@
 # configuration for linux-64 gpu, cuda 11.3
 full_base_version:
-  - "2.11.0 gpu_py38h24d65da_0"
-  - "2.11.0 gpu_py39h24d65da_0"
-  - "2.11.0 gpu_py310h24d65da_0"
+  - "2.12.0 gpu_py38h24d65da_0"
+  - "2.12.0 gpu_py39h24d65da_0"
+  - "2.12.0 gpu_py310h24d65da_0"
+  - "2.12.0 gpu_py311h24d65da_0"
 select_version:
+  - "2.1.0 gpu"
   - "2.1.0 gpu"
   - "2.1.0 gpu"
   - "2.1.0 gpu"
@@ -11,10 +13,12 @@ tflow_variant:
   - "gpu"
   - "gpu"
   - "gpu"
+  - "gpu"
 py_version:
   - 3.8
   - 3.9
   - 3.10
+  - 3.11
 zip_keys:
   - full_base_version
   - select_version
