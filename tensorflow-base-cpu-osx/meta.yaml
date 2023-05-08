@@ -84,20 +84,21 @@ requirements:
     - grpcio
     - h5py >=3.1.0
     - keras-preprocessing >=1.1.2
-    - numpy 1.20  # [py<=39 and osx and x86_64]
-    - numpy 1.21  # [py>39 and osx and x86_64]
-    - numpy 1.21  # [osx and arm64]
+    # numpy conflicts with scipy otherwise
+    - numpy 1.22  # [py<311]
+    - numpy 1.23  # [py>=311]
     - opt_einsum 3.3.0.*
     # build only requirement, doesn't need a run dep below
-    - protobuf >=3.9.2
+    - protobuf >=3.20.3,<5.0.0dev,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5
     # build only requirement, doesn't need a run dep below
-    - scipy 1.7.3
+    - scipy 1.7.3  # [py<311]
+    - scipy 1.9.3  # [py>=311]
     - six >=1.15.0
     - typing_extensions >=3.7.4
     # build only requirement, doesn't need a run dep below
     - swig
     - termcolor >=1.1.0
-    - wrapt >=1.11.2
+    - wrapt >=1.11.2,<1.15
     # has run_exports, doesn't need a run dep below
     - sqlite
     - llvm-openmp
