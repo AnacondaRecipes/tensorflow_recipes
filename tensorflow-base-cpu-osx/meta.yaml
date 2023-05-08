@@ -105,31 +105,31 @@ requirements:
     - snappy
     - packaging
   run:
-    - python
+    - numpy >=1.22,<1.24
+    - scipy >=1.7.3,<2
+    - packaging
     - absl-py >=1.0.0
     - astunparse >=1.6.3
-    - python-flatbuffers >=2.0
-    - google-pasta >=0.2
-    - h5py >=3.1.0
-    - keras {{ major_minor }}.*
-    - numpy >=1.20
-    - opt_einsum 3.3.0.*
-    - protobuf >=3.9.2
-    - six >=1.15.0
-    - termcolor >=1.1.0
-    - typing_extensions >=3.7.4
-    - wheel >=0.35,<0.36
-    - wrapt >=1.11.2
-    - grpcio
-    - packaging
-    - requests
+    - flatbuffers >=2.0
     # upstream wants exact pin for gast
     - gast ==0.4.0
-    - scipy >=1.7.3,<2
-    - flatbuffers >=2.0
-    - llvm-openmp
+    - google-pasta >=0.2
+    - grpcio >=1.24.3,<2.0
+    - h5py >=3.1.0
+    - keras {{ major_minor }}.*
+    - opt_einsum 3.3.0.*
+    - python
+    - python-flatbuffers >=2.0
+    - requests
+    - six >=1.15.0
     - tensorboard {{ major_minor }}.*
     - tensorflow-estimator {{ major_minor }}.*
+    - termcolor >=1.1.0
+    - typing_extensions >=3.7.4
+    - wrapt >=1.11.2
+    - protobuf >=3.9.2
+    - wheel >=0.35,<0.36
+    - llvm-openmp
 test:
   imports:
     - tensorflow
