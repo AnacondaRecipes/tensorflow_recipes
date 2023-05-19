@@ -162,6 +162,12 @@ build:windows --distinct_host_configuration=false
 # This is needed because otherwise abseil has trouble compiling
 build:windows --copt=/Zc:__cplusplus
 
+# In some cases, the command line arguments bazel passes to the compiler can
+# exceed the maximum character limit that CreateProcess() can handle (32K),
+# so use param files to get around this.
+build:windows --features=compiler_param_file
+build:windows --features=linker_param_file
+
 # Configure short or long logs
 build:short_logs --output_filter=DONT_MATCH_ANYTHING
 build:verbose_logs --output_filter=
