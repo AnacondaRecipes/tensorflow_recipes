@@ -43,7 +43,8 @@ requirements:
     - m2-patch  # [win]
     - m2-coreutils  # [win]
     # required here for all OS's, and ALSO below for windows
-    - bazel >=5.2.0
+    - bazel >=5.3.0  # [win]
+    - bazel >=5.2.0  # [not win]
     - aws-sdk-cpp
 
   host:
@@ -53,7 +54,7 @@ requirements:
     # conda build requirements for .sh scripts on win
     - posix  # [win]
     - m2-patch  # [win]
-    - bazel >=5.2.0    # [win]
+    - bazel >=5.3.0    # [win]
     - packaging
     - python
     - pip
