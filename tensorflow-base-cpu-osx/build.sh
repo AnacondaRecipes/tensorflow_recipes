@@ -77,7 +77,7 @@ BUILD_OPTS="
     --verbose_failures
     ${BAZEL_MKL_OPT}
     --config=opt"
-export TF_ENABLE_XLA=0
+export TF_ENABLE_XLA=1
 
 if [[ "${target_platform}" == "osx-64" ]]; then
   # Tensorflow doesn't cope yet with an explicit architecture (darwin_x86_64) on osx-64 yet.
