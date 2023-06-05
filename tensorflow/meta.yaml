@@ -1,4 +1,4 @@
-{% set version = "2.12.0" %}
+{% set version = "2.11.0" %}
 {% set major_minor = version.rsplit('.', 1)[0] %}
 
 package:
@@ -8,7 +8,7 @@ package:
 build:
   number: 0
   skip: True  # [not x86_64 and not (linux and aarch64)]
-  string: eigen_py{{ py_version | replace(".", "") }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}
+  string: {{ tflow_variant }}_py{{ py_version | replace(".", "") }}h{{PKG_HASH}}_{{ PKG_BUILDNUM }}
 
 requirements:
   run:
