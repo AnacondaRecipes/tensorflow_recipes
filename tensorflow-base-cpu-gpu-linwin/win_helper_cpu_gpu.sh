@@ -10,8 +10,8 @@ sed -i -e "s:\${PREFIX}:${PREFIX}:" \
 # Set defaults
 ###############################################################################
 
-export MSYS2_ARG_CONV="*"
 export MSYS_NO_PATHCONV=1
+export MSYS2_ARG_CONV_EXCL="*"
 
 # Bazel settings
 export BAZEL_MKL_OPT=""
