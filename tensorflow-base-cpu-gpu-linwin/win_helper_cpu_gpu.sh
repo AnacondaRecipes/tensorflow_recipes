@@ -18,8 +18,8 @@ export BAZEL_MKL_OPT=""
 export BAZEL_CUDA_OPT=""
 
 # Compile tensorflow from source
-export PYTHON_BIN_PATH=${PYTHON}
-export PYTHON_LIB_PATH=${SP_DIR}
+export PYTHON_BIN_PATH=$(cygpath -w ${PYTHON})
+export PYTHON_LIB_PATH=$(cygpath -w ${SP_DIR})
 export USE_DEFAULT_PYTHON_LIB_PATH=1
 
 # Tensorflow settings
@@ -130,10 +130,10 @@ ${LIBRARY_BIN}/bazel build ${BAZEL_MKL_OPT} ${BAZEL_CUDA_OPT} \
     --host_copt=-D_copysign="copysign" \
     --cxxopt=-D_copysign="copysign" \
     --host_cxxopt=-D_copysign="copysign" \
-    --python_path="${PYTHON}" \
-    --action_env="PYTHON_BIN_PATH=${PYTHON}" \
-    --action_env="PYTHON_LIB_PATH=${SP_DIR}" \
-    --linkopt="-L$LIBRARY_PREFIX" \
+    --python_path="$(cygpath -w ${PYTHON})" \
+    --action_env="PYTHON_BIN_PATH=$(cygpath -w ${PYTHON})" \
+    --action_env="PYTHON_LIB_PATH=$(cygpath -w ${SP_DIR})" \
+    --linkopt="-L$(cygpath -w ${LIBRARY_PREFIX})" \
     --strip=always \
     --incompatible_fix_package_group_reporoot_syntax=false \
     --experimental_cc_shared_library \
