@@ -1,10 +1,12 @@
 # Configuration for osx-64 eigen variant.
 full_base_version:
-  - "2.11.0 eigen_haf03e11_1"
-  - "2.11.0 eigen_haf03e11_1"
-  - "2.11.0 eigen_haf03e11_1"
+  - "2.12.0 eigen_py38hbf87084_0"
+  - "2.12.0 eigen_py39hbf87084_0"
+  - "2.12.0 eigen_py310hbf87084_0"
+  - "2.12.0 eigen_py311hbf87084_0"
 
 select_version:
+  - "2.2.0 eigen"
   - "2.2.0 eigen"
   - "2.2.0 eigen"
   - "2.2.0 eigen"
@@ -13,11 +15,13 @@ tflow_variant:
   - "eigen"
   - "eigen"
   - "eigen"
+  - "eigen"
 
 py_version:
   - 3.8
   - 3.9
   - 3.10
+  - 3.11
 
 zip_keys:
   - full_base_version
